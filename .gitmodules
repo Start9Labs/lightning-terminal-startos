@@ -1,0 +1,3 @@
+[submodule "lightning-terminal"]
+	path = lightning-terminal
+	url = https://github.com/lightninglabs/lightning-terminal
