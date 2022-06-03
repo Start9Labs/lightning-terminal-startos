@@ -39,7 +39,7 @@ bitcoind:
     variant-names:
       internal: Internal
       internal-proxy: Internal (Bitcoin Proxy)
-  default: internal
+  default: internal-proxy
   variants:
     internal:
       user:
