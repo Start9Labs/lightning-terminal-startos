@@ -14,6 +14,7 @@ verify: lightning-terminal.s9pk $(S9PK_PATH)
 clean:
 	rm -f image.tar
 	rm -f lightning-terminal.s9pk
+	rm -f scripts/*.js
 
 lightning-terminal.s9pk: manifest.yaml assets/compat/* image.tar docs/instructions.md scripts/embassy.js $(ASSET_PATHS)
 	embassy-sdk pack

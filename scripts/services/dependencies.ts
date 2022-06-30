@@ -1,4 +1,4 @@
-import { ExpectedExports, Config, matches } from "../deps.ts";
+import { matches, types as T } from "../deps.ts";
 
 const { shape, arrayOf, string, boolean } = matches;
 
@@ -35,8 +35,8 @@ function randomItemString(input: string) {
 const serviceName = "lightning-terminal";
 const fullChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 type Check = {
-  currentError(config: Config): string | void;
-  fix(config: Config): void;
+  currentError(config: T.Config): string | void;
+  fix(config: T.Config): T.Config;
 };
 
 const proxyChecks: Array<Check> = [
@@ -100,7 +100,7 @@ const proxyChecks: Array<Check> = [
   ),
 ];
 
-export const dependencies: ExpectedExports.dependencies = {
+export const dependencies: T.ExpectedExports.dependencies = {
     bitcoind: {
         async check(effects, configInput) {
             effects.info("check bitcoind");
