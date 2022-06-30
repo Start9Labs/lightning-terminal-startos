@@ -51,11 +51,15 @@ const proxyChecks: Array<Check> = [
       return `Must have an RPC user named "${serviceName}"`;
     },
     fix(config) {
+      if (!matchProxyConfig.test(config)) {
+        throw new Error("Config is not the correct shape");
+      }
       config.users.push({
         name: serviceName,
         "allowed-calls": [],
         password: times(() => randomItemString(fullChars), 22).join(""),
       });
+      return config;
     },
   },
   ...[
@@ -92,11 +96,12 @@ const proxyChecks: Array<Check> = [
         }
         const found = config.users.find((x) => x.name === serviceName);
         if (!found) {
-          throw new Error("Users for lightning-terminal should exist");
+          throw new Error("Users for mempool should exist");
         }
         found["allowed-calls"] = [...(found["allowed-calls"] ?? []), operator];
+        return config;
       },
-    })
+    }),
   ),
 ];
 
