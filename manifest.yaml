@@ -1,7 +1,7 @@
 id: lightning-terminal 
 title: Lightning Terminal
 version: 0.6.7.1
-release-notes: updated version for EmbassyOS v0.3.1 - includes EOS performance improvements
+release-notes: Switch to using new EOS APIs for faster configuration and properties
 license: mit
 wrapper-repo: https://github.com/Start9Labs/lightning-terminal-wrapper
 upstream-repo: https://github.com/lightninglabs/lightning-terminal
@@ -25,7 +25,6 @@ main:
     lnd: /mnt/lnd
     compat: /mnt/assets
     main: /root
-  io-format: yaml
 health-checks:
   main:
     name: Web Interface
