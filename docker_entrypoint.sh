@@ -35,7 +35,7 @@ faraday.bitcoin.user="$RPC_USER"
 faraday.bitcoin.password="$RPC_PASS"
 " >> /root/.lit/lit.conf
 # Properties Page showing password to be used for login
-  echo 'version: 2' >> /root/start9/stats.yaml
+  echo 'version: 2' > /root/start9/stats.yaml
   echo 'data:' >> /root/start9/stats.yaml
   echo '  Password: ' >> /root/start9/stats.yaml
         echo '    type: string' >> /root/start9/stats.yaml

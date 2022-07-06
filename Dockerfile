@@ -1,5 +1,7 @@
 FROM --platform=linux/arm64/v8 lightninglabs/lightning-terminal:v0.6.7-alpha
+
 RUN apk add --no-cache yq
+
 # Import Entrypoint and give permissions
 ADD ./docker_entrypoint.sh /usr/local/bin/docker_entrypoint.sh
 RUN chmod a+x /usr/local/bin/docker_entrypoint.sh
