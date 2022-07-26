@@ -20,6 +20,9 @@ else
 	echo "Running on Bitcoin Core..."
 fi
 echo "Configuring LiT..."
+### There seems to be a bug in the upstream repo, requiring lit.macaroon to be present before it is generated. 
+### Workaround is making the empty file and letting the setup process remove it to generate a new one.
+mkdir -p ~/.lit/mainnet && touch ~/.lit/mainnet/lit.macaroon
 # Removing any old data in the lit.conf file
 rm -f /root/.lit/lit.conf
 # Copying the TLS cert for LND to the faraday working mainnet folder
@@ -33,7 +36,7 @@ faraday.connect_bitcoin=1
 faraday.bitcoin.host="$RPC_HOST":8332
 faraday.bitcoin.user="$RPC_USER"
 faraday.bitcoin.password="$RPC_PASS"
-" >> /root/.lit/lit.conf
+" > /root/.lit/lit.conf
 # Properties Page showing password to be used for login
   echo 'version: 2' > /root/start9/stats.yaml
   echo 'data:' >> /root/start9/stats.yaml
@@ -44,6 +47,7 @@ faraday.bitcoin.password="$RPC_PASS"
         echo '    copyable: true' >> /root/start9/stats.yaml
         echo '    masked: true' >> /root/start9/stats.yaml
         echo '    qr: false' >> /root/start9/stats.yaml
+
 echo "Starting LiT..."
 /bin/litd --uipassword=$LITD_PASS --lit-dir=~/.lit --insecure-httplisten=lightning-terminal.embassy:8443
 
