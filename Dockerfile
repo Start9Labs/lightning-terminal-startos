@@ -1,4 +1,4 @@
-FROM --platform=linux/arm64/v8 lightninglabs/lightning-terminal:v0.6.7-alpha
+FROM --platform=linux/arm64/v8 lightninglabs/lightning-terminal:v0.7.0-alpha
 
 RUN apk add --no-cache yq
 

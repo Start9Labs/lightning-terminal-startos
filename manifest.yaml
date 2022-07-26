@@ -1,7 +1,10 @@
 id: lightning-terminal 
 title: Lightning Terminal
-version: 0.6.7.1
-release-notes: Switch to using new EOS APIs for faster configuration and properties
+version: 0.7.0
+release-notes: |-
+  * New Lightning Terminal v0.7.0-alpha: [Upstream Release Notes](https://github.com/lightninglabs/lightning-terminal/releases/tag/v0.7.0-alpha)  
+  * [Updated documentation on how to run frcli on EOS v0.3.1](https://github.com/Start9Labs/lightning-terminal-wrapper/issues/2)
+  * Improved service migration flow
 license: mit
 wrapper-repo: https://github.com/Start9Labs/lightning-terminal-wrapper
 upstream-repo: https://github.com/lightninglabs/lightning-terminal
@@ -72,15 +75,15 @@ interfaces:
       - http
 dependencies:
   lnd:
-    version: ">=0.13.3 <0.15.0"
+    version: ">=0.14.3 <0.16.0"
     description: Used to communicate with the Lightning Network.
     requirement:
       type: required
     config: ~
   bitcoind:
-    version: ">=0.21.1.2 <=23.0.0"
+    version: ">=0.21.1.2 <=24.0.0"
     requirement:
-      type: "opt-out"
+      type: "opt-in"
       how: Can alternatively configure proxy or bitcoin core  node.
     description: Used to subscribe to new block events from a full archival node.
     config:
@@ -91,7 +94,7 @@ dependencies:
   btc-rpc-proxy:
     version: ">=0.3.2.1 <0.4.0"
     requirement:
-      type: "opt-in"
+      type: "opt-out"
       how: Can alternatively configure proxy or bitcoin core  node.
     description: Used for RPC permissioning.
     config:
@@ -126,22 +129,10 @@ backup:
     mounts:
       BACKUP: /mnt/backup
       main: /root/data
-migrations:
-  from:
-    "<=0.6.7.1":
-      type: docker
-      image: main
-      system: false
-      entrypoint: "/bin/echo"
-      args: ['{"configured": true}']
-      io-format: json
-      inject: false
-  to:
-    "<=0.6.7.1":
-      type: docker
-      image: main
-      system: false
-      entrypoint: "/bin/echo"
-      args: ['{"configured": true}']
-      io-format: json
-      inject: false
+# migrations:
+#   from:
+#     "*":
+#       type: script
+#   to:
+#     "*":
+#       type: script
