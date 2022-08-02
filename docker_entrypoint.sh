@@ -20,8 +20,8 @@ else
 	echo "Running on Bitcoin Core..."
 fi
 echo "Configuring LiT..."
-### There seems to be a bug in the upstream repo, requiring lit.macaroon to be present before it is generated. 
-### Workaround is making the empty file and letting the setup process remove it to generate a new one.
+### There seems to be a bug in the upstream repo, requiring the lit/mainnet folder to be present before it is generated. 
+### Workaround is making the empty folder and letting the setup process remove it to generate a new one.
 mkdir -p ~/.lit/mainnet
 # Removing any old data in the lit.conf file
 rm -f /root/.lit/lit.conf
