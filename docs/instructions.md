@@ -10,6 +10,7 @@
 > **Faraday(SSH Required):** Data Reporting tool developed by Lightning Labs to help you extract valuable analytics and insights from your LND node. Please note that Faraday is command line only, and not supported by EmbassyOS.
 
 **To use the Faraday command line interface (frcli) you will need to ssh into your Embassy:**
+Please note: for EOS v0.3.1 and above the default ssh user has changed from "root" to "start9", you will need to add `sudo` to the beginning of each command below.
 
 Usage: 
 - `docker exec lightning-terminal.embassy frcli --rpcserver=localhost:8443 "command"`

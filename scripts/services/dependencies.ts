@@ -1,3 +1,4 @@
+// deno-lint-ignore-file require-await
 import { matches, types as T } from "../deps.ts";
 
 const { shape, arrayOf, string, boolean } = matches;
