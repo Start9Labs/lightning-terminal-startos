@@ -29,12 +29,21 @@ main:
     compat: /mnt/assets
     main: /root
 health-checks:
-  main:
+  web:
     name: Web Interface
     success-message: The Lightning Terminal UI is ready to visit in a web browser
     type: docker
     image: main
     entrypoint: check-web.sh
+    args: []
+    io-format: json
+    inject: true
+  lnd:
+    name: LND API
+    success-message: The LND Server is active and accepting requests
+    type: docker
+    image: main
+    entrypoint: check-lnd.sh
     args: []
     io-format: json
     inject: true

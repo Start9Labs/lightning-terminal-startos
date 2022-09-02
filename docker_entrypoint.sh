@@ -19,6 +19,12 @@ else
 	RPC_HOST="bitcoind.embassy"
 	echo "Running on Bitcoin Core..."
 fi
+MACAROON_HEADER="Grpc-Metadata-macaroon: $(xxd -ps -u -c 1000 /mnt/lnd/admin.macaroon)"
+until curl --silent --fail --cacert /mnt/lnd/tls.cert --header "$MACAROON_HEADER" https://lnd.embassy:8080/v1/getinfo &>/dev/null
+do
+    echo "LND Server is unreachable. Are you sure the LND service is running?" 
+    sleep 5
+done
 echo "Configuring LiT..."
 ### There seems to be a bug in the upstream repo, requiring the lit/mainnet folder to be present before it is generated. 
 ### Workaround is making the empty folder and letting the setup process remove it to generate a new one.
@@ -49,7 +55,9 @@ faraday.bitcoin.password="$RPC_PASS"
         echo '    qr: false' >> /root/start9/stats.yaml
 
 echo "Starting LiT..."
-/bin/litd --uipassword=$LITD_PASS --lit-dir=~/.lit --insecure-httplisten=lightning-terminal.embassy:8443
+/bin/litd --uipassword=$LITD_PASS --lit-dir=~/.lit --insecure-httplisten=lightning-terminal.embassy:8443 & 
+$lightning_terminal_process=$!
 
 trap _term SIGTERM
-wait -n $lightning_terminal_process
+
+wait $lightning_terminal_process
