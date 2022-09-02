@@ -11,7 +11,7 @@ all: verify
 verify: lightning-terminal.s9pk $(S9PK_PATH)
 	embassy-sdk verify s9pk $(S9PK_PATH)
 
-install: all lightning-terminal.s9pk
+install: all 
 	embassy-cli package install lightning-terminal.s9pk
 
 clean:
