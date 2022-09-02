@@ -19,16 +19,11 @@ else
 	RPC_HOST="bitcoind.embassy"
 	echo "Running on Bitcoin Core..."
 fi
-while true; do
-  MACAROON_HEADER="Grpc-Metadata-macaroon: $(xxd -ps -u -c 1000 /mnt/lnd/admin.macaroon)"
-  curl --silent --fail --cacert /mnt/lnd/tls.cert --header "$MACAROON_HEADER" https://lnd.embassy:8080/v1/getinfo &>/dev/null
-  WT_RES=$?
-  if test "$WT_RES" != 0; then
+MACAROON_HEADER="Grpc-Metadata-macaroon: $(xxd -ps -u -c 1000 /mnt/lnd/admin.macaroon)"
+until curl --silent --fail --cacert /mnt/lnd/tls.cert --header "$MACAROON_HEADER" https://lnd.embassy:8080/v1/getinfo &>/dev/null
+do
     echo "LND Server is unreachable. Are you sure the LND service is running?" 
-  else 
-    break
-  fi
-  sleep 5
+    sleep 5
 done
 echo "Configuring LiT..."
 ### There seems to be a bug in the upstream repo, requiring the lit/mainnet folder to be present before it is generated. 
