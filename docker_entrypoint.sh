@@ -5,8 +5,6 @@ _term() {
   kill -TERM "$lightning_terminal_process" 2>/dev/null
 }
 # Setting variables
-# TOR_ADDRESS=$(yq e '.tor-address' /root/start9/config.yaml)
-# LAN_ADDRESS=$(yq e '.lan-address' /root/start9/config.yaml)
 LND_ADDRESS='lnd.embassy'
 LITD_PASS=$(yq e '.password' /root/start9/config.yaml)
 RPC_TYPE=$(yq e '.bitcoind.type' /root/start9/config.yaml)
