@@ -4,6 +4,7 @@ version: 0.8.0
 release-notes: | 
   * Updated to run on x86_64 architecture. 
   * LiT v0.8.0-alpha [Release Notes](https://github.com/lightninglabs/lightning-terminal/releases/tag/v0.8.0-alpha)
+  * Fix backup restore
 license: mit
 wrapper-repo: https://github.com/Start9Labs/lightning-terminal-wrapper
 upstream-repo: https://github.com/lightninglabs/lightning-terminal
@@ -121,8 +122,8 @@ backup:
     args:
       - duplicity
       - restore
-      - /root/data
       - /mnt/backup
+      - /root/data
     mounts:
       BACKUP: /mnt/backup
       main: /root/data
