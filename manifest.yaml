@@ -1,10 +1,10 @@
 id: lightning-terminal 
 title: Lightning Terminal
-version: 0.7.0
-release-notes: |-
-  * New Lightning Terminal v0.7.0-alpha: [Upstream Release Notes](https://github.com/lightninglabs/lightning-terminal/releases/tag/v0.7.0-alpha)  
-  * [Updated documentation on how to run frcli on EOS v0.3.1](https://github.com/Start9Labs/lightning-terminal-wrapper/issues/2)
-  * Improved service migration flow
+version: 0.8.0
+release-notes: | 
+  * Updated to run on x86_64 architecture. 
+  * LiT v0.8.0-alpha [Release Notes](https://github.com/lightninglabs/lightning-terminal/releases/tag/v0.8.0-alpha)
+  * Fix backup restore
 license: mit
 wrapper-repo: https://github.com/Start9Labs/lightning-terminal-wrapper
 upstream-repo: https://github.com/lightninglabs/lightning-terminal
@@ -17,27 +17,20 @@ description:
 assets:
   license: LICENSE
   icon: icon.png
-  instructions: docs/instructions.md
-  docker-images: image.tar
+  instructions: instructions.md
 main:
   type: docker
   image: main
-  entrypoint: "docker_entrypoint.sh"
+  entrypoint: docker_entrypoint.sh
   args: []
   mounts:
-    lnd: /mnt/lnd
-    compat: /mnt/assets
     main: /root
+    lnd: /mnt/lnd
 health-checks:
-  web:
+  web-ui:
     name: Web Interface
     success-message: The Lightning Terminal UI is ready to visit in a web browser
-    type: docker
-    image: main
-    entrypoint: check-web.sh
-    args: []
-    io-format: json
-    inject: true
+    type: script
   lnd:
     name: LND API
     success-message: The LND Server is active and accepting requests
@@ -57,10 +50,6 @@ properties:
 volumes:
   main:
     type: data
-  compat:
-    type: assets
-  utils:
-    type: assets
   lnd:
     type: pointer
     package-id: lnd
@@ -133,8 +122,8 @@ backup:
     args:
       - duplicity
       - restore
-      - /root/data
       - /mnt/backup
+      - /root/data
     mounts:
       BACKUP: /mnt/backup
       main: /root/data
