@@ -7,16 +7,11 @@ _term() {
 # Setting variables
 LND_ADDRESS='lnd.embassy'
 LITD_PASS=$(yq e '.password' /root/start9/config.yaml)
-RPC_TYPE=$(yq e '.bitcoind.type' /root/start9/config.yaml)
-RPC_USER=$(yq e '.bitcoind.user' /root/start9/config.yaml)
-RPC_PASS=$(yq e '.bitcoind.password' /root/start9/config.yaml)
-if [ "$RPC_TYPE" = "internal-proxy" ]; then
-	RPC_HOST="btc-rpc-proxy.embassy"
-	echo "Running on Bitcoin Proxy..."
-else
-	RPC_HOST="bitcoind.embassy"
-	echo "Running on Bitcoin Core..."
-fi
+RPC_USER=$(yq e '.bitcoind-user' /root/start9/config.yaml)
+RPC_PASS=$(yq e '.bitcoind-password' /root/start9/config.yaml)
+RPC_HOST="bitcoind.embassy"
+echo "Running on Bitcoin Core..."
+
 MACAROON_HEADER="Grpc-Metadata-macaroon: $(xxd -ps -u -c 1000 /mnt/lnd/admin.macaroon)"
 until curl --silent --fail --cacert /mnt/lnd/tls.cert --header "$MACAROON_HEADER" https://lnd.embassy:8080/v1/getinfo &>/dev/null
 do
