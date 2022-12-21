@@ -35,7 +35,7 @@ export const getConfig: T.ExpectedExports.getConfig = compat.getConfig({
       },
       "description": "The Bitcoin Core node to connect to:\n  - internal: The Bitcoin Core and Proxy services installed to your Embassy\n"
     },
-    "default": "internal-proxy",
+    "default": "internal",
     "variants": {
       "internal": {
         "user": {
