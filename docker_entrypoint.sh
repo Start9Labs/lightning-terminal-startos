@@ -6,9 +6,9 @@ _term() {
 }
 # Setting variables
 LND_ADDRESS='lnd.embassy'
-LITD_PASS=$(yq e '.password' /root/start9/config.yaml)
-RPC_USER=$(yq e '.bitcoind-user' /root/start9/config.yaml)
-RPC_PASS=$(yq e '.bitcoind-password' /root/start9/config.yaml)
+LITD_PASS=$(yq e '.password' /data/start9/config.yaml)
+RPC_USER=$(yq e '.bitcoind-user' /data/start9/config.yaml)
+RPC_PASS=$(yq e '.bitcoind-password' /data/start9/config.yaml)
 RPC_HOST="bitcoind.embassy"
 echo "Running on Bitcoin Core..."
 
@@ -19,13 +19,11 @@ do
     sleep 5
 done
 echo "Configuring LiT..."
-### There seems to be a bug in the upstream repo, requiring the lit/mainnet folder to be present before it is generated. 
-### Workaround is making the empty folder and letting the setup process remove it to generate a new one.
-mkdir -p ~/.lit/mainnet
-# Removing any old data in the lit.conf file
-rm -f /root/.lit/lit.conf
+
+# Removing any old data in the lit folder
+rm -f /data/.lit/mainnet/lit.macaroon
 # Copying the TLS cert for LND to the faraday working mainnet folder
-cp /root/.lit/tls.cert /root/.faraday/mainnet/tls.cert
+cp /data/.lit/tls.cert /data/.faraday/mainnet/tls.cert
 # Creating lit.conf
 echo "
 remote.lnd.rpcserver="$LND_ADDRESS":10009
@@ -35,20 +33,20 @@ faraday.connect_bitcoin=1
 faraday.bitcoin.host="$RPC_HOST":8332
 faraday.bitcoin.user="$RPC_USER"
 faraday.bitcoin.password="$RPC_PASS"
-" > /root/.lit/lit.conf
+" > /data/.lit/lit.conf
 # Properties Page showing password to be used for login
-  echo 'version: 2' > /root/start9/stats.yaml
-  echo 'data:' >> /root/start9/stats.yaml
-  echo '  Password: ' >> /root/start9/stats.yaml
-        echo '    type: string' >> /root/start9/stats.yaml
-        echo "    value: \"$LITD_PASS\"" >> /root/start9/stats.yaml
-        echo '    description: This is your admin password for Lightning Terminal. Please use caution when sharing this password, you could lose your funds!' >> /root/start9/stats.yaml
-        echo '    copyable: true' >> /root/start9/stats.yaml
-        echo '    masked: true' >> /root/start9/stats.yaml
-        echo '    qr: false' >> /root/start9/stats.yaml
+  echo 'version: 2' > /data/start9/stats.yaml
+  echo 'data:' >> /data/start9/stats.yaml
+  echo '  Password: ' >> /data/start9/stats.yaml
+        echo '    type: string' >> /data/start9/stats.yaml
+        echo "    value: \"$LITD_PASS\"" >> /data/start9/stats.yaml
+        echo '    description: This is your admin password for Lightning Terminal. Please use caution when sharing this password, you could lose your funds!' >> /data/start9/stats.yaml
+        echo '    copyable: true' >> /data/start9/stats.yaml
+        echo '    masked: true' >> /data/start9/stats.yaml
+        echo '    qr: false' >> /data/start9/stats.yaml
 
 echo "Starting LiT..."
-/bin/litd --uipassword=$LITD_PASS --lit-dir=~/.lit --insecure-httplisten=lightning-terminal.embassy:8443 & 
+/bin/litd --uipassword=$LITD_PASS --macaroonpath=/data/.lit/mainnet/lit.macaroon --lit-dir=/data/.lit --remote.lit-tlscertpath=/data/.lit/tls.cert --remote.lit-tlskeypath=/data/.lit/tls.key --insecure-httplisten=lightning-terminal.embassy:8443 & 
 $lightning_terminal_process=$!
 
 trap _term SIGTERM

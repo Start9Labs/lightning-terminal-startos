@@ -1,10 +1,8 @@
 id: lightning-terminal 
 title: Lightning Terminal
-version: 0.8.5
+version: 0.8.5.1
 release-notes: | 
-  * Updated to run on x86_64 architecture. 
-  * LiT v0.8.5-alpha [Release Notes](https://github.com/lightninglabs/lightning-terminal/releases/tag/v0.8.5-alpha)
-  * Fix backup restore
+  * fix macaroon error
 license: mit
 wrapper-repo: https://github.com/Start9Labs/lightning-terminal-wrapper
 upstream-repo: https://github.com/lightninglabs/lightning-terminal
@@ -24,7 +22,7 @@ main:
   entrypoint: docker_entrypoint.sh
   args: []
   mounts:
-    main: /root
+    main: /data
     lnd: /mnt/lnd
 health-checks:
   web-ui:
@@ -98,10 +96,10 @@ backup:
       - duplicity
       - create
       - /mnt/backup
-      - /root/data
+      - /data
     mounts:
       BACKUP: "/mnt/backup" 
-      main: "/root/data"
+      main: "/data"
   restore:
     type: docker
     image: compat
@@ -111,10 +109,10 @@ backup:
       - duplicity
       - restore
       - /mnt/backup
-      - /root/data
+      - /data
     mounts:
       BACKUP: /mnt/backup
-      main: /root/data
+      main: /data
 migrations:
   from:
     "*":
