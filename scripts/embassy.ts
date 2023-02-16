@@ -4,4 +4,5 @@ export { getConfig } from "./procedures/getConfig.ts";
 export { dependencies } from "./procedures/dependencies.ts";
 export { migration } from "./procedures/migrations.ts";
 export { health } from "./procedures/healthChecks.ts";
+export { createBackup, restoreBackup } from "./procedures/backups.ts";
 // export { main } from "./procedures/main.ts";
