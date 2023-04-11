@@ -1,9 +1,9 @@
 id: lightning-terminal 
 title: Lightning Terminal
-version: 0.8.5.2
+version: 0.9.0
 release-notes: | 
-  * fix macaroon error
-  * add rsync backups
+  * update to v0.9.0 [Release Notes](https://github.com/lightninglabs/lightning-terminal/releases/tag/v0.9.0-alpha)
+  * Update LND dependency version
 license: mit
 wrapper-repo: https://github.com/Start9Labs/lightning-terminal-wrapper
 upstream-repo: https://github.com/lightninglabs/lightning-terminal
@@ -72,7 +72,7 @@ interfaces:
       - http
 dependencies:
   lnd:
-    version: ">=0.15.4 <=0.16.0"
+    version: ">=0.15.4 <0.17.0"
     description: Used to communicate with the Lightning Network.
     requirement:
       type: required
