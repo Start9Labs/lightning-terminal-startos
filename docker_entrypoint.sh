@@ -46,7 +46,7 @@ faraday.bitcoin.password="$RPC_PASS"
         echo '    qr: false' >> /data/start9/stats.yaml
 
 echo "Starting LiT..."
-/bin/litd --uipassword=$LITD_PASS --macaroonpath=/data/.lit/mainnet/lit.macaroon --lit-dir=/data/.lit --remote.lit-tlscertpath=/data/.lit/tls.cert --remote.lit-tlskeypath=/data/.lit/tls.key --insecure-httplisten=lightning-terminal.embassy:8443 & 
+/bin/litd --uipassword=$LITD_PASS --macaroonpath=/data/.lit/mainnet/lit.macaroon --lit-dir=/data/.lit --tlscertpath=/data/.lit/tls.cert --tlskeypath=/data/.lit/tls.key --insecure-httplisten=lightning-terminal.embassy:8443 & 
 $lightning_terminal_process=$!
 
 trap _term SIGTERM
