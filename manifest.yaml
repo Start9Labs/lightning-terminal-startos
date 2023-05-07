@@ -1,9 +1,8 @@
 id: lightning-terminal 
 title: Lightning Terminal
-version: 0.9.0.1
+version: 0.9.2
 release-notes: | 
-  * Update to v0.9.0 [Release Notes](https://github.com/lightninglabs/lightning-terminal/releases/tag/v0.9.0-alpha)
-  * Update LND dependency version
+  * Update to v0.9.2 [Release Notes](https://github.com/lightninglabs/lightning-terminal/releases/tag/v0.9.2-alpha)
 license: mit
 wrapper-repo: https://github.com/Start9Labs/lightning-terminal-wrapper
 upstream-repo: https://github.com/lightninglabs/lightning-terminal
