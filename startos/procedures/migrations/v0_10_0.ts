@@ -1,14 +1,25 @@
 import { sdk } from '../../sdk'
+import { readFile, rmdir } from 'fs/promises'
+import { load } from 'js-yaml'
 
-/**
- * This is an example migration file
- *
- * By convention, each version service requiring a migration receives its own file
- *
- * The resulting migration (e.g. v0_10_0) is exported, then imported into migrations/index.ts
- */
+type ConfigYaml = {
+  password: string
+}
 export const v0_10_0 = sdk.Migration.of({
   version: '0.10.0',
-  up: async ({ effects, utils }) => await effects.setConfigured(false),
-  down: async ({ effects, utils }) => {},
+  up: async ({ effects, utils }) => {
+    // get old config.yaml
+    const configYaml = load(
+      await readFile('/root/start9/config.yaml', 'utf-8'),
+    ) as ConfigYaml
+
+    // Save password to vault
+    await utils.vault.set('password', configYaml.password)
+
+    // remove old start9 dir
+    await rmdir('/root/start9')
+  },
+  down: async ({ effects }) => {
+    throw new Error('Downgrade not permitted')
+  },
 })

@@ -1,5 +1,5 @@
 import { sdk } from '../../sdk'
-import { manifest as lndManifest } from 'lnd-wrapper/startos/manifest'
+import { manifest as lndManifest } from 'lnd-startos/startos/manifest'
 
 export const dependencyMounts = sdk
   .setupDependencyMounts()

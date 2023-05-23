@@ -3,9 +3,7 @@ FROM lightninglabs/lightning-terminal:v0.10.0-alpha
 ARG PLATFORM
 ARG ARCH
 
-RUN apk add --no-cache yq xxd curl
+# RUN apk add --no-cache yq xxd curl
 
 # Import Entrypoint and give permissions
-ADD ./docker_entrypoint.sh /usr/local/bin/docker_entrypoint.sh
-ADD ./check-lnd.sh /usr/local/bin/check-lnd.sh
 RUN chmod a+x /usr/local/bin/*.sh

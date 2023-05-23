@@ -1,7 +1,7 @@
 import { sdk } from '../sdk'
 import { configSpec } from './config/spec'
 
-export const uiPort = 80
+export const uiPort = 8443
 export const uiId = 'webui'
 
 /**
