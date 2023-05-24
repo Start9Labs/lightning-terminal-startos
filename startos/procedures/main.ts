@@ -19,10 +19,30 @@ export const main: ExpectedExports.main = sdk.setupMain(
       dependencyMounts.lnd.main.rootDir,
     )
     const config = (await litConfig.read(effects))!
-    config.remote.lnd.rpcserver = 'lnd.embassy'
+    config.remote.lnd.rpcserver = 'lnd.embassy:10009'
     config.remote.lnd.macaroonpath = `${lndMountPoint}/admin.macaroon`
     config.remote.lnd.tlscertpath = `${lndMountPoint}/tls.cert`
-
+    const macaroonHeader = `Grpc-Metadata-macaroon: $(xxd -ps -u -c 1000 ${config.remote.lnd.macaroonpath})`
+    const lndCommand: [string, ...string[]] = [
+      'curl',
+      '-s',
+      '-X',
+      'GET',
+      '--cacert',
+      `${lndMountPoint}/tls.cert`,
+      '--header',
+      `${macaroonHeader}`,
+      'https://lnd.embassy:10009/v1/getinfo',
+    ]
+    const lndHealthCheck = sdk.healthCheck.runHealthScript(
+      effects,
+      lndCommand,
+      {
+        timeout: 10000,
+        errorMessage: 'LND is not ready',
+      },
+    )
+    await lndHealthCheck // Wait for LND to be ready
     await litConfig.write(config, effects)
 
     /**
@@ -30,6 +50,7 @@ export const main: ExpectedExports.main = sdk.setupMain(
      *
      * In this section, you will define *additional* health checks beyond those associated with daemons
      */
+
     const healthReceipts: HealthReceipt[] = []
 
     /**

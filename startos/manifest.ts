@@ -6,7 +6,8 @@ export const manifest = setupManifest({
   version: '0.10.0',
   releaseNotes: `
         * Update to v0.10.0 [Release Notes](https://github.com/lightninglabs/lightning-terminal/releases/tag/v0.10.0-alpha)
-        * Revamped for StartOS 0.4.0 `,
+        * Revamped for StartOS 0.4.0 
+        * Removed Faraday command-line daemon and Bitcoin Core dependency`,
   license: 'mit',
   replaces: Array<string>(
     'Lightning Terminal (hosted)',
