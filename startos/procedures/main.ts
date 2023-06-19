@@ -6,6 +6,8 @@ import { uiPort } from './interfaces'
 import { litDir } from '../utils'
 import { dependencyMounts } from './dependencies/dependencyMounts'
 import { litConfig } from './config/file-models/lit.conf'
+import { getDefaultString } from '@start9labs/start-sdk/lib/util/getDefaultString'
+import { randomPassword } from '../utils'
 
 export const main: ExpectedExports.main = sdk.setupMain(
   async ({ effects, utils, started }) => {
@@ -36,7 +38,7 @@ export const main: ExpectedExports.main = sdk.setupMain(
     ]
     const lndHealthCheck = sdk.healthCheck.runHealthScript(
       effects,
-      lndCommand,
+      lndCommand.join(' '),
       {
         timeout: 10000,
         errorMessage: 'LND is not ready',
@@ -60,7 +62,12 @@ export const main: ExpectedExports.main = sdk.setupMain(
      *
      * Each daemon defines its own health check, which can optionally be exposed to the user
      */
-    const password = await utils.vault.get('password').once()
+
+    // generate random password
+    const password = getDefaultString(randomPassword)
+    // Save password to vault	  // Save password to vault
+    await utils.store.setOwn('/password', password)
+
     return Daemons.of({
       effects,
       started,

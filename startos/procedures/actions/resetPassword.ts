@@ -3,7 +3,6 @@ import { randomPassword } from '../../utils'
 
 const { Config, Value } = sdk
 
-
 const input = Config.of({
   password: Value.text({
     name: 'New Password',
@@ -27,7 +26,7 @@ export const resetPassword = sdk.createAction(
     const password = input.password
 
     // Save password to vault
-    await utils.vault.set('password', password)
+    await utils.store.setOwn('/password', password)
 
     return {
       message: 'Password changed successfully and saved to your Vault.',
