@@ -1,8 +1,9 @@
 id: lightning-terminal 
 title: Lightning Terminal
-version: 0.9.2
+version: 0.10.1
 release-notes: | 
-  * Update to v0.9.2 [Release Notes](https://github.com/lightninglabs/lightning-terminal/releases/tag/v0.9.2-alpha)
+  * Updates to [latest upstream release](https://github.com/lightninglabs/lightning-terminal/releases/tag/v0.10.1-alpha)
+  * Bumps version for Bitcoin Core
 license: mit
 wrapper-repo: https://github.com/Start9Labs/lightning-terminal-wrapper
 upstream-repo: https://github.com/lightninglabs/lightning-terminal
@@ -77,7 +78,7 @@ dependencies:
       type: required
     config: ~
   bitcoind:
-    version: ">=0.21.1.2 <=26.0.0"
+    version: ">=0.21.1.2 <=27.0.0"
     requirement:
       type: required
     description: Used to subscribe to new block events from a full archival node.
