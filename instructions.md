@@ -7,9 +7,9 @@
 >
 > **Lightning Pool:** Marketplace for buying and selling channel liquidity. Lightning Terminal allows users to place their own asks and bids through the web browser.
 >
-> **Faraday(SSH Required):** Data Reporting tool developed by Lightning Labs to help you extract valuable analytics and insights from your LND node. Please note that Faraday is command line only, and not supported by EmbassyOS.
+> **Faraday(SSH Required):** Data Reporting tool developed by Lightning Labs to help you extract valuable analytics and insights from your LND node. Please note that Faraday is command line only, and not supported by StartOS.
 
-**To use the Faraday command line interface (frcli) you will need to ssh into your Embassy:**
+**To use the Faraday command line interface (frcli) you will need to ssh into your Start9 Server:**
 Please note: for EOS v0.3.1 and above the default ssh user has changed from "root" to "start9", you will need to add `sudo` to the beginning of each command below.
 
 Usage: 
