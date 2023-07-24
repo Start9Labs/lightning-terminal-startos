@@ -1,9 +1,8 @@
 id: lightning-terminal
 title: Lightning Terminal
-version: 0.10.1
+version: 0.10.2
 release-notes: |
-  * Updates to [latest upstream release](https://github.com/lightninglabs/lightning-terminal/releases/tag/v0.10.1-alpha)
-  * Bumps version for Bitcoin Core
+  * Updates to [latest upstream release](https://github.com/lightninglabs/lightning-terminal/releases/tag/v0.10.2-alpha)
 license: mit
 wrapper-repo: https://github.com/Start9Labs/lightning-terminal-wrapper
 upstream-repo: https://github.com/lightninglabs/lightning-terminal
