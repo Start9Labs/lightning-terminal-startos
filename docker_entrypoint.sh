@@ -7,7 +7,7 @@ _term() {
 # Setting variables
 sleep 5
 LND_ADDRESS='lnd.embassy'
-LITD_PASS=$(yq e '.password' /root/start9/config.yaml)
+export LITD_PASS=$(yq e '.password' /root/start9/config.yaml)
 RPC_USER=$(yq e '.bitcoind-user' /root/start9/config.yaml)
 RPC_PASS=$(yq e '.bitcoind-password' /root/start9/config.yaml)
 RPC_HOST="bitcoind.embassy"
@@ -37,15 +37,15 @@ cp /root/.lit/tls.cert /root/.faraday/mainnet/tls.cert
   echo 'version: 2' > /root/start9/stats.yaml
   echo 'data:' >> /root/start9/stats.yaml
   echo '  Password: ' >> /root/start9/stats.yaml
-        echo '    type: string' >> /root/start9/stats.yaml
-        echo "    value: \"$LITD_PASS\"" >> /root/start9/stats.yaml
-        echo '    description: This is your admin password for Lightning Terminal. Please use caution when sharing this password, you could lose your funds!' >> /root/start9/stats.yaml
-        echo '    copyable: true' >> /root/start9/stats.yaml
-        echo '    masked: true' >> /root/start9/stats.yaml
-        echo '    qr: false' >> /root/start9/stats.yaml
+  echo '    type: string' >> /root/start9/stats.yaml
+  echo "    value: \"$LITD_PASS\"" >> /root/start9/stats.yaml
+  echo '    description: This is your admin password for Lightning Terminal. Please use caution when sharing this password, you could lose your funds!' >> /root/start9/stats.yaml
+  echo '    copyable: true' >> /root/start9/stats.yaml
+  echo '    masked: true' >> /root/start9/stats.yaml
+  echo '    qr: false' >> /root/start9/stats.yaml
 
 echo "Starting LiT..."
-/bin/litd --uipassword=$LITD_PASS --macaroonpath=/root/.lit/mainnet/lit.macaroon --lit-dir=/root/.lit --tlscertpath=/root/.lit/tls.cert --tlskeypath=/root/.lit/tls.key --insecure-httplisten=lightning-terminal.embassy:8443 & 
+/bin/litd --uipassword_env=LITD_PASS --macaroonpath=/root/.lit/mainnet/lit.macaroon --lit-dir=/root/.lit --tlscertpath=/root/.lit/tls.cert --tlskeypath=/root/.lit/tls.key --insecure-httplisten=lightning-terminal.embassy:8443 & 
 lightning_terminal_process=$!
 
 
