@@ -17,12 +17,7 @@ echo "
 remote.lnd.rpcserver="$LND_ADDRESS":10009
 remote.lnd.macaroonpath=/mnt/lnd/admin.macaroon
 remote.lnd.tlscertpath=/mnt/lnd/tls.cert
-faraday.connect_bitcoin=1
-faraday.bitcoin.host="$RPC_HOST":8332
-faraday.bitcoin.user="$RPC_USER"
-faraday.bitcoin.password="$RPC_PASS"
 " > /root/.lit/lit.conf
-echo "Running on Bitcoin Core..."
 until curl --silent --fail --cacert /mnt/lnd/tls.cert --header "$MACAROON_HEADER" https://lnd.embassy:8080/v1/getinfo &>/dev/null
 do
     echo "LND Server is unreachable. Are you sure the LND service is running?" 
@@ -31,8 +26,6 @@ done
 echo "Configuring LiT..."
 # Removing any old data in the lit folder
 rm -f /root/.lit/mainnet/lit.macaroon
-# Copying the TLS cert for LND to the faraday working mainnet folder
-cp /root/.lit/tls.cert /root/.faraday/mainnet/tls.cert
 # Properties Page showing password to be used for login
   echo 'version: 2' > /root/start9/stats.yaml
   echo 'data:' >> /root/start9/stats.yaml

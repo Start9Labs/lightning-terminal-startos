@@ -3,6 +3,7 @@ title: Lightning Terminal
 version: 0.10.5
 release-notes: |
   * Updates to [latest upstream release](https://github.com/lightninglabs/lightning-terminal/releases/tag/v0.10.5-alpha)
+  * Remove Faraday and Bitcoin Core Dependency
 license: mit
 wrapper-repo: https://github.com/Start9Labs/lightning-terminal-wrapper
 upstream-repo: https://github.com/lightninglabs/lightning-terminal
@@ -11,7 +12,7 @@ marketing-site: https://lightning.engineering/
 build: ["make"]
 description:
   short: Your Home for Lightning Liquidity
-  long: A browser-based interface for managing channel liquidity on your self-hosted LND node, Visualize your channels and balances, Perform submarine swaps via the Lightning Loop service, Classify channels according to your node's operating mode, Run a single binary that integrates loopd, poold and faraday daemons all in one, Access a preview release of the Pool UI, Use Pool to earn sats by opening channels to those needing inbound liquidity.
+  long: A browser-based interface for managing channel liquidity on your self-hosted LND node, Visualize your channels and balances, Perform submarine swaps via the Lightning Loop service, Classify channels according to your node's operating mode, Run a single binary that integrates loopd and poold daemons all in one, Access a preview release of the Pool UI, Use Pool to earn sats by opening channels to those needing inbound liquidity.
 assets:
   license: LICENSE
   icon: icon.png
@@ -76,16 +77,6 @@ dependencies:
     requirement:
       type: required
     config: ~
-  bitcoind:
-    version: ">=0.21.1.2 <=27.0.0"
-    requirement:
-      type: required
-    description: Used to subscribe to new block events from a full archival node.
-    config:
-      check:
-        type: script
-      auto-configure:
-        type: script
 backup:
   create:
     type: script
