@@ -22,24 +22,4 @@ export const getConfig: T.ExpectedExports.getConfig = compat.getConfig({
       "len": 22
     }
   },
-  "bitcoind-user": {
-    "type": "pointer",
-    "name": "RPC Username",
-    "description": "The username for Bitcoin Core's RPC interface",
-    "subtype": "package",
-    "package-id": "bitcoind",
-    "target": "config",
-    "multi": false,
-    "selector": "$.rpc.username"
-  },
-  "bitcoind-password": {
-    "type": "pointer",
-    "name": "RPC Password",
-    "description": "The password for Bitcoin Core's RPC interface",
-    "subtype": "package",
-    "package-id": "bitcoind",
-    "target": "config",
-    "multi": false,
-    "selector": "$.rpc.password"
-  }
 });
