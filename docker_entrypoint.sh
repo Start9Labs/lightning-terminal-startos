@@ -5,14 +5,15 @@ _term() {
   kill -TERM "$lightning_terminal_process" 2>/dev/null
 }
 # Setting variables
-sleep 5
 LND_ADDRESS='lnd.embassy'
 export LITD_PASS=$(yq e '.password' /root/start9/config.yaml)
 RPC_USER=$(yq e '.bitcoind-user' /root/start9/config.yaml)
 RPC_PASS=$(yq e '.bitcoind-password' /root/start9/config.yaml)
 RPC_HOST="bitcoind.embassy"
 MACAROON_HEADER="Grpc-Metadata-macaroon: $(xxd -ps -u -c 1000 /mnt/lnd/admin.macaroon)"
+
 # Creating lit.conf
+mkdir -p /root/.lit
 echo "
 remote.lnd.rpcserver="$LND_ADDRESS":10009
 remote.lnd.macaroonpath=/mnt/lnd/admin.macaroon
