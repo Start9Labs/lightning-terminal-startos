@@ -9,22 +9,24 @@ export const uiId = 'webui'
  */
 export const setInterfaces = sdk.setupInterfaces(
   configSpec,
-  async ({ effects, utils, input }) => {
-    const multi = utils.host.multi('multi')
+  async ({ effects, input }) => {
+    const multi = sdk.host.multi(effects, 'multi')
     const multiOrigin = await multi.bindPort(uiPort, { protocol: 'http' })
-    const multiInterface = utils.createInterface({
+    const ui = sdk.createInterface(effects, {
       name: 'Web UI',
       id: uiId,
       description: 'Web user interface for Lightning Terminal',
       hasPrimary: false,
       disabled: false,
       type: 'ui',
+      schemeOverride: null,
+      masked: false,
       username: null,
       path: '',
       search: {},
     })
 
-    const multiReceipt = await multiInterface.export([multiOrigin])
+    const multiReceipt = await multiOrigin.export([ui])
 
     return [multiReceipt]
   },

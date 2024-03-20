@@ -13,7 +13,9 @@
     "@types/node": "^20.0.0",
     "@vercel/ncc": "^0.36.1",
     "prettier": "^2.8.4",
-    "typescript": "^4.9.5"
+    "typescript": "^4.9.5",
+    "lnd-startos": "git+https://github.com/Start9Labs/hello-world-startos.git#d7b3c6063db17d1233e4b9c7cc6adda5b5a29b87"
+
   },
   "prettier": {
     "trailingComma": "all",

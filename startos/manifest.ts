@@ -1,4 +1,4 @@
-import { setupManifest } from '@start9labs/start-sdk/lib/manifest/setupManifest'
+import { setupManifest } from '@start9labs/start-sdk'
 
 export const manifest = setupManifest({
   id: 'lightning-terminal',
@@ -24,23 +24,9 @@ export const manifest = setupManifest({
     short: 'Your Home for Lightning Liquidity',
     long: "A browser-based interface for managing channel liquidity on your self-hosted LND node, Visualize your channels and balances, Perform submarine swaps via the Lightning Loop service, Classify channels according to your node's operating mode, Run a single binary that integrates loopd, poold and faraday daemons all in one, Access a preview release of the Pool UI, Use Pool to earn sats by opening channels to those needing inbound liquidity.",
   },
-  assets: {
-    license: 'LICENSE',
-    icon: 'assets/icon.png',
-    instructions: 'assets/instructions.md',
-  },
-  volumes: {
-    main: 'data',
-  },
-  containers: {
-    main: {
-      image: 'main',
-      mounts: {
-        main: '/data',
-        lnd: '/mnt/lnd',
-      },
-    },
-  },
+  assets: [],
+  volumes: ['main'],
+  images: ['main'],
   alerts: {
     install: null,
     update: null,

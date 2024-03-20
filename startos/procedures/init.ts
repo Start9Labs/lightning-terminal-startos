@@ -1,27 +1,30 @@
 import { setInterfaces } from './interfaces'
 import { sdk } from '../sdk'
 import { migrations } from './migrations'
-import { getDefaultString } from '@start9labs/start-sdk/lib/util/getDefaultString'
+import { utils } from '@start9labs/start-sdk'
 import { randomPassword } from '../utils'
 
-const install = sdk.setupInstall(async ({ effects, utils }) => {
+const install = sdk.setupInstall(async ({ effects }) => {
   // generate random password
-  const password = getDefaultString(randomPassword)
-  // Save password to vault
-  await utils.store.setOwn('/password', password)
+  const password = utils.getDefaultString(randomPassword)
+  // Save password to store
+  await sdk.store.setOwn(effects, '/password', password)
 })
 
-const uninstall = sdk.setupUninstall(async ({ effects, utils }) => {})
+const uninstall = sdk.setupUninstall(async ({ effects }) => {})
 
-const exportedValues = sdk.setupExports(({ effects, utils }) => {
+const exportedValues = sdk.setupExports(({ effects }) => {
   return {
-    ui: [
-      {
-        title: 'Password',
+    ui: {
+      'Password': {
+        type: 'string',
         path: '/password',
-      },
-    ],
-    services: [],
+        copyable: true,
+        qr: false,
+        masked: true,
+      }
+    },
+    services: []
   }
 })
 
