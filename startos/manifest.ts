@@ -37,13 +37,8 @@ export const manifest = setupManifest({
   },
   dependencies: {
     lnd: {
-      version: '>=0.13.4 <0.17.0',
       description: 'Used to communicate with the Lightning Network',
-      requirement: {
-        type: 'required',
-      },
+      optional: false,
     },
   },
 })
-
-export type Manifest = typeof manifest

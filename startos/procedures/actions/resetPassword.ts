@@ -21,12 +21,13 @@ export const resetPassword = sdk.createAction(
     id: 'resetPassword',
     input,
     allowedStatuses: 'only-stopped',
+    group: null,
   },
-  async ({ effects, utils, input }) => {
+  async ({ effects, input }) => {
     const password = input.password
 
     // Save password to vault
-    await utils.store.setOwn('/password', password)
+    await sdk.store.setOwn(effects, '/password', password)
 
     return {
       message: 'Password changed successfully and saved to your Vault.',

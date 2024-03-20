@@ -3,6 +3,7 @@ import { sdk } from '../sdk'
 import { migrations } from './migrations'
 import { utils } from '@start9labs/start-sdk'
 import { randomPassword } from '../utils'
+import { setDependencies } from './dependencies/dependencies'
 
 const install = sdk.setupInstall(async ({ effects }) => {
   // generate random password
@@ -16,15 +17,15 @@ const uninstall = sdk.setupUninstall(async ({ effects }) => {})
 const exportedValues = sdk.setupExports(({ effects }) => {
   return {
     ui: {
-      'Password': {
+      Password: {
         type: 'string',
         path: '/password',
         copyable: true,
         qr: false,
         masked: true,
-      }
+      },
     },
-    services: []
+    services: [],
   }
 })
 
@@ -36,5 +37,6 @@ export const { init, uninit } = sdk.setupInit(
   install,
   uninstall,
   setInterfaces,
+  setDependencies,
   exportedValues,
 )
