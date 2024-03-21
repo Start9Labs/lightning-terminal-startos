@@ -2,7 +2,6 @@ import { sdk } from '../sdk'
 import { configSpec } from './config/spec'
 
 export const uiPort = 8443
-export const uiId = 'webui'
 
 /**
  * ======================== Interfaces ========================
@@ -14,7 +13,7 @@ export const setInterfaces = sdk.setupInterfaces(
     const multiOrigin = await multi.bindPort(uiPort, { protocol: 'http' })
     const ui = sdk.createInterface(effects, {
       name: 'Web UI',
-      id: uiId,
+      id: 'webui',
       description: 'Web user interface for Lightning Terminal',
       hasPrimary: false,
       disabled: false,

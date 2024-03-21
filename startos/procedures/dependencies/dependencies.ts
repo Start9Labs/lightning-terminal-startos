@@ -12,7 +12,7 @@ export const setDependencies = sdk.setupDependencies(
     return {
       lnd: sdk.Dependency.of({
         type: 'running',
-        versionSpec: '>=0.13.4 <0.17.0',
+        versionSpec: sdk.Checker.parse('>=0.13.4 <0.17.0'),
         url: '',
         healthChecks: ['grpc'],
       }),
