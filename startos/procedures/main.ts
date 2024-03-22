@@ -5,68 +5,64 @@ import { litDir } from '../utils'
 import { litConfig } from './config/file-models/lit.conf'
 import { manifest as lndManifest } from 'lnd-startos/startos/manifest'
 
+export const main = sdk.setupMain(async ({ effects, started }) => {
+  /**
+   * ======================== Setup ========================
+   */
+  console.info('Starting Lightning Terminal...')
 
-export const main = sdk.setupMain(
-  async ({ effects, started }) => {
-    /**
-     * ======================== Setup ========================
-     */
-    console.info('Starting Lightning Terminal...')
+  const lndMountPoint = '/lnd'
 
-    // TODO get path
-    const lndMountPoint = ""
+  const config = (await litConfig.read(effects))!
+  config.remote.lnd.rpcserver = 'lnd.embassy:10009'
+  config.remote.lnd.macaroonpath = `${lndMountPoint}/admin.macaroon`
+  config.remote.lnd.tlscertpath = `${lndMountPoint}/tls.cert`
+  await litConfig.write(config, effects)
 
-    const config = (await litConfig.read(effects))!
-    config.remote.lnd.rpcserver = 'lnd.embassy:10009'
-    config.remote.lnd.macaroonpath = `${lndMountPoint}/admin.macaroon`
-    config.remote.lnd.tlscertpath = `${lndMountPoint}/tls.cert`
-    await litConfig.write(config, effects)
+  /**
+   * ======================== Additional Health Checks (optional) ========================
+   */
 
-    /**
-     * ======================== Additional Health Checks (optional) ========================
-     */
+  const healthReceipts: HealthReceipt[] = []
 
-    const healthReceipts: HealthReceipt[] = []
+  /**
+   * ======================== Daemons ========================
+   */
 
-    /**
-     * ======================== Daemons ========================
-     */
+  const password = sdk.store.getOwn(effects, '/password')
 
-    const password = sdk.store.getOwn(effects, '/password')
-
-    return sdk.Daemons.of({
-      effects,
-      started,
-      healthReceipts,
-    }).addDaemon('webui', {
-      imageId: 'main',
-      command: [
-        '/bin/litd',
-        `--uipassword=${password}`,
-        `--macaroonpath=${litDir}/mainnet/lit.macaroon`,
-        `--lit-dir=${litDir}`,
-        `--tlscertpath=${litDir}/tls.cert`,
-        `--tlskeypath=${litDir}/tls.key`,
-        `--insecure-httplisten=lightning-terminal.embassy:${uiPort}`,
-      ],
-      mounts: sdk.Mounts.of()
+  return sdk.Daemons.of({
+    effects,
+    started,
+    healthReceipts,
+  }).addDaemon('webui', {
+    imageId: 'main',
+    command: [
+      '/bin/litd',
+      `--uipassword=${password}`,
+      `--macaroonpath=${litDir}/mainnet/lit.macaroon`,
+      `--lit-dir=${litDir}`,
+      `--tlscertpath=${litDir}/tls.cert`,
+      `--tlskeypath=${litDir}/tls.key`,
+      `--insecure-httplisten=lightning-terminal.embassy:${uiPort}`,
+    ],
+    mounts: sdk.Mounts.of()
       .addVolume('main', null, '/data', false)
       .addDependency<typeof lndManifest>(
         'lnd',
         'main',
         null,
-        '/',
+        lndMountPoint,
         true,
       ),
-      ready: {
-        display: 'Web Interface',
-        fn: () =>
-          sdk.healthCheck.checkPortListening(effects, uiPort, {
-            successMessage: 'The web interface is ready',
-            errorMessage: 'The web interface is not ready',
-          }),
-      },
-      requires: [],
-    })
-  },
-)
+    ready: {
+      display: 'Web Interface',
+      fn: () =>
+        sdk.healthCheck.checkPortListening(effects, uiPort, {
+          successMessage: 'The web interface is ready',
+          errorMessage: 'The web interface is not ready',
+        }),
+    },
+    requires: [],
+  })
+})

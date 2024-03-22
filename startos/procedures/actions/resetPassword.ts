@@ -14,14 +14,18 @@ const input = Config.of({
   }),
 })
 
-export const resetPassword = sdk.createAction(
-  {
-    name: 'Reset Password',
-    description: 'Resets your password to the one provided',
-    id: 'resetPassword',
-    input,
-    allowedStatuses: 'only-stopped',
-    group: null,
+export const resetPassword = sdk.createDynamicAction(
+  'resetPassword',
+  async ({ effects }) => {
+    return {
+      name: 'Reset Password',
+      description: 'Resets your password to the one provided',
+      warning: null,
+      disabled: false,
+      input,
+      allowedStatuses: 'only-stopped',
+      group: null,
+    }
   },
   async ({ effects, input }) => {
     const password = input.password
@@ -38,4 +42,5 @@ export const resetPassword = sdk.createAction(
       },
     }
   },
+  input,
 )

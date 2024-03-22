@@ -1,4 +1,5 @@
 import { setInterfaces } from './interfaces'
+import { exposedStore } from '../store'
 import { sdk } from '../sdk'
 import { migrations } from './migrations'
 import { utils } from '@start9labs/start-sdk'
@@ -14,21 +15,6 @@ const install = sdk.setupInstall(async ({ effects }) => {
 
 const uninstall = sdk.setupUninstall(async ({ effects }) => {})
 
-const exportedValues = sdk.setupExports(({ effects }) => {
-  return {
-    ui: {
-      Password: {
-        type: 'string',
-        path: '/password',
-        copyable: true,
-        qr: false,
-        masked: true,
-      },
-    },
-    services: [],
-  }
-})
-
 /**
  * This is a static function. There is no need to make changes here
  */
@@ -38,5 +24,5 @@ export const { init, uninit } = sdk.setupInit(
   uninstall,
   setInterfaces,
   setDependencies,
-  exportedValues,
+  exposedStore,
 )
