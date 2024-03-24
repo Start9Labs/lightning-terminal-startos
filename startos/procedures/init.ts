@@ -10,7 +10,7 @@ const install = sdk.setupInstall(async ({ effects }) => {
   // generate random password
   const password = utils.getDefaultString(randomPassword)
   // Save password to store
-  await sdk.store.setOwn(effects, '/password', password)
+  await sdk.store.setOwn(effects, sdk.StorePath.password, password)
 })
 
 const uninstall = sdk.setupUninstall(async ({ effects }) => {})

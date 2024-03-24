@@ -14,7 +14,7 @@ export const v0_10_0 = sdk.Migration.of({
     ) as ConfigYaml
 
     // Save password to vault
-    await sdk.store.setOwn(effects, '/password', configYaml.password)
+    await sdk.store.setOwn(effects, sdk.StorePath.password, configYaml.password)
 
     // remove old start9 dir
     await rmdir('/root/start9')

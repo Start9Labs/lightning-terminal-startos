@@ -31,7 +31,7 @@ export const resetPassword = sdk.createDynamicAction(
     const password = input.password
 
     // Save password to vault
-    await sdk.store.setOwn(effects, '/password', password)
+    await sdk.store.setOwn(effects, sdk.StorePath.password, password)
 
     return {
       message: 'Password changed successfully and saved to your Vault.',

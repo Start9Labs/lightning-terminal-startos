@@ -29,7 +29,7 @@ export const main = sdk.setupMain(async ({ effects, started }) => {
    * ======================== Daemons ========================
    */
 
-  const password = sdk.store.getOwn(effects, '/password')
+  const password = sdk.store.getOwn(effects, sdk.StorePath.password)
 
   return sdk.Daemons.of({
     effects,
