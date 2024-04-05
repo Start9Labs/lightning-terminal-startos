@@ -9,12 +9,7 @@ export const manifest = setupManifest({
         * Revamped for StartOS 0.4.0 
         * Removed Faraday command-line daemon and Bitcoin Core dependency`,
   license: 'mit',
-  replaces: Array<string>(
-    'Lightning Terminal (hosted)',
-    'Amboss',
-    'Liquidity Pools',
-    'Voltage Flow',
-  ),
+  replaces: [],
   wrapperRepo: 'https://github.com/Start9Labs/lightning-terminal-wrapper',
   upstreamRepo: 'https://github.com/lightninglabs/lightning-terminal',
   supportSite: 'https://github.com/lightninglabs/lightning-terminal/issues',

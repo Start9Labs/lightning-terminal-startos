@@ -1,4 +1,4 @@
-import { sdk } from '../../sdk'
+import { sdk } from '../sdk'
 import { readFile, rmdir } from 'fs/promises'
 import { load } from 'js-yaml'
 

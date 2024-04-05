@@ -1,11 +1,8 @@
-import { sdk } from '../sdk'
+import { sdk } from './sdk'
 import { configSpec } from './config/spec'
 
 export const uiPort = 8443
 
-/**
- * ======================== Interfaces ========================
- */
 export const setInterfaces = sdk.setupInterfaces(
   configSpec,
   async ({ effects, input }) => {

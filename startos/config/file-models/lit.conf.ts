@@ -1,5 +1,5 @@
 import { matches, FileHelper } from '@start9labs/start-sdk'
-import { litDir } from '../../../utils'
+import { litDir } from '../../utils'
 
 const { object, string } = matches
 

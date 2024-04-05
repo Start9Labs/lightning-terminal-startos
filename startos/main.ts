@@ -1,7 +1,7 @@
-import { sdk } from '../sdk'
+import { sdk } from './sdk'
 import { HealthReceipt } from '@start9labs/start-sdk/cjs/sdk/lib/health/HealthReceipt'
 import { uiPort } from './interfaces'
-import { litDir } from '../utils'
+import { litDir } from './utils'
 import { litConfig } from './config/file-models/lit.conf'
 import { manifest as lndManifest } from 'lnd-startos/startos/manifest'
 
@@ -22,13 +22,11 @@ export const main = sdk.setupMain(async ({ effects, started }) => {
   /**
    * ======================== Additional Health Checks (optional) ========================
    */
-
   const healthReceipts: HealthReceipt[] = []
 
   /**
    * ======================== Daemons ========================
    */
-
   const password = sdk.store.getOwn(effects, sdk.StorePath.password)
 
   return sdk.Daemons.of({

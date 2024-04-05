@@ -1,5 +1,5 @@
-import { sdk } from '../../sdk'
-import { randomPassword } from '../../utils'
+import { sdk } from '../sdk'
+import { randomPassword } from '../utils'
 
 const { Config, Value } = sdk
 
@@ -23,18 +23,18 @@ export const resetPassword = sdk.createDynamicAction(
       warning: null,
       disabled: false,
       input,
-      allowedStatuses: 'only-stopped',
+      allowedStatuses: 'onlyStopped',
       group: null,
     }
   },
   async ({ effects, input }) => {
     const password = input.password
 
-    // Save password to vault
+    // Save password to store
     await sdk.store.setOwn(effects, sdk.StorePath.password, password)
 
     return {
-      message: 'Password changed successfully and saved to your Vault.',
+      message: 'Password successfully updated.',
       value: {
         value: password,
         copyable: true,
