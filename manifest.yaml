@@ -3,7 +3,7 @@ title: Lightning Terminal
 version: 0.12.4
 release-notes: |
   * Update upstream to v0.12.4 [Release Notes](https://github.com/lightninglabs/lightning-terminal/releases/tag/v0.12.4-alpha)
-  * Fix backup bug
+  * Minor package improvements
 license: mit
 wrapper-repo: https://github.com/Start9Labs/lightning-terminal-wrapper
 upstream-repo: https://github.com/lightninglabs/lightning-terminal
