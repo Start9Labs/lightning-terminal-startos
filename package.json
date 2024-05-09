@@ -5,17 +5,16 @@
     "check": "tsc --noEmit"
   },
   "dependencies": {
-    "@start9labs/start-sdk": "0.4.0-rev0.lib0.rc8.beta2",
+    "@start9labs/start-sdk": "^0.4.0-3df957898aeaa22286970b280e3f525a480dfa96",
     "js-yaml": "^4.1.0"
   },
   "devDependencies": {
     "@types/js-yaml": "^4.0.5",
     "@types/node": "^20.0.0",
     "@vercel/ncc": "^0.36.1",
+    "lnd-startos": "git+https://github.com/Start9Labs/hello-world-startos.git#f9db05203e39a92dbc0fff120549924f142e4faf",
     "prettier": "^2.8.4",
-    "typescript": "^4.9.5",
-    "lnd-startos": "git+https://github.com/Start9Labs/hello-world-startos.git#d7b3c6063db17d1233e4b9c7cc6adda5b5a29b87"
-
+    "typescript": "^4.9.5"
   },
   "prettier": {
     "trailingComma": "all",

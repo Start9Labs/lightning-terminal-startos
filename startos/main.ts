@@ -1,8 +1,8 @@
 import { sdk } from './sdk'
-import { HealthReceipt } from '@start9labs/start-sdk/cjs/sdk/lib/health/HealthReceipt'
 import { uiPort } from './interfaces'
 import { litDir } from './utils'
-import { litConfig } from './config/file-models/lit.conf'
+import { T } from '@start9labs/start-sdk'
+import { litConfig } from './file-models/lit.conf'
 import { manifest as lndManifest } from 'lnd-startos/startos/manifest'
 
 export const main = sdk.setupMain(async ({ effects, started }) => {
@@ -11,18 +11,21 @@ export const main = sdk.setupMain(async ({ effects, started }) => {
    */
   console.info('Starting Lightning Terminal...')
 
+  const depResult = sdk.checkAllDependencies(effects)
+  await depResult.throwIfNotValid()
+
   const lndMountPoint = '/lnd'
 
   const config = (await litConfig.read(effects))!
   config.remote.lnd.rpcserver = 'lnd.embassy:10009'
   config.remote.lnd.macaroonpath = `${lndMountPoint}/admin.macaroon`
   config.remote.lnd.tlscertpath = `${lndMountPoint}/tls.cert`
-  await litConfig.write(config, effects)
+  await litConfig.merge(config, effects)
 
   /**
    * ======================== Additional Health Checks (optional) ========================
    */
-  const healthReceipts: HealthReceipt[] = []
+  const healthReceipts: T.HealthReceipt[] = []
 
   /**
    * ======================== Daemons ========================
@@ -33,7 +36,7 @@ export const main = sdk.setupMain(async ({ effects, started }) => {
     effects,
     started,
     healthReceipts,
-  }).addDaemon('webui', {
+  }).addDaemon('primary', {
     imageId: 'main',
     command: [
       '/bin/litd',
