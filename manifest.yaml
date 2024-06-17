@@ -3,6 +3,7 @@ title: Lightning Terminal
 version: 0.13.0
 release-notes: |
   * Update upstream to v0.13.0 [Release Notes](https://github.com/lightninglabs/lightning-terminal/releases/tag/v0.13.0-alpha)
+  * Minor package improvements
 license: mit
 wrapper-repo: https://github.com/Start9Labs/lightning-terminal-wrapper
 upstream-repo: https://github.com/lightninglabs/lightning-terminal
