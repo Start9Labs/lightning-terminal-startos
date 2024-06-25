@@ -21,7 +21,16 @@ export const manifest = setupManifest({
   },
   assets: [],
   volumes: ['main'],
-  images: ['main'],
+  images: {
+    main: {
+      source: {
+        dockerTag: 'lightninglabs/lightning-terminal:v0.12.4-alpha',
+      },
+      arch: ['x86_64', 'aarch64'],
+      emulateMissingAs: 'aarch64',
+    },
+  },
+  hardwareRequirements: null,
   alerts: {
     install: null,
     update: null,

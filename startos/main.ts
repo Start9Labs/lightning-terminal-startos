@@ -37,7 +37,7 @@ export const main = sdk.setupMain(async ({ effects, started }) => {
     started,
     healthReceipts,
   }).addDaemon('primary', {
-    imageId: 'main',
+    image: { id: 'main' },
     command: [
       '/bin/litd',
       `--uipassword=${password}`,
