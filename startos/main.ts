@@ -1,8 +1,7 @@
 import { sdk } from './sdk'
 import { uiPort } from './interfaces'
-import { litDir } from './utils'
+import { litDir, lndMount } from './utils'
 import { T } from '@start9labs/start-sdk'
-import { litConfig } from './file-models/lit.conf'
 import { manifest as lndManifest } from 'lnd-startos/startos/manifest'
 
 export const main = sdk.setupMain(async ({ effects, started }) => {
@@ -14,14 +13,6 @@ export const main = sdk.setupMain(async ({ effects, started }) => {
   const depResult = sdk.checkAllDependencies(effects)
   await depResult.throwIfNotValid()
 
-  const lndMountPoint = '/lnd'
-
-  const config = (await litConfig.read(effects))!
-  config.remote.lnd.rpcserver = 'lnd.embassy:10009'
-  config.remote.lnd.macaroonpath = `${lndMountPoint}/admin.macaroon`
-  config.remote.lnd.tlscertpath = `${lndMountPoint}/tls.cert`
-  await litConfig.merge(config, effects)
-
   /**
    * ======================== Additional Health Checks (optional) ========================
    */
@@ -30,7 +21,9 @@ export const main = sdk.setupMain(async ({ effects, started }) => {
   /**
    * ======================== Daemons ========================
    */
-  const password = sdk.store.getOwn(effects, sdk.StorePath.password)
+  const password: string = await sdk.store
+    .getOwn(effects, sdk.StorePath.password)
+    .const()
 
   return sdk.Daemons.of({
     effects,
@@ -49,13 +42,7 @@ export const main = sdk.setupMain(async ({ effects, started }) => {
     ],
     mounts: sdk.Mounts.of()
       .addVolume('main', null, '/data', false)
-      .addDependency<typeof lndManifest>(
-        'lnd',
-        'main',
-        null,
-        lndMountPoint,
-        true,
-      ),
+      .addDependency<typeof lndManifest>('lnd', 'main', null, lndMount, true),
     ready: {
       display: 'Web Interface',
       fn: () =>

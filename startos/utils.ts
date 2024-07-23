@@ -3,3 +3,4 @@ export const randomPassword = {
   len: 22,
 }
 export const litDir = '/data/.lit'
+export const lndMount = '/lnd'

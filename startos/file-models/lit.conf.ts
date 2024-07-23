@@ -1,5 +1,5 @@
 import { matches, FileHelper } from '@start9labs/start-sdk'
-import { litDir } from '../utils'
+import { litDir, lndMount } from '../utils'
 
 const { object, string } = matches
 
@@ -12,5 +12,15 @@ const shape = object({
     }),
   }),
 })
+
+export const defaultConfig = {
+  remote: {
+    lnd: {
+      rpcserver: 'lnd.startos:10009',
+      macaroonpath: `${lndMount}/admin/macaroon`,
+      tlscertpath: `${lndMount}/tls.cert`,
+    }
+  }
+}
 
 export const litConfig = FileHelper.json(`${litDir}/lit.conf`, shape)
