@@ -1,3 +1,4 @@
+import { VersionRange } from '@start9labs/start-sdk'
 import { sdk } from '../sdk'
 
 export const setDependencies = sdk.setupDependencies(
@@ -5,7 +6,7 @@ export const setDependencies = sdk.setupDependencies(
     return {
       lnd: sdk.Dependency.of({
         type: 'running',
-        versionSpec: sdk.Checker.parse('>=0.17.0 <0.19.0'),
+        versionRange: VersionRange.parse('>=0.17.0 <0.19.0'),
         registryUrl: '',
         healthChecks: ['grpc'],
       }),

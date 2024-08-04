@@ -3,34 +3,30 @@ import { setupManifest } from '@start9labs/start-sdk'
 export const manifest = setupManifest({
   id: 'lightning-terminal',
   title: 'Lightning Terminal',
-  version: '0.10.0',
+  version: '0.13.3:0',
   releaseNotes: `
-        * Update to v0.10.0 [Release Notes](https://github.com/lightninglabs/lightning-terminal/releases/tag/v0.10.0-alpha)
-        * Revamped for StartOS 0.4.0 
-        * Removed Faraday command-line daemon and Bitcoin Core dependency`,
+        * Update to v0.13.3 [Release Notes](https://github.com/lightninglabs/lightning-terminal/releases/tag/v0.13.3-alpha)
+        * Revamped for StartOS 0.3.6`,
   license: 'mit',
-  replaces: [],
   wrapperRepo: 'https://github.com/Start9Labs/lightning-terminal-wrapper',
   upstreamRepo: 'https://github.com/lightninglabs/lightning-terminal',
   supportSite: 'https://github.com/lightninglabs/lightning-terminal/issues',
   marketingSite: 'https://lightning.engineering/',
   donationUrl: 'https://donate.start9.com/',
   description: {
-    short: 'Your Home for Lightning Liquidity',
-    long: "A browser-based interface for managing channel liquidity on your self-hosted LND node, Visualize your channels and balances, Perform submarine swaps via the Lightning Loop service, Classify channels according to your node's operating mode, Run a single binary that integrates loopd, poold and faraday daemons all in one, Access a preview release of the Pool UI, Use Pool to earn sats by opening channels to those needing inbound liquidity.",
+    short: 'Your home for Lightning liquidity',
+    long: "A browser-based interface for managing channel liquidity on your self-hosted LND node. Visualize your channels and balances, perform submarine swaps via the Lightning Loop service, classify channels according to your node's operating mode, use Pool to earn sats by opening channels to those needing inbound liquidity.",
   },
   assets: [],
   volumes: ['main'],
   images: {
     main: {
       source: {
-        dockerTag: 'lightninglabs/lightning-terminal:v0.12.4-alpha',
+        dockerTag: 'lightninglabs/lightning-terminal:v0.13.3-alpha',
       },
-      arch: ['x86_64', 'aarch64'],
-      emulateMissingAs: 'aarch64',
     },
   },
-  hardwareRequirements: null,
+  hardwareRequirements: {},
   alerts: {
     install: null,
     update: null,
@@ -41,8 +37,9 @@ export const manifest = setupManifest({
   },
   dependencies: {
     lnd: {
-      description: 'Used to communicate with the Lightning Network',
+      description: 'Needed to communicate with the Lightning Network',
       optional: false,
+      s9pk: '',
     },
   },
 })
