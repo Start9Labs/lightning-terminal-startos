@@ -8,10 +8,12 @@
 
 ## Dependencies
 
+- [deno](https://deno.land/)
 - [docker](https://docs.docker.com/get-docker)
 - [docker-buildx](https://docs.docker.com/buildx/working-with-buildx/)
-- [start-sdk](https://github.com/Start9Labs/start-os/blob/v0.3.5.1/core/install-sdk.sh)
 - [make](https://www.gnu.org/software/make/)
+- [start-sdk](https://github.com/Start9Labs/start-os/blob/v0.3.5.1/core/install-sdk.sh)
+- [yq (version 4)](https://mikefarah.gitbook.io/yq)
 
 ## Build Enviroment
 
