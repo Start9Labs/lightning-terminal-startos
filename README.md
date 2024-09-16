@@ -24,11 +24,14 @@ Before building the lightning terminal package, your build environment must be s
 
 Clone the project locally. Note the submodule link to the original project(s).
 
-`git clone https://github.com/Start9Labs/lightning-terminal-startos.git`
+```
+git clone https://github.com/Start9Labs/lightning-terminal-startos.git
+cd lightning-terminal-startos
+```
 
 ## Building
 
-To build the project, run the command: `make`
+To build the project run the command: `make`
 
 ## Installing (on StartOS)
 
