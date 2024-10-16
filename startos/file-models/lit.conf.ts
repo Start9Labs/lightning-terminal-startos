@@ -4,11 +4,9 @@ import { litDir, lndMount, uiPort } from '../utils'
 const { object, string, literal } = matches
 
 const shape = object({
-  'lnd-mode': literal('remote'),
   uipassword: string,
   'lit-dir': literal(litDir),
-  'tlskeypath': literal(`${litDir}/tls.key`),
-  'httpslisten': literal(`0.0.0.0:${uiPort}`),
+  'insecure-httplisten': literal(`lightning-terminal.startos:${uiPort}`),
   remote: object({
     lnd: object({
       rpcserver: string,
@@ -19,11 +17,9 @@ const shape = object({
 })
 
 export const defaultConfig: typeof shape._TYPE = {
-  'lnd-mode': 'remote',
   uipassword: '',
   'lit-dir': litDir,
-  'tlskeypath': `${litDir}/tls.key`,
-  'httpslisten': `0.0.0.0:${uiPort}`,
+  'insecure-httplisten': `lightning-terminal.startos:${uiPort}`,
   remote: {
     lnd: {
       rpcserver: 'lnd.startos:10009',
