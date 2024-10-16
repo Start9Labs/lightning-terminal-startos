@@ -4,3 +4,4 @@ export const randomPassword = {
 }
 export const litDir = '/data/.lit'
 export const lndMount = '/lnd'
+export const uiPort = 8443

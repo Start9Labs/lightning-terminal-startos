@@ -1,7 +1,5 @@
 import { setupExposeStore } from '@start9labs/start-sdk'
 
-export type Store = {
-  password: string
-}
+export type Store = {}
 
 export const exposedStore = setupExposeStore<Store>((_pathBuilder) => [])

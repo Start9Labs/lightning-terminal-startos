@@ -1,6 +1,5 @@
 import { sdk } from './sdk'
-import { uiPort } from './interfaces'
-import { litDir, lndMount } from './utils'
+import { uiPort, lndMount } from './utils'
 import { T } from '@start9labs/start-sdk'
 import { manifest as lndManifest } from 'lnd-startos/startos/manifest'
 
@@ -10,8 +9,8 @@ export const main = sdk.setupMain(async ({ effects, started }) => {
    */
   console.info('Starting Lightning Terminal...')
 
-  const depResult = sdk.checkAllDependencies(effects)
-  await depResult.throwIfNotValid()
+  const depResult = await sdk.checkDependencies(effects)
+  depResult.throwIfNotSatisfied()
 
   /**
    * ======================== Additional Health Checks (optional) ========================
@@ -21,10 +20,6 @@ export const main = sdk.setupMain(async ({ effects, started }) => {
   /**
    * ======================== Daemons ========================
    */
-  const password: string = await sdk.store
-    .getOwn(effects, sdk.StorePath.password)
-    .const()
-
   return sdk.Daemons.of({
     effects,
     started,
@@ -33,12 +28,6 @@ export const main = sdk.setupMain(async ({ effects, started }) => {
     image: { id: 'main' },
     command: [
       '/bin/litd',
-      `--uipassword=${password}`,
-      `--macaroonpath=${litDir}/mainnet/lit.macaroon`,
-      `--lit-dir=${litDir}`,
-      `--tlscertpath=${litDir}/tls.cert`,
-      `--tlskeypath=${litDir}/tls.key`,
-      `--insecure-httplisten=lightning-terminal.embassy:${uiPort}`,
     ],
     mounts: sdk.Mounts.of()
       .addVolume('main', null, '/data', false)

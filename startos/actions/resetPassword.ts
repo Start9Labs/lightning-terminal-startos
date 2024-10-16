@@ -1,46 +1,37 @@
+import { utils } from '@start9labs/start-sdk'
 import { sdk } from '../sdk'
 import { randomPassword } from '../utils'
+import { litConfig } from '../file-models/lit.conf'
 
-const { Config, Value } = sdk
+export const resetPassword = sdk.Action.withoutInput(
+  // id
+  'reset-password',
 
-const input = Config.of({
-  password: Value.text({
-    name: 'New Password',
-    required: {
-      default: randomPassword,
-    },
-    generate: randomPassword,
-    masked: true,
+  // metadata
+  async ({ effects }) => ({
+    name: 'Reset password',
+    description: 'Reset your user interface password',
+    warning: null,
+    allowedStatuses: 'any',
+    group: null,
+    visibility: 'enabled',
   }),
-})
 
-export const resetPassword = sdk.createDynamicAction(
-  'resetPassword',
+  // the execution function
   async ({ effects }) => {
-    return {
-      name: 'Reset Password',
-      description: 'Resets your password to the one provided',
-      warning: null,
-      disabled: false,
-      input,
-      allowedStatuses: 'onlyStopped',
-      group: null,
-    }
-  },
-  async ({ effects, input }) => {
-    const password = input.password
+    const password = utils.getDefaultString(randomPassword)
 
-    // Save password to store
-    await sdk.store.setOwn(effects, sdk.StorePath.password, password)
+    await litConfig.merge({ uipassword: password })
 
     return {
-      message: 'Password successfully updated.',
-      value: {
-        value: password,
-        copyable: true,
-        qr: false,
-      },
+      version: '1',
+      type: 'string',
+      name: 'Password has been reset',
+      description: null,
+      value: password,
+      masked: true,
+      copyable: true,
+      qr: false,
     }
   },
-  input,
 )

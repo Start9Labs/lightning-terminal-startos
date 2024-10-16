@@ -1,29 +1,24 @@
 import { sdk } from './sdk'
-import { configSpec } from './config/spec'
 
-export const uiPort = 8443
+export const setInterfaces = sdk.setupInterfaces(async ({ effects }) => {
+  const uiMulti = sdk.host.multi(effects, 'ui-multi')
+  const uiMultiOrigin = await uiMulti.bindPort(80, {
+    protocol: 'http',
+  })
+  const ui = sdk.createInterface(effects, {
+    name: 'Web UI',
+    id: 'ui',
+    description: 'The web interface of Lightning Terminal',
+    type: 'ui',
+    hasPrimary: false,
+    masked: false,
+    schemeOverride: null,
+    username: null,
+    path: '',
+    search: {},
+  })
 
-export const setInterfaces = sdk.setupInterfaces(
-  configSpec,
-  async ({ effects, input }) => {
-    const multi = sdk.host.multi(effects, 'multi')
-    const multiOrigin = await multi.bindPort(uiPort, { protocol: 'http' })
-    const ui = sdk.createInterface(effects, {
-      name: 'Web UI',
-      id: 'webui',
-      description: 'Web user interface for Lightning Terminal',
-      hasPrimary: false,
-      disabled: false,
-      type: 'ui',
-      schemeOverride: null,
-      masked: false,
-      username: null,
-      path: '',
-      search: {},
-    })
+  const uiReceipt = await uiMultiOrigin.export([ui])
 
-    const multiReceipt = await multiOrigin.export([ui])
-
-    return [multiReceipt]
-  },
-)
+  return [uiReceipt]
+})
