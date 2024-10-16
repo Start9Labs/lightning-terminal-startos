@@ -4,13 +4,11 @@ import { litDir, lndMount, uiPort } from '../utils'
 const { object, string, literal } = matches
 
 const shape = object({
-  'lnd-mode': literal('integrated'),
+  'lnd-mode': literal('remote'),
   uipassword: string,
-  macaroonpath: literal(`${litDir}/mainnet/lit.macaroon`),
   'lit-dir': literal(litDir),
-  'tlscertpath': literal(`${litDir}/tls.cert`),
   'tlskeypath': literal(`${litDir}/tls.key`),
-  'insecure-httplisten': literal(`lightning-terminal.embassy:${uiPort}`),
+  'httpslisten': literal(`0.0.0.0:${uiPort}`),
   remote: object({
     lnd: object({
       rpcserver: string,
@@ -21,13 +19,11 @@ const shape = object({
 })
 
 export const defaultConfig: typeof shape._TYPE = {
-  'lnd-mode': 'integrated',
+  'lnd-mode': 'remote',
   uipassword: '',
-  macaroonpath: `${litDir}/mainnet/lit.macaroon`,
   'lit-dir': litDir,
-  'tlscertpath': `${litDir}/tls.cert`,
   'tlskeypath': `${litDir}/tls.key`,
-  'insecure-httplisten': `lightning-terminal.embassy:${uiPort}`,
+  'httpslisten': `0.0.0.0:${uiPort}`,
   remote: {
     lnd: {
       rpcserver: 'lnd.startos:10009',
