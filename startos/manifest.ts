@@ -22,7 +22,7 @@ export const manifest = setupManifest({
   images: {
     main: {
       source: {
-        dockerTag: 'lightninglabs/lightning-terminal:v0.13.3-alpha',
+        dockerTag: 'lightninglabs/lightning-terminal:v0.13.4-alpha',
       },
     },
   },
