@@ -5,7 +5,7 @@ import { versions } from './versions'
 import { actions } from './actions'
 import { utils } from '@start9labs/start-sdk'
 import { randomPassword } from './utils'
-import { setDependencies } from './dependencies/dependencies'
+import { setDependencies } from './dependencies'
 import { defaultConfig, litConfig } from './file-models/lit.conf'
 
 const install = sdk.setupInstall(async ({ effects }) => {
