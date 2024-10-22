@@ -20,15 +20,9 @@ export const main = sdk.setupMain(async ({ effects, started }) => {
   /**
    * ======================== Daemons ========================
    */
-  return sdk.Daemons.of({
-    effects,
-    started,
-    healthReceipts,
-  }).addDaemon('primary', {
+  return sdk.Daemons.of(effects, started, healthReceipts).addDaemon('primary', {
     image: { id: 'main' },
-    command: [
-      '/bin/litd',
-    ],
+    command: ['/bin/litd'],
     mounts: sdk.Mounts.of()
       .addVolume('main', null, '/data', false)
       .addDependency<typeof lndManifest>('lnd', 'main', null, lndMount, true),

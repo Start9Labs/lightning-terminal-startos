@@ -25,13 +25,15 @@ export const resetPassword = sdk.Action.withoutInput(
 
     return {
       version: '1',
-      type: 'string',
-      name: 'Password has been reset',
-      description: null,
-      value: password,
-      masked: true,
-      copyable: true,
-      qr: false,
+      title: 'Success',
+      message: 'Your new password is below',
+      result: {
+        type: 'single',
+        value: password,
+        masked: true,
+        copyable: true,
+        qr: false,
+      },
     }
   },
 )

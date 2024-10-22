@@ -17,16 +17,16 @@ export const viewPassword = sdk.Action.withoutInput(
   }),
 
   // the execution function
-  async ({ effects }) => {
-    return {
-      version: '1',
-      type: 'string',
-      name: 'Password',
-      description: null,
+  async ({ effects }) => ({
+    version: '1',
+    title: 'Password',
+    message: 'Below is your Lightning Terminal password.',
+    result: {
+      type: 'single',
       value: (await litConfig.read.const(effects))!.uipassword,
       copyable: true,
       qr: false,
       masked: true,
-    }
-  },
+    },
+  }),
 )
