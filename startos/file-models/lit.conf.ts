@@ -30,7 +30,7 @@ function fromLitConf(text: string): typeof shape._TYPE {
     const trimmedKey = key.trim()
     const trimmedValue = value.trim()
 
-    conf[trimmedKey]= trimmedValue
+    conf[trimmedKey] = trimmedValue
   }
 
   return conf as typeof shape._TYPE
@@ -45,7 +45,9 @@ function toLitConf(obj: typeof shape._TYPE): string {
   return litConf
 }
 
-export const litConfig = FileHelper.raw(`${litDir}/lit.conf`,
-  (obj: typeof shape._TYPE ) => toLitConf(obj),
+export const litConfig = FileHelper.raw(
+  `${litDir}/lit.conf`,
+  (obj: typeof shape._TYPE) => toLitConf(obj),
   (str) => fromLitConf(str),
+  (value) => shape.unsafeCast(value),
 )
