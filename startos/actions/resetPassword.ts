@@ -19,9 +19,9 @@ export const resetPassword = sdk.Action.withoutInput(
 
   // the execution function
   async ({ effects }) => {
-    const password = utils.getDefaultString(randomPassword)
+    const uipassword = utils.getDefaultString(randomPassword)
 
-    await litConfig.merge({ uipassword: password })
+    await litConfig.merge({ uipassword })
 
     return {
       version: '1',
@@ -29,7 +29,7 @@ export const resetPassword = sdk.Action.withoutInput(
       message: 'Your new password is below',
       result: {
         type: 'single',
-        value: password,
+        value: uipassword,
         masked: true,
         copyable: true,
         qr: false,

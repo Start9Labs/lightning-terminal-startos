@@ -20,9 +20,9 @@ export const manifest = setupManifest({
   assets: [],
   volumes: ['main'],
   images: {
-    main: {
+    'lightning-terminal': {
       source: {
-        dockerTag: 'lightninglabs/lightning-terminal:v0.13.4-alpha',
+        dockerTag: 'lightninglabs/lightning-terminal:v0.13.6-alpha',
       },
     },
   },
@@ -39,7 +39,7 @@ export const manifest = setupManifest({
     lnd: {
       description: 'Needed to communicate with the Lightning Network',
       optional: false,
-      s9pk: '',
+      s9pk: '../lnd/lnd.s9pk',
     },
   },
 })

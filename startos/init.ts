@@ -3,17 +3,12 @@ import { exposedStore } from './store'
 import { sdk } from './sdk'
 import { versions } from './versions'
 import { actions } from './actions'
-import { utils } from '@start9labs/start-sdk'
-import { randomPassword } from './utils'
 import { setDependencies } from './dependencies'
-import { defaultConfig, litConfig } from './file-models/lit.conf'
+import { litConfig } from './file-models/lit.conf'
 
 const install = sdk.setupInstall(async ({ effects }) => {
-  // Create lit.conf with random password
-  await litConfig.write({
-    ...defaultConfig,
-    uipassword: utils.getDefaultString(randomPassword),
-  })
+  // create lit.conf using defaults provided in file model
+  await litConfig.merge({})
 })
 
 const uninstall = sdk.setupUninstall(async ({ effects }) => {})

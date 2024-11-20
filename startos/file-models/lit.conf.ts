@@ -1,25 +1,23 @@
-import { matches, FileHelper } from '@start9labs/start-sdk'
-import { litDir, lndMount, uiPort } from '../utils'
+import { matches, FileHelper, utils } from '@start9labs/start-sdk'
+import { litDir, lndMount, randomPassword, uiPort } from '../utils'
 
 const { object, string, literal } = matches
 
-const shape = object({
-  uipassword: string,
-  'lit-dir': literal(litDir),
-  'insecure-httplisten': literal(`lightning-terminal.startos:${uiPort}`),
-  'remote.lnd.rpcserver': literal('lnd.startos:10009'),
-  'remote.lnd.macaroonpath': literal(`${lndMount}/admin/macaroon`),
-  'remote.lnd.tlscertpath': literal(`${lndMount}/tls.cert`),
-})
+const insecureHttplisten = `lightning-terminal.startos:${uiPort}`
+const lndRpcserver = 'lnd.startos:10009'
+const lndMacaroonpath = `${lndMount}/admin/macaroon`
+const lndTlscertpath = `${lndMount}/tls.cert`
 
-export const defaultConfig: typeof shape._TYPE = {
-  uipassword: '',
-  'lit-dir': litDir,
-  'insecure-httplisten': `lightning-terminal.startos:${uiPort}`,
-  'remote.lnd.rpcserver': 'lnd.startos:10009',
-  'remote.lnd.macaroonpath': `${lndMount}/admin/macaroon`,
-  'remote.lnd.tlscertpath': `${lndMount}/tls.cert`,
-}
+const shape = object({
+  uipassword: string.onMismatch(utils.getDefaultString(randomPassword)),
+  'lit-dir': literal(litDir).onMismatch(litDir),
+  'insecure-httplisten':
+    literal(insecureHttplisten).onMismatch(insecureHttplisten),
+  'remote.lnd.rpcserver': literal(lndRpcserver).onMismatch(lndRpcserver),
+  'remote.lnd.macaroonpath':
+    literal(lndMacaroonpath).onMismatch(lndMacaroonpath),
+  'remote.lnd.tlscertpath': literal(lndTlscertpath).onMismatch(lndTlscertpath),
+})
 
 function fromLitConf(text: string): typeof shape._TYPE {
   let conf: Record<string, string> = {}
