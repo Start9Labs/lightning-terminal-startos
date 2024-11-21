@@ -5,9 +5,9 @@
     "check": "tsc --noEmit"
   },
   "dependencies": {
-    "@start9labs/start-sdk": "0.3.6-alpha.18",
+    "@start9labs/start-sdk": "0.3.6-alpha.20",
     "js-yaml": "^4.1.0",
-    "lnd-startos": "git+https://github.com/Start9Labs/hello-world-startos.git#dc420cb02a536379468cb804d0121b467bcf705a"
+    "lnd-startos": "git+https://github.com/Start9Labs/hello-world-startos.git#2364040041597332baf7d8b7d8f52600b5541a9f"
   },
   "devDependencies": {
     "@types/js-yaml": "^4.0.5",
