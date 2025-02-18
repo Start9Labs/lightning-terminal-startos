@@ -21,7 +21,7 @@ export const main = sdk.setupMain(async ({ effects, started }) => {
    * ======================== Daemons ========================
    */
   return sdk.Daemons.of(effects, started, healthReceipts).addDaemon('primary', {
-    subcontainer: { id: 'lightning-terminal' },
+    subcontainer: { imageId: 'lightning-terminal' },
     command: ['/bin/litd'],
     mounts: sdk.Mounts.of()
       .addVolume('main', null, '/data', false)

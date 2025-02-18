@@ -3,7 +3,7 @@ import { readFile, rmdir } from 'fs/promises'
 import { load } from 'js-yaml'
 import { litConfig } from '../file-models/lit.conf'
 
-export const v0_13_3 = VersionInfo.of({
+export const v0_13_3_0 = VersionInfo.of({
   version: '0.13.3:0',
   releaseNotes: 'Revamped for StartOS 0.3.6',
   migrations: {
