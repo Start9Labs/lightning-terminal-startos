@@ -2,6 +2,7 @@ import { VersionInfo, IMPOSSIBLE } from '@start9labs/start-sdk'
 import { readFile, rmdir } from 'fs/promises'
 import { load } from 'js-yaml'
 import { litConfig } from '../file-models/lit.conf'
+import { configDefaults } from '../utils'
 
 export const v0_13_3_0 = VersionInfo.of({
   version: '0.13.3:0',
@@ -13,8 +14,8 @@ export const v0_13_3_0 = VersionInfo.of({
         await readFile('/root/start9/config.yaml', 'utf-8'),
       ) as { password: string }
 
-      // Create lit.conf with existing password
-      await litConfig.merge({
+      await litConfig.merge(effects, {
+        ...configDefaults,
         uipassword: configYaml.password,
       })
 

@@ -8,20 +8,25 @@ export const resetPassword = sdk.Action.withoutInput(
   'reset-password',
 
   // metadata
-  async ({ effects }) => ({
-    name: 'Reset password',
-    description: 'Reset your user interface password',
-    warning: null,
-    allowedStatuses: 'any',
-    group: null,
-    visibility: 'enabled',
-  }),
+  async ({ effects }) => {
+    const hasPass = !!(await litConfig.read.const(effects))?.uipassword
+    const desc = 'your user interface password'
+
+    return {
+      name: hasPass ? 'Reset Password' : 'Create Password',
+      description: hasPass ? `Reset ${desc}` : `Create ${desc}`,
+      warning: null,
+      allowedStatuses: 'any',
+      group: null,
+      visibility: 'enabled',
+    }
+  },
 
   // the execution function
   async ({ effects }) => {
     const uipassword = utils.getDefaultString(randomPassword)
 
-    await litConfig.merge({ uipassword })
+    await litConfig.merge(effects, { uipassword })
 
     return {
       version: '1',

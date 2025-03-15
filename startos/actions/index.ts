@@ -1,7 +1,4 @@
-import { viewPassword } from './viewPassword'
-import { resetPassword } from './resetPassword'
 import { sdk } from '../sdk'
+import { resetPassword } from './resetPassword'
 
-export const actions = sdk.Actions.of()
-  .addAction(viewPassword)
-  .addAction(resetPassword)
+export const actions = sdk.Actions.of().addAction(resetPassword)

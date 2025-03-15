@@ -17,7 +17,6 @@ export const manifest = setupManifest({
     short: 'Your home for Lightning liquidity',
     long: "A browser-based interface for managing channel liquidity on your self-hosted LND node. Visualize your channels and balances, perform submarine swaps via the Lightning Loop service, classify channels according to your node's operating mode, use Pool to earn sats by opening channels to those needing inbound liquidity.",
   },
-  assets: [],
   volumes: ['main'],
   images: {
     'lightning-terminal': {

@@ -5,3 +5,12 @@ export const randomPassword = {
 export const litDir = '/data/.lit'
 export const lndMount = '/lnd'
 export const uiPort = 8443
+
+export const configDefaults = {
+  uipassword: undefined,
+  'lit-dir': litDir,
+  'insecure-httplisten': `lightning-terminal.startos:${uiPort}`,
+  'remote.lnd.rpcserver': 'lnd.startos:10009',
+  'remote.lnd.macaroonpath': `${lndMount}/admin/macaroon`,
+  'remote.lnd.tlscertpath': `${lndMount}/tls.cert`,
+}
