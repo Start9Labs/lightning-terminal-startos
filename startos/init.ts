@@ -1,5 +1,5 @@
 import { setInterfaces } from './interfaces'
-import { exposedStore } from './store'
+import { exposedStore, initStore } from './store'
 import { sdk } from './sdk'
 import { versions } from './versions'
 import { actions } from './actions'
@@ -8,9 +8,11 @@ import { litConfig } from './file-models/lit.conf'
 import { configDefaults } from './utils'
 import { resetPassword } from './actions/resetPassword'
 
-const install = sdk.setupInstall(async ({ effects }) => {
+const preInstall = sdk.setupPreInstall(async ({ effects }) => {
   await litConfig.write(effects, configDefaults)
+})
 
+const postInstall = sdk.setupPostInstall(async ({ effects }) => {
   await sdk.action.requestOwn(effects, resetPassword, 'critical')
 })
 
@@ -21,10 +23,12 @@ const uninstall = sdk.setupUninstall(async ({ effects }) => {})
  */
 export const { packageInit, packageUninit, containerInit } = sdk.setupInit(
   versions,
-  install,
+  preInstall,
+  postInstall,
   uninstall,
   setInterfaces,
   setDependencies,
   actions,
+  initStore,
   exposedStore,
 )

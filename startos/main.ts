@@ -21,11 +21,15 @@ export const main = sdk.setupMain(async ({ effects, started }) => {
    * ======================== Daemons ========================
    */
   return sdk.Daemons.of(effects, started, healthReceipts).addDaemon('primary', {
-    subcontainer: { imageId: 'lightning-terminal' },
+    subcontainer: await sdk.SubContainer.of(
+      effects,
+      { imageId: 'lightning-terminal' },
+      sdk.Mounts.of()
+        .addVolume('main', null, '/data', false)
+        .addDependency<typeof lndManifest>('lnd', 'main', null, lndMount, true),
+      'lit-sub',
+    ),
     command: ['/bin/litd'],
-    mounts: sdk.Mounts.of()
-      .addVolume('main', null, '/data', false)
-      .addDependency<typeof lndManifest>('lnd', 'main', null, lndMount, true),
     ready: {
       display: 'Web Interface',
       fn: () =>
