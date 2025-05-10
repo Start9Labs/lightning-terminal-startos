@@ -9,7 +9,7 @@ export const resetPassword = sdk.Action.withoutInput(
 
   // metadata
   async ({ effects }) => {
-    const hasPass = !!(await litConfig.read.const(effects))?.uipassword
+    const hasPass = !!(await litConfig.read((c) => c.uipassword).const(effects))
     const desc = 'your user interface password'
 
     return {

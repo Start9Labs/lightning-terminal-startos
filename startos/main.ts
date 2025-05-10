@@ -25,8 +25,19 @@ export const main = sdk.setupMain(async ({ effects, started }) => {
       effects,
       { imageId: 'lightning-terminal' },
       sdk.Mounts.of()
-        .addVolume('main', null, '/data', false)
-        .addDependency<typeof lndManifest>('lnd', 'main', null, lndMount, true),
+        .mountVolume({
+          volumeId: 'main',
+          subpath: null,
+          mountpoint: '/data',
+          readonly: false,
+        })
+        .mountDependency<typeof lndManifest>({
+          dependencyId: 'lnd',
+          volumeId: 'main',
+          subpath: null,
+          mountpoint: lndMount,
+          readonly: true,
+        }),
       'lit-sub',
     ),
     command: ['/bin/litd'],
