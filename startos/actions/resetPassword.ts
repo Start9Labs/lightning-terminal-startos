@@ -1,7 +1,7 @@
 import { utils } from '@start9labs/start-sdk'
 import { sdk } from '../sdk'
 import { randomPassword } from '../utils'
-import { litConfig } from '../file-models/lit.conf'
+import { litConfig } from '../fileModels/lit.conf'
 
 export const resetPassword = sdk.Action.withoutInput(
   // id
