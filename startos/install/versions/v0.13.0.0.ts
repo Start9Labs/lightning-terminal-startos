@@ -7,8 +7,6 @@ import {
 import { rm } from 'fs/promises'
 import { litConfig } from '../../fileModels/lit.conf'
 import { configDefaults } from '../../utils'
-import { sdk } from '../../sdk'
-import { resetPassword } from '../../actions/resetPassword'
 
 export const v0_13_3_0 = VersionInfo.of({
   version: '0.13.3:0',
@@ -17,7 +15,10 @@ export const v0_13_3_0 = VersionInfo.of({
     up: async ({ effects }) => {
       // get old password if exists
       const uipassword = await FileHelper.yaml(
-        { volumeId: 'main', subpath: 'start9/config.yaml' },
+        {
+          volumeId: 'main',
+          subpath: '/media/startos/volumes/main/start9/config.yaml',
+        },
         matches.object({ password: matches.string.optional() }),
       )
         .read((c) => c.password)

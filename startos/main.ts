@@ -40,7 +40,7 @@ export const main = sdk.setupMain(async ({ effects, started }) => {
         }),
       'lit-sub',
     ),
-    command: ['/bin/litd'],
+    exec: { command: ['/bin/litd'] },
     ready: {
       display: 'Web Interface',
       fn: () =>
