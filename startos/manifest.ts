@@ -34,7 +34,7 @@ export const manifest = setupManifest({
     lnd: {
       description: 'Needed to communicate with the Lightning Network',
       optional: false,
-      s9pk: '../lnd/lnd.s9pk',
+      s9pk: 'https://github.com/Start9Labs/lnd-startos/releases/download/v0.19.1-beta.1-alpha.1/lnd.s9pk',
     },
   },
 })
