@@ -13,14 +13,9 @@ export const main = sdk.setupMain(async ({ effects, started }) => {
   depResult.throwIfNotSatisfied()
 
   /**
-   * ======================== Additional Health Checks (optional) ========================
-   */
-  const healthReceipts: T.HealthCheck[] = []
-
-  /**
    * ======================== Daemons ========================
    */
-  return sdk.Daemons.of(effects, started, healthReceipts).addDaemon('primary', {
+  return sdk.Daemons.of(effects, started).addDaemon('primary', {
     subcontainer: await sdk.SubContainer.of(
       effects,
       { imageId: 'lightning-terminal' },

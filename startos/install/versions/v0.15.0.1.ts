@@ -8,9 +8,9 @@ import { rm } from 'fs/promises'
 import { litConfig } from '../../fileModels/lit.conf'
 import { configDefaults } from '../../utils'
 
-export const v0_13_3_0 = VersionInfo.of({
-  version: '0.13.3:0',
-  releaseNotes: 'Revamped for StartOS 0.3.6',
+export const v0_15_0_1 = VersionInfo.of({
+  version: '0.15.0:1',
+  releaseNotes: 'Revamped for StartOS 0.4.0',
   migrations: {
     up: async ({ effects }) => {
       // get old password if exists

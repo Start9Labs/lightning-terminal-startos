@@ -3,10 +3,6 @@ import { setupManifest } from '@start9labs/start-sdk'
 export const manifest = setupManifest({
   id: 'lightning-terminal',
   title: 'Lightning Terminal',
-  version: '0.13.3:0',
-  releaseNotes: `
-        * Update to v0.13.3 [Release Notes](https://github.com/lightninglabs/lightning-terminal/releases/tag/v0.13.3-alpha)
-        * Revamped for StartOS 0.3.6`,
   license: 'mit',
   wrapperRepo: 'https://github.com/Start9Labs/lightning-terminal-wrapper',
   upstreamRepo: 'https://github.com/lightninglabs/lightning-terminal',
@@ -21,7 +17,7 @@ export const manifest = setupManifest({
   images: {
     'lightning-terminal': {
       source: {
-        dockerTag: 'lightninglabs/lightning-terminal:v0.13.6-alpha',
+        dockerTag: 'lightninglabs/lightning-terminal:v0.15.0-alpha',
       },
     },
   },
