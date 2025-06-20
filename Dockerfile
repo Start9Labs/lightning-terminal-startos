@@ -1,4 +1,4 @@
-FROM lightninglabs/lightning-terminal:v0.14.1-alpha
+FROM lightninglabs/lightning-terminal:v0.15.0-alpha
 # arm64 or amd64
 ARG PLATFORM
 ARG ARCH
