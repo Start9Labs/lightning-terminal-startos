@@ -49,7 +49,10 @@ function toLitConf(obj: typeof shape._TYPE): string {
 }
 
 export const litConfig = FileHelper.raw(
-  `${ld}/lit.conf`,
+  {
+    subpath: '/lit.conf',
+    volumeId: 'main',
+  },
   (obj: typeof shape._TYPE) => toLitConf(obj),
   (str) => fromLitConf(str),
   (value) => shape.unsafeCast(value),

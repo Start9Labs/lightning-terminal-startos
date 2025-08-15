@@ -1,5 +1,5 @@
 import { sdk } from './sdk'
-import { uiPort, lndMount } from './utils'
+import { uiPort, lndMount, litDir } from './utils'
 import { T } from '@start9labs/start-sdk'
 import { manifest as lndManifest } from 'lnd-startos/startos/manifest'
 
@@ -23,7 +23,7 @@ export const main = sdk.setupMain(async ({ effects, started }) => {
         .mountVolume({
           volumeId: 'main',
           subpath: null,
-          mountpoint: '/root',
+          mountpoint: litDir,
           readonly: false,
         })
         .mountDependency<typeof lndManifest>({
