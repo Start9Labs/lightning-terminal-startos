@@ -3,7 +3,7 @@ export const randomPassword = {
   len: 22,
 }
 export const litDir = '/root/.lit'
-export const lndMount = '/lnd'
+export const lndMount = '/mnt/lnd'
 export const uiPort = 8443
 
 export const configDefaults = {
@@ -11,6 +11,6 @@ export const configDefaults = {
   'lit-dir': litDir,
   'insecure-httplisten': `lightning-terminal.startos:${uiPort}`,
   'remote.lnd.rpcserver': 'lnd.startos:10009',
-  'remote.lnd.macaroonpath': `${lndMount}/admin/macaroon`,
+  'remote.lnd.macaroonpath': `${lndMount}/data/chain/bitcoin/mainnet/admin.macaroon`,
   'remote.lnd.tlscertpath': `${lndMount}/tls.cert`,
 }
