@@ -23,7 +23,7 @@ export const main = sdk.setupMain(async ({ effects, started }) => {
         .mountVolume({
           volumeId: 'main',
           subpath: null,
-          mountpoint: '/data',
+          mountpoint: '/root',
           readonly: false,
         })
         .mountDependency<typeof lndManifest>({
