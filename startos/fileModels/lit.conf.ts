@@ -27,6 +27,9 @@ function fromLitConf(text: string): typeof shape._TYPE {
 
   for (const line of lines) {
     const [key, value] = line.split('=', 2)
+    if (key === '') {
+      continue
+    }
     const trimmedKey = key.trim()
     const trimmedValue = value.trim()
 
