@@ -1,3 +1,5 @@
+import { resetPassword } from './actions/resetPassword'
+import { litConfig } from './fileModels/lit.conf'
 import { sdk } from './sdk'
 import { uiPort, lndMount, litDir } from './utils'
 import { T } from '@start9labs/start-sdk'
@@ -11,6 +13,15 @@ export const main = sdk.setupMain(async ({ effects, started }) => {
 
   const depResult = await sdk.checkDependencies(effects)
   depResult.throwIfNotSatisfied()
+
+  const password = await litConfig.read((e) => e.uipassword).const(effects)
+  console.log('password', password)
+
+  if (!password || password === 'null') {
+    await sdk.action.createOwnTask(effects, resetPassword, 'critical', {
+      reason: 'Create your LiT admin password',
+    })
+  }
 
   /**
    * ======================== Daemons ========================
