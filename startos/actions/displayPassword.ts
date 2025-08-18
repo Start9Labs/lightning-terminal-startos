@@ -17,7 +17,7 @@ export const displayPassword = sdk.Action.withoutInput(
       group: null,
       visibility: password && password !== 'null'
         ? 'enabled'
-        : { disabled: 'A password must be before it can be displayed!' },
+        : { disabled: 'A password must be set before it can be displayed!' },
     }
   },
 
