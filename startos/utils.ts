@@ -7,7 +7,7 @@ export const lndMount = '/mnt/lnd'
 export const uiPort = 8443
 
 export const configDefaults = {
-  uipassword: undefined,
+  uipassword: null,
   'lit-dir': litDir,
   'insecure-httplisten': `lightning-terminal.startos:${uiPort}`,
   'remote.lnd.rpcserver': 'lnd.startos:10009',

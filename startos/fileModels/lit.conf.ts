@@ -13,7 +13,7 @@ const {
 } = configDefaults
 
 const shape = object({
-  uipassword: string.optional().onMismatch(uipassword),
+  uipassword: string.nullable().onMismatch(uipassword),
   'lit-dir': literal(ld).onMismatch(ld),
   'insecure-httplisten': literal(ih).onMismatch(ih),
   'remote.lnd.rpcserver': literal(rlr).onMismatch(rlr),
