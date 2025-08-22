@@ -9,7 +9,8 @@ export const manifest = setupManifest({
   supportSite: 'https://github.com/lightninglabs/lightning-terminal/issues',
   marketingSite: 'https://lightning.engineering/',
   donationUrl: 'https://donate.start9.com/',
-  docsUrl: 'https://github.com/Start9Labs/lightning-terminal-startos/blob/update/040/instructions.md',
+  docsUrl:
+    'https://github.com/Start9Labs/lightning-terminal-startos/blob/update/040/instructions.md',
   description: {
     short: 'Your home for Lightning liquidity',
     long: "A browser-based interface for managing channel liquidity on your self-hosted LND node. Visualize your channels and balances, perform submarine swaps via the Lightning Loop service, classify channels according to your node's operating mode, use Pool to earn sats by opening channels to those needing inbound liquidity.",
@@ -18,7 +19,7 @@ export const manifest = setupManifest({
   images: {
     'lightning-terminal': {
       source: {
-        dockerTag: 'lightninglabs/lightning-terminal:v0.15.0-alpha',
+        dockerTag: 'lightninglabs/lightning-terminal:v0.15.2-alpha',
       },
     },
   },

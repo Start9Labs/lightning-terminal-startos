@@ -8,8 +8,8 @@ import { rm } from 'fs/promises'
 import { litConfig } from '../../fileModels/lit.conf'
 import { configDefaults } from '../../utils'
 
-export const v0_15_0_1 = VersionInfo.of({
-  version: '0.15.0:1',
+export const v0_15_2_1_alpha_0 = VersionInfo.of({
+  version: '0.15.2-alpha:1',
   releaseNotes: 'Revamped for StartOS 0.4.0',
   migrations: {
     up: async ({ effects }) => {
