@@ -9,7 +9,7 @@ import { litConfig } from '../../fileModels/lit.conf'
 import { configDefaults } from '../../utils'
 
 export const v0_15_2_1_alpha_0 = VersionInfo.of({
-  version: '0.15.2-alpha:1',
+  version: '0.15.2-alpha:1-alpha.0',
   releaseNotes: 'Revamped for StartOS 0.4.0',
   migrations: {
     up: async ({ effects }) => {
