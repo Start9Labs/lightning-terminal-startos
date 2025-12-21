@@ -9,31 +9,28 @@ export const v0_16_0_1_beta_1 = VersionInfo.of({
   releaseNotes: 'Revamped for StartOS 0.4.0',
   migrations: {
     up: async ({ effects }) => {
-      try {
-        const oldConfigFile = await readFile(
-          '/media/startos/volumes/main/start9/config.yaml',
-          'utf-8',
-        )
+      const oldConfigFile = await readFile(
+        '/media/startos/volumes/main/start9/config.yaml',
+        'utf-8',
+      )
 
-        await litConfig.write(effects, configDefaults)
-
+      if (oldConfigFile) {
         const uipassword = (
           load(oldConfigFile) as {
             password: string
           }
         ).password
 
-        await litConfig.merge(effects, {
-          uipassword: uipassword,
+        await litConfig.write(effects, {
+          ...configDefaults,
+          uipassword,
         })
-
-        // remove old start9 dir
-        await rm('/media/startos/volumes/main/start9', {
-          recursive: true,
-        })
-      } catch (error) {
-        console.log('No config.yaml found')
       }
+
+      // remove old start9 dir
+      await rm('/media/startos/volumes/main/start9', {
+        recursive: true,
+      }).catch(console.log)
     },
     down: IMPOSSIBLE,
   },
