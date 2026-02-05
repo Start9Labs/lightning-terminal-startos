@@ -4,12 +4,13 @@ import { sdk } from './sdk'
 import { uiPort, lndMount, litDir } from './utils'
 import { T } from '@start9labs/start-sdk'
 import { manifest as lndManifest } from 'lnd-startos/startos/manifest'
+import { i18n } from './i18n'
 
 export const main = sdk.setupMain(async ({ effects }) => {
   /**
    * ======================== Setup ========================
    */
-  console.info('Starting Lightning Terminal...')
+  console.info(i18n('Starting Lightning Terminal...'))
 
   const depResult = await sdk.checkDependencies(effects)
   depResult.throwIfNotSatisfied()
@@ -19,7 +20,7 @@ export const main = sdk.setupMain(async ({ effects }) => {
 
   if (!password || password === 'null') {
     await sdk.action.createOwnTask(effects, resetPassword, 'critical', {
-      reason: 'Create your LiT admin password',
+      reason: i18n('Create your LiT admin password'),
     })
   }
 
@@ -48,11 +49,11 @@ export const main = sdk.setupMain(async ({ effects }) => {
     ),
     exec: { command: ['/bin/litd'] },
     ready: {
-      display: 'Web Interface',
+      display: i18n('Web Interface'),
       fn: () =>
         sdk.healthCheck.checkPortListening(effects, uiPort, {
-          successMessage: 'The web interface is ready',
-          errorMessage: 'The web interface is not ready',
+          successMessage: i18n('The web interface is ready'),
+          errorMessage: i18n('The web interface is not ready'),
         }),
     },
     requires: [],

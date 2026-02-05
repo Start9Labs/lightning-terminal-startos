@@ -1,5 +1,6 @@
 import { matches, FileHelper } from '@start9labs/start-sdk'
 import { configDefaults } from '../utils'
+import { sdk } from '../sdk'
 
 const { object, string, literal } = matches
 
@@ -49,10 +50,7 @@ function toLitConf(obj: typeof shape._TYPE): string {
 }
 
 export const litConfig = FileHelper.raw(
-  {
-    subpath: '/.lit/lit.conf',
-    volumeId: 'main',
-  },
+  { base: sdk.volumes.main, subpath: '/.lit/lit.conf'},
   (obj: typeof shape._TYPE) => toLitConf(obj),
   (str) => fromLitConf(str),
   (value) => shape.unsafeCast(value),
