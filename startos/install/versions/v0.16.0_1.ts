@@ -3,8 +3,8 @@ import { readFile, rm } from 'fs/promises'
 import { litConfig } from '../../fileModels/lit.conf'
 import { configDefaults } from '../../utils'
 
-export const v0_16_0_1_beta_1 = VersionInfo.of({
-  version: '0.16.0-alpha:1-beta.1',
+export const v0_16_0_1 = VersionInfo.of({
+  version: '0.16.0-alpha:1-beta.2',
   releaseNotes: 'Revamped for StartOS 0.4.0',
   migrations: {
     up: async ({ effects }) => {

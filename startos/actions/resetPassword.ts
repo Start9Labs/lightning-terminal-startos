@@ -2,6 +2,7 @@ import { utils } from '@start9labs/start-sdk'
 import { sdk } from '../sdk'
 import { randomPassword } from '../utils'
 import { litConfig } from '../fileModels/lit.conf'
+import { i18n } from '../i18n'
 
 export const resetPassword = sdk.Action.withoutInput(
   // id
@@ -11,11 +12,12 @@ export const resetPassword = sdk.Action.withoutInput(
   async ({ effects }) => {
     const hasPass =
       (await litConfig.read((c) => c.uipassword).const(effects)) !== 'null'
-    const desc = 'your user interface password'
 
     return {
-      name: hasPass ? 'Reset Password' : 'Create Password',
-      description: hasPass ? `Reset ${desc}` : `Create ${desc}`,
+      name: hasPass ? i18n('Reset Password') : i18n('Create Password'),
+      description: hasPass
+        ? i18n('Reset your user interface password')
+        : i18n('Create your user interface password'),
       warning: null,
       allowedStatuses: 'any',
       group: null,
@@ -31,8 +33,8 @@ export const resetPassword = sdk.Action.withoutInput(
 
     return {
       version: '1',
-      title: 'Success',
-      message: 'Your new password is below',
+      title: i18n('Success'),
+      message: i18n('Your new password is below'),
       result: {
         type: 'single',
         value: uipassword,

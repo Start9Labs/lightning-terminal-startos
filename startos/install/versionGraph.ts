@@ -4,6 +4,7 @@ import { litConfig } from '../fileModels/lit.conf'
 import { configDefaults } from '../utils'
 import { sdk } from '../sdk'
 import { resetPassword } from '../actions/resetPassword'
+import { i18n } from '../i18n'
 
 export const versionGraph = VersionGraph.of({
   current,
@@ -11,7 +12,7 @@ export const versionGraph = VersionGraph.of({
   preInstall: async (effects) => {
     await litConfig.write(effects, configDefaults)
     await sdk.action.createOwnTask(effects, resetPassword, 'critical', {
-      reason: 'Create your LiT admin password',
+      reason: i18n('Create your LiT admin password'),
     })
   },
 })

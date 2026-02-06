@@ -1,4 +1,5 @@
 import { setupManifest } from '@start9labs/start-sdk'
+import { short, long, depLndTitle } from './i18n'
 
 export const manifest = setupManifest({
   id: 'lightning-terminal',
@@ -11,23 +12,25 @@ export const manifest = setupManifest({
   donationUrl: 'https://donate.start9.com/',
   docsUrl:
     'https://github.com/Start9Labs/lightning-terminal-startos/blob/update/040/instructions.md',
-  description: {
-    short: 'Your home for Lightning liquidity',
-    long: "A browser-based interface for managing channel liquidity on your self-hosted LND node. Visualize your channels and balances, perform submarine swaps via the Lightning Loop service, classify channels according to your node's operating mode, use Pool to earn sats by opening channels to those needing inbound liquidity.",
-  },
+  description: { short, long },
   volumes: ['main'],
   images: {
     'lightning-terminal': {
       source: {
         dockerTag: 'lightninglabs/lightning-terminal:v0.16.0-alpha',
       },
+      arch: ['aarch64', 'x86_64'],
+      emulateMissingAs: 'aarch64'
     },
   },
   dependencies: {
     lnd: {
       description: 'Needed to communicate with the Lightning Network',
       optional: false,
-      s9pk: 'https://github.com/Start9Labs/lnd-startos/releases/download/v0.20.0-beta.1-beta.2/lnd.s9pk',
+      metadata: {
+        title: depLndTitle,
+        icon: 'https://github.com/Start9Labs/lnd-startos/blob/master/icon.png?raw=true',
+      },
     },
   },
 })
