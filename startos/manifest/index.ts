@@ -11,7 +11,7 @@ export const manifest = setupManifest({
   marketingSite: 'https://lightning.engineering/',
   donationUrl: 'https://donate.start9.com/',
   docsUrl:
-    'https://github.com/Start9Labs/lightning-terminal-startos/blob/update/040/instructions.md',
+    'https://docs.lightning.engineering/lightning-network-tools/lightning-terminal',
   description: { short, long },
   volumes: ['main'],
   images: {
