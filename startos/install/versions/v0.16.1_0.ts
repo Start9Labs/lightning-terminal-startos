@@ -1,10 +1,9 @@
 import { VersionInfo, IMPOSSIBLE, YAML } from '@start9labs/start-sdk'
 import { readFile, rm } from 'fs/promises'
 import { litConfig } from '../../fileModels/lit.conf'
-import { configDefaults } from '../../utils'
 
-export const v0_16_0_1 = VersionInfo.of({
-  version: '0.16.0-alpha:1-beta.2',
+export const v0_16_1_0 = VersionInfo.of({
+  version: '0.16.1-alpha:0-beta.0',
   releaseNotes: 'Revamped for StartOS 0.4.0',
   migrations: {
     up: async ({ effects }) => {
@@ -19,8 +18,7 @@ export const v0_16_0_1 = VersionInfo.of({
       ).then(YAML.parse, () => undefined)
 
       if (configYaml) {
-        await litConfig.write(effects, {
-          ...configDefaults,
+        await litConfig.merge(effects, {
           uipassword: configYaml.password,
         })
 

@@ -1,57 +1,34 @@
-import { matches, FileHelper } from '@start9labs/start-sdk'
-import { configDefaults } from '../utils'
+import { FileHelper, z } from '@start9labs/start-sdk'
 import { sdk } from '../sdk'
+import { litDir, lndMount, uiPort } from '../utils'
 
-const { object, string, literal } = matches
+const httpListen = `lightning-terminal.startos:${uiPort}` as const
+const rpcServer = 'lnd.startos:10009' as const
+const macaroonPath =
+  `${lndMount}/data/chain/bitcoin/mainnet/admin.macaroon` as const
+const tlsCertPath = `${lndMount}/tls.cert` as const
 
-const {
-  uipassword,
-  'lit-dir': ld,
-  'insecure-httplisten': ih,
-  'remote.lnd.rpcserver': rlr,
-  'remote.lnd.macaroonpath': rlm,
-  'remote.lnd.tlscertpath': rlt,
-} = configDefaults
-
-const shape = object({
-  uipassword: string.nullable().onMismatch(uipassword),
-  'lit-dir': literal(ld).onMismatch(ld),
-  'insecure-httplisten': literal(ih).onMismatch(ih),
-  'remote.lnd.rpcserver': literal(rlr).onMismatch(rlr),
-  'remote.lnd.macaroonpath': literal(rlm).onMismatch(rlm),
-  'remote.lnd.tlscertpath': literal(rlt).onMismatch(rlt),
+const shape = z.object({
+  uipassword: z.string().nullable().catch(null),
+  'lit-dir': z.literal(litDir).catch(litDir),
+  'insecure-httplisten': z.literal(httpListen).catch(httpListen),
+  'remote.lnd.rpcserver': z.literal(rpcServer).catch(rpcServer),
+  'remote.lnd.macaroonpath': z.literal(macaroonPath).catch(macaroonPath),
+  'remote.lnd.tlscertpath': z.literal(tlsCertPath).catch(tlsCertPath),
 })
 
-function fromLitConf(text: string): typeof shape._TYPE {
-  let conf: Record<string, string> = {}
-  const lines = text.split('\n')
-
-  for (const line of lines) {
-    const [key, value] = line.split('=', 2)
-    if (key === '') {
-      continue
-    }
-    const trimmedKey = key.trim()
-    const trimmedValue = value.trim()
-
-    conf[trimmedKey] = trimmedValue
-  }
-
-  return conf as typeof shape._TYPE
-}
-
-function toLitConf(obj: typeof shape._TYPE): string {
-  let litConf = ''
-  for (const [key, value] of Object.entries(obj)) {
-    litConf += `${key}=${value}\n`
-  }
-
-  return litConf
-}
-
-export const litConfig = FileHelper.raw(
-  { base: sdk.volumes.main, subpath: '/.lit/lit.conf'},
-  (obj: typeof shape._TYPE) => toLitConf(obj),
-  (str) => fromLitConf(str),
-  (value) => shape.unsafeCast(value),
+export const litConfig = FileHelper.ini(
+  { base: sdk.volumes.main, subpath: '/.lit/lit.conf' },
+  shape,
+  { bracketedArray: false },
+  {
+    onRead: (a) => a,
+    onWrite: (a) => {
+      const result: Record<string, string> = {}
+      for (const [k, v] of Object.entries(a)) {
+        if (v != null) result[k] = String(v)
+      }
+      return result
+    },
+  },
 )

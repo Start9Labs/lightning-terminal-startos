@@ -26,3 +26,11 @@ export const depLndTitle = {
   pl_PL: 'LND',
   fr_FR: 'LND',
 }
+
+export const depLndDescription = {
+  en_US: 'Needed to communicate with the Lightning Network',
+  es_ES: 'Necesario para comunicarse con la Red Lightning',
+  de_DE: 'Benötigt für die Kommunikation mit dem Lightning-Netzwerk',
+  pl_PL: 'Potrzebny do komunikacji z siecią Lightning',
+  fr_FR: 'Nécessaire pour communiquer avec le réseau Lightning',
+}

@@ -1,8 +1,7 @@
 import { utils } from '@start9labs/start-sdk'
-import { sdk } from '../sdk'
-import { randomPassword } from '../utils'
 import { litConfig } from '../fileModels/lit.conf'
 import { i18n } from '../i18n'
+import { sdk } from '../sdk'
 
 export const resetPassword = sdk.Action.withoutInput(
   // id
@@ -27,7 +26,10 @@ export const resetPassword = sdk.Action.withoutInput(
 
   // the execution function
   async ({ effects }) => {
-    const uipassword = utils.getDefaultString(randomPassword)
+    const uipassword = utils.getDefaultString({
+      charset: 'a-z,A-Z,1-9,!,@,$,%,&,*',
+      len: 22,
+    })
 
     await litConfig.merge(effects, { uipassword })
 

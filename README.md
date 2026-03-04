@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="icon.png" alt="Lightning Terminal Logo" width="21%">
+  <img src="icon.svg" alt="Lightning Terminal Logo" width="21%">
 </p>
 
 # Lightning Terminal on StartOS
@@ -7,8 +7,8 @@
 > **Upstream docs:** <https://docs.lightning.engineering/lightning-network-tools/lightning-terminal>
 >
 > Everything not listed in this document should behave the same as upstream
-> Lightning Terminal v0.16.0-alpha. If a feature, setting, or behavior is not mentioned
-> here, the upstream documentation is accurate and fully applicable.
+> Lightning Terminal. If a feature, setting, or behavior is not mentioned here, the
+> upstream documentation is accurate and fully applicable.
 
 A browser-based interface for managing channel liquidity on a self-hosted LND node. See the [upstream repo](https://github.com/lightninglabs/lightning-terminal) for general Lightning Terminal documentation.
 
@@ -36,7 +36,7 @@ A browser-based interface for managing channel liquidity on a self-hosted LND no
 
 | Property | Value |
 |----------|-------|
-| Image | `lightninglabs/lightning-terminal:v0.16.0-alpha` (upstream, unmodified) |
+| Image | `lightninglabs/lightning-terminal:v0.16.1-alpha` (upstream, unmodified) |
 | Architectures | x86_64, aarch64 |
 | Entrypoint | `/bin/litd` |
 
@@ -133,8 +133,8 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for build instructions and development wo
 
 ```yaml
 package_id: lightning-terminal
-upstream_version: 0.16.0-alpha
-image: lightninglabs/lightning-terminal:v0.16.0-alpha
+upstream_version: 0.16.1-alpha
+image: lightninglabs/lightning-terminal:v0.16.1-alpha
 architectures: [x86_64, aarch64]
 volumes:
   main: /root
