@@ -2,8 +2,8 @@ import { VersionInfo, IMPOSSIBLE, YAML } from '@start9labs/start-sdk'
 import { readFile, rm } from 'fs/promises'
 import { litConfig } from '../../fileModels/lit.conf'
 
-export const v0_16_1_0 = VersionInfo.of({
-  version: '0.16.1-alpha:0-beta.0',
+export const v_0_16_1_alpha_1_b0 = VersionInfo.of({
+  version: '0.16.1-alpha:1-beta.0',
   releaseNotes: 'Revamped for StartOS 0.4.0',
   migrations: {
     up: async ({ effects }) => {
