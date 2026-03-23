@@ -36,7 +36,7 @@ A browser-based interface for managing channel liquidity on a self-hosted LND no
 
 | Property | Value |
 |----------|-------|
-| Image | `lightninglabs/lightning-terminal:v0.16.1-alpha` (upstream, unmodified) |
+| Image | `lightninglabs/lightning-terminal` (upstream, unmodified) |
 | Architectures | x86_64, aarch64 |
 | Entrypoint | `/bin/litd` |
 
@@ -103,9 +103,9 @@ The action name changes dynamically: "Create Password" on first use, "Reset Pass
 
 ## Dependencies
 
-| Dependency | Required | Version | Purpose |
-|------------|----------|---------|---------|
-| LND | Required | `>=0.20.0-beta:1-beta.2` | Lightning Network node access via gRPC |
+| Dependency | Required | Purpose |
+|------------|----------|---------|
+| LND | Required | Lightning Network node access via gRPC |
 
 LND must be installed and running. LiT connects to LND using the admin macaroon and TLS certificate from the mounted volume.
 
@@ -133,15 +133,14 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for build instructions and development wo
 
 ```yaml
 package_id: lightning-terminal
-upstream_version: 0.16.1-alpha
-image: lightninglabs/lightning-terminal:v0.16.1-alpha
+image: lightninglabs/lightning-terminal
 architectures: [x86_64, aarch64]
 volumes:
   main: /root
 ports:
   ui: 8443
 dependencies:
-  - lnd (required, >=0.20.0-beta:1-beta.2)
+  - lnd (required)
 startos_managed_files:
   - .lit/lit.conf
 actions:
