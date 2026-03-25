@@ -3,7 +3,7 @@ import { seedFiles } from './seedFiles'
 import { taskSetPassword } from './taskSetPassword'
 import { setDependencies } from '../dependencies'
 import { setInterfaces } from '../interfaces'
-import { versionGraph } from '../install/versionGraph'
+import { versionGraph } from '../versions'
 import { actions } from '../actions'
 import { restoreInit } from '../backups'
 

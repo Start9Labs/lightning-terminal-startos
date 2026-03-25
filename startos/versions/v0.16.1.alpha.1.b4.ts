@@ -1,9 +1,9 @@
 import { VersionInfo, IMPOSSIBLE, YAML } from '@start9labs/start-sdk'
 import { readFile, rm } from 'fs/promises'
-import { litConfig } from '../../fileModels/lit.conf'
+import { litConfig } from '../fileModels/lit.conf'
 
-export const v_0_16_1_alpha_1_b3 = VersionInfo.of({
-  version: '0.16.1-alpha:1-beta.3',
+export const v_0_16_1_alpha_1_b4 = VersionInfo.of({
+  version: '0.16.1-alpha:1-beta.4',
   releaseNotes: {
     en_US: 'Update to StartOS SDK beta.65',
     es_ES: 'Actualización a StartOS SDK beta.65',

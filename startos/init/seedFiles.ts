@@ -1,8 +1,6 @@
 import { litConfig } from '../fileModels/lit.conf'
 import { sdk } from '../sdk'
 
-export const seedFiles = sdk.setupOnInit(async (effects, kind) => {
-  if (kind !== 'install') return
-
+export const seedFiles = sdk.setupOnInit(async (effects) => {
   await litConfig.merge(effects, {})
 })
