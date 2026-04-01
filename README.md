@@ -21,7 +21,7 @@ A browser-based interface for managing channel liquidity on a self-hosted LND no
 - [Installation and First-Run Flow](#installation-and-first-run-flow)
 - [Configuration Management](#configuration-management)
 - [Network Access and Interfaces](#network-access-and-interfaces)
-- [Actions](#actions-startos-ui)
+- [Actions (StartOS UI)](#actions-startos-ui)
 - [Backups and Restore](#backups-and-restore)
 - [Health Checks](#health-checks)
 - [Dependencies](#dependencies)
@@ -40,6 +40,8 @@ A browser-based interface for managing channel liquidity on a self-hosted LND no
 | Architectures | x86_64, aarch64 |
 | Entrypoint | `/bin/litd` |
 
+---
+
 ## Volume and Data Layout
 
 | Volume | Mount Point | Purpose |
@@ -54,11 +56,15 @@ StartOS-specific files on the `main` volume:
 
 The LND `main` volume is mounted read-only at `/mnt/lnd` for macaroon and TLS certificate access.
 
+---
+
 ## Installation and First-Run Flow
 
 1. On install, StartOS creates a **critical task** prompting the user to set an admin password via the **Create Password** action
 2. The `.lit/lit.conf` file is written with default configuration and the generated password
 3. LiT connects to the running LND node using the mounted macaroon and TLS certificate
+
+---
 
 ## Configuration Management
 
@@ -75,19 +81,35 @@ Settings managed by StartOS (hardcoded):
 | `remote.lnd.macaroonpath` | `/mnt/lnd/data/chain/bitcoin/mainnet/admin.macaroon` | Mounted dependency volume |
 | `remote.lnd.tlscertpath` | `/mnt/lnd/tls.cert` | Mounted dependency volume |
 
+---
+
 ## Network Access and Interfaces
 
 | Interface | Port | Protocol | Purpose |
 |-----------|------|----------|---------|
 | Web UI | 8443 | HTTP | Lightning Terminal web interface |
 
+---
+
 ## Actions (StartOS UI)
 
-| Action | Purpose | Availability | Inputs |
-|--------|---------|-------------|--------|
-| **Create/Reset Password** | Generate a random 22-character admin password for the web UI | Any | None |
+### Create / Reset Password
 
-The action name changes dynamically: "Create Password" on first use, "Reset Password" thereafter. The generated password is displayed once as a copyable value.
+| Property | Value |
+|----------|-------|
+| ID | `reset-password` |
+| Name | Create Password / Reset Password |
+| Visibility | Enabled |
+| Availability | Any status |
+| Purpose | Generate a random 22-character admin password for the web UI |
+
+**Inputs:** None
+
+**Output:** Displays the new randomly generated password (copyable, masked).
+
+The action name changes dynamically: "Create Password" on first use, "Reset Password" thereafter.
+
+---
 
 ## Backups and Restore
 
@@ -95,25 +117,39 @@ The action name changes dynamically: "Create Password" on first use, "Reset Pass
 
 **Restore behavior:** Standard restore — the configuration and data are restored as-is. The configured LND node must be available.
 
+---
+
 ## Health Checks
 
 | Check | Method | Messages |
 |-------|--------|----------|
 | **Web Interface** | Port listening (8443) | Ready: "The web interface is ready" |
 
+---
+
 ## Dependencies
 
-| Dependency | Required | Purpose |
-|------------|----------|---------|
-| LND | Required | Lightning Network node access via gRPC |
+### LND
 
-LND must be installed and running. LiT connects to LND using the admin macaroon and TLS certificate from the mounted volume.
+| Property | Value |
+|----------|-------|
+| Required | Yes |
+| Version constraint | `>= 0.20.1-beta` |
+| Health checks | `lnd` |
+| Mounted volumes | `main` → `/mnt/lnd` (read-only) |
+| Purpose | Lightning Network node access via gRPC (admin macaroon + TLS certificate) |
+
+LND must be installed and running. LiT connects via the mounted macaroon and TLS certificate.
+
+---
 
 ## Limitations and Differences
 
 1. **Remote mode only** — LiT runs in remote mode connecting to a separate LND instance; integrated mode (where LiT runs its own LND) is not available
 2. **No user-configurable settings** — all configuration is managed by StartOS; the only user action is password management
 3. **Password-only authentication** — the UI password is auto-generated via the StartOS action; there is no option to set a custom password manually
+
+---
 
 ## What Is Unchanged from Upstream
 
@@ -122,6 +158,8 @@ LND must be installed and running. LiT connects to LND using the admin macaroon 
 - Channel visualization and balance management
 - All web UI functionality
 - Faraday (channel analytics)
+
+---
 
 ## Contributing
 
@@ -140,7 +178,12 @@ volumes:
 ports:
   ui: 8443
 dependencies:
-  - lnd (required)
+  lnd:
+    required: true
+    version: ">=0.20.1-beta"
+    health_check: [lnd]
+    mounted_volume: main -> /mnt/lnd (read-only)
+startos_managed_env_vars: none
 startos_managed_files:
   - .lit/lit.conf
 actions:
