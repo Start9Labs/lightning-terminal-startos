@@ -6,7 +6,7 @@ export const manifest = setupManifest({
   title: 'Lightning Terminal',
   license: 'mit',
   packageRepo:
-    'https://github.com/Start9Labs/lightning-terminal-startos/tree/update/040',
+    'https://github.com/Start9Labs/lightning-terminal-startos',
   upstreamRepo: 'https://github.com/lightninglabs/lightning-terminal',
   marketingUrl: 'https://lightning.engineering/',
   donationUrl: null,
