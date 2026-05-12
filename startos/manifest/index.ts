@@ -10,9 +10,6 @@ export const manifest = setupManifest({
   upstreamRepo: 'https://github.com/lightninglabs/lightning-terminal',
   marketingUrl: 'https://lightning.engineering/',
   donationUrl: null,
-  docsUrls: [
-    'https://docs.lightning.engineering/lightning-network-tools/lightning-terminal',
-  ],
   description: { short, long },
   volumes: ['main'],
   images: {
