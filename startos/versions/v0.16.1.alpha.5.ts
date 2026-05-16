@@ -2,14 +2,14 @@ import { VersionInfo, IMPOSSIBLE, YAML } from '@start9labs/start-sdk'
 import { readFile, rm } from 'fs/promises'
 import { litConfig } from '../fileModels/lit.conf'
 
-export const v_0_16_1_alpha_4 = VersionInfo.of({
-  version: '0.16.1-alpha:4',
+export const v_0_16_1_alpha_5 = VersionInfo.of({
+  version: '0.16.1-alpha:5',
   releaseNotes: {
-    en_US: 'Internal updates (start-sdk 1.5.0)',
-    es_ES: 'Actualizaciones internas (start-sdk 1.5.0)',
-    de_DE: 'Interne Aktualisierungen (start-sdk 1.5.0)',
-    pl_PL: 'Aktualizacje wewnętrzne (start-sdk 1.5.0)',
-    fr_FR: 'Mises à jour internes (start-sdk 1.5.0)',
+    en_US: 'Internal updates (start-sdk 1.5.2)',
+    es_ES: 'Actualizaciones internas (start-sdk 1.5.2)',
+    de_DE: 'Interne Aktualisierungen (start-sdk 1.5.2)',
+    pl_PL: 'Aktualizacje wewnętrzne (start-sdk 1.5.2)',
+    fr_FR: 'Mises à jour internes (start-sdk 1.5.2)',
   },
   migrations: {
     up: async ({ effects }) => {
