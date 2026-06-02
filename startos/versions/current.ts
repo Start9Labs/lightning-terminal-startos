@@ -2,7 +2,7 @@ import { VersionInfo, IMPOSSIBLE, YAML } from '@start9labs/start-sdk'
 import { readFile, rm } from 'fs/promises'
 import { litConfig } from '../fileModels/lit.conf'
 
-export const v_0_16_1_alpha_4 = VersionInfo.of({
+export const current = VersionInfo.of({
   version: '0.16.1-alpha:4',
   releaseNotes: {
     en_US: 'Internal updates (start-sdk 1.5.0)',
