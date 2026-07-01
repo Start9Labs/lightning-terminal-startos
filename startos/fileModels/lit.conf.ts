@@ -15,6 +15,9 @@ const shape = z.object({
   'remote.lnd.rpcserver': z.literal(rpcServer).catch(rpcServer),
   'remote.lnd.macaroonpath': z.literal(macaroonPath).catch(macaroonPath),
   'remote.lnd.tlscertpath': z.literal(tlsCertPath).catch(tlsCertPath),
+  // v0.17 migrates bbolt→SQL by default, prompting on stdin; the daemon has no
+  // stdin, so pin bbolt to keep startup non-interactive and reversible.
+  databasebackend: z.literal('bbolt').catch('bbolt'),
 })
 
 export const litConfig = FileHelper.ini(

@@ -5,8 +5,7 @@ export const manifest = setupManifest({
   id: 'lightning-terminal',
   title: 'Lightning Terminal',
   license: 'mit',
-  packageRepo:
-    'https://github.com/Start9Labs/lightning-terminal-startos',
+  packageRepo: 'https://github.com/Start9Labs/lightning-terminal-startos',
   upstreamRepo: 'https://github.com/lightninglabs/lightning-terminal',
   marketingUrl: 'https://lightning.engineering/',
   donationUrl: null,
@@ -15,7 +14,7 @@ export const manifest = setupManifest({
   images: {
     'lightning-terminal': {
       source: {
-        dockerTag: 'lightninglabs/lightning-terminal:v0.16.1-alpha',
+        dockerTag: 'lightninglabs/lightning-terminal:v0.17.0-alpha',
       },
       arch: ['aarch64', 'x86_64'],
     },
