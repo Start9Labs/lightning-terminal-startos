@@ -75,14 +75,15 @@ Settings managed by StartOS (hardcoded):
 | Setting | Value | Reason |
 |---------|-------|--------|
 | `uipassword` | Auto-generated | Set via Create/Reset Password action |
-| `databasebackend` | `bbolt` | Defer litd's own irreversible `bbolt`→SQL migration introduced upstream in v0.17.0 |
+| `databasebackend` | `sqlite` | Upstream default in v0.17.0; litd's own stores use SQLite |
+| `auto-migrate-to-sql` | `true` | Approve litd's one-way `bbolt`→SQL migration unattended (no `stdin` prompt available) |
 | `lit-dir` | `/root` | Maps to the mounted volume |
 | `insecure-httplisten` | `lightning-terminal.startos:8443` | StartOS service networking |
 | `remote.lnd.rpcserver` | `lnd.startos:10009` | StartOS service networking |
 | `remote.lnd.macaroonpath` | `/mnt/lnd/data/chain/bitcoin/mainnet/admin.macaroon` | Mounted dependency volume |
 | `remote.lnd.tlscertpath` | `/mnt/lnd/tls.cert` | Mounted dependency volume |
 
-Upstream v0.17.0 makes SQLite the default backend for litd's **own** internal databases — accounts, sessions, and firewall/autopilot rules — which litd maintains even in remote-LND mode. This is separate from the LND node's own database (the LND package manages that, including LND's own kvdb→SQL migration). On the first restart after upgrading, litd would migrate its internal stores one-way to SQL, prompting for confirmation on `stdin` that a headless StartOS daemon cannot answer (any input other than `yes` cancels litd startup). This package pins `databasebackend=bbolt` so existing installs keep their data and start unattended; `bbolt` remains supported upstream, now deprecated.
+Upstream v0.17.0 makes SQLite the default backend for litd's **own** internal databases — accounts, sessions, and firewall/autopilot rules — which litd maintains even in remote-LND mode. This is separate from the LND node's own database (the LND package manages that, including LND's own kvdb→SQL migration). On the first start after upgrading, litd migrates its internal stores one-way from `bbolt` to SQLite. That migration normally prompts for confirmation on `stdin`, which a headless StartOS daemon cannot answer, so this package sets `auto-migrate-to-sql=true` to approve it unattended. The migration is irreversible: once it runs you cannot downgrade below v0.17.0-alpha. It reads macaroon IDs from LND, so it needs the LND node running (StartOS shows a dependency warning if it isn't). The migration is transactional — if LND is unreachable the attempt aborts cleanly, leaves the `bbolt` data intact, and litd retries automatically on its next start.
 
 ---
 
@@ -151,7 +152,7 @@ LND must be installed and running. LiT connects via the mounted macaroon and TLS
 1. **Remote mode only** — LiT runs in remote mode connecting to a separate LND instance; integrated mode (where LiT runs its own LND) is not available
 2. **No user-configurable settings** — all configuration is managed by StartOS; the only user action is password management
 3. **Password-only authentication** — the UI password is auto-generated via the StartOS action; there is no option to set a custom password manually
-4. **Legacy `bbolt` database backend** — the package pins `databasebackend=bbolt` and does not run the upstream `bbolt`→SQL migration of litd's own internal stores (which is irreversible and cannot be confirmed from a headless daemon)
+4. **One-way SQLite migration** — on upgrade to v0.17.0, litd migrates its own internal stores from `bbolt` to SQLite (`auto-migrate-to-sql=true`); this is irreversible, so afterwards the package cannot be downgraded below v0.17.0-alpha
 
 ---
 
