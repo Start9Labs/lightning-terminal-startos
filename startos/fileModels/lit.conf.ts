@@ -10,6 +10,8 @@ const tlsCertPath = `${lndMount}/tls.cert` as const
 
 const shape = z.object({
   uipassword: z.string().nullable().catch(null),
+  // Pin bbolt to defer litd 0.17's irreversible bbolt→SQL migration (SQLite is now the upstream default).
+  databasebackend: z.literal('bbolt').catch('bbolt'),
   'lit-dir': z.literal(litDir).catch(litDir),
   'insecure-httplisten': z.literal(httpListen).catch(httpListen),
   'remote.lnd.rpcserver': z.literal(rpcServer).catch(rpcServer),

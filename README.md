@@ -75,11 +75,14 @@ Settings managed by StartOS (hardcoded):
 | Setting | Value | Reason |
 |---------|-------|--------|
 | `uipassword` | Auto-generated | Set via Create/Reset Password action |
+| `databasebackend` | `bbolt` | Defer the irreversible `bbolt`→SQL migration introduced upstream in v0.17.0 |
 | `lit-dir` | `/root` | Maps to the mounted volume |
 | `insecure-httplisten` | `lightning-terminal.startos:8443` | StartOS service networking |
 | `remote.lnd.rpcserver` | `lnd.startos:10009` | StartOS service networking |
 | `remote.lnd.macaroonpath` | `/mnt/lnd/data/chain/bitcoin/mainnet/admin.macaroon` | Mounted dependency volume |
 | `remote.lnd.tlscertpath` | `/mnt/lnd/tls.cert` | Mounted dependency volume |
+
+Upstream v0.17.0 makes SQLite the default database backend and, on an existing `bbolt` database, prompts for a one-way migration to SQL that cannot be answered from a headless StartOS daemon (litd startup is canceled without confirmation). This package pins `databasebackend=bbolt` so existing installs keep their data and start unattended; `bbolt` remains supported upstream, now deprecated.
 
 ---
 
@@ -148,6 +151,7 @@ LND must be installed and running. LiT connects via the mounted macaroon and TLS
 1. **Remote mode only** — LiT runs in remote mode connecting to a separate LND instance; integrated mode (where LiT runs its own LND) is not available
 2. **No user-configurable settings** — all configuration is managed by StartOS; the only user action is password management
 3. **Password-only authentication** — the UI password is auto-generated via the StartOS action; there is no option to set a custom password manually
+4. **Legacy `bbolt` database backend** — the package pins `databasebackend=bbolt` and does not run the upstream `bbolt`→SQL migration (which is irreversible and cannot be confirmed from a headless daemon)
 
 ---
 
