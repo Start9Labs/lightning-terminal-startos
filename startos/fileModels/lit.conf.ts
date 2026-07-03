@@ -10,6 +10,9 @@ const tlsCertPath = `${lndMount}/tls.cert` as const
 
 const shape = z.object({
   uipassword: z.string().nullable().catch(null),
+  databasebackend: z.literal('sqlite').catch('sqlite'),
+  // Approve litd 0.17's one-way bbolt→SQL migration headlessly; no stdin prompt is answerable here.
+  'auto-migrate-to-sql': z.literal('true').catch('true'),
   'lit-dir': z.literal(litDir).catch(litDir),
   'insecure-httplisten': z.literal(httpListen).catch(httpListen),
   'remote.lnd.rpcserver': z.literal(rpcServer).catch(rpcServer),
