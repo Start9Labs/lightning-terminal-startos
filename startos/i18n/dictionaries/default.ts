@@ -7,6 +7,7 @@ const dict = {
   'The web interface is ready': 2,
   'The web interface is not ready': 3,
   'Create your LiT admin password': 4,
+  'LND is not yet reachable on the internal network. Please wait for it to finish starting.': 13,
 
   // interfaces.ts
   'Web UI': 5,

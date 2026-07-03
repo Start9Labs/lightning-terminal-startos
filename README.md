@@ -78,8 +78,8 @@ Settings managed by StartOS (hardcoded):
 | `databasebackend` | `sqlite` | Upstream default in v0.17.0; litd's own stores use SQLite |
 | `auto-migrate-to-sql` | `true` | Approve litd's one-way `bbolt`→SQL migration unattended (no `stdin` prompt available) |
 | `lit-dir` | `/root` | Maps to the mounted volume |
-| `insecure-httplisten` | `lightning-terminal.startos:8443` | StartOS service networking |
-| `remote.lnd.rpcserver` | `lnd.startos:10009` | StartOS service networking |
+| `insecure-httplisten` | `0.0.0.0:8443` | Bind litd's web UI on all container interfaces; StartOS exposes it over the LXC bridge |
+| `remote.lnd.rpcserver` | LND's LXC-bridge gRPC address (resolved at startup) | `main.ts` reads LND's gRPC host over the LXC bridge and writes it in; replaces the old `lnd.startos` DNS name |
 | `remote.lnd.macaroonpath` | `/mnt/lnd/data/chain/bitcoin/mainnet/admin.macaroon` | Mounted dependency volume |
 | `remote.lnd.tlscertpath` | `/mnt/lnd/tls.cert` | Mounted dependency volume |
 
