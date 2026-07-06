@@ -16,10 +16,10 @@ const shape = z.object({
   'auto-migrate-to-sql': z.literal('true').catch('true'),
   'lit-dir': z.literal(litDir).catch(litDir),
   'insecure-httplisten': z.literal(httpListen).catch(httpListen),
-  // LND's gRPC endpoint over the LXC bridge; main.ts overwrites this with the
-  // resolved bridge address at startup, so this fallback is only the fresh-file
-  // seed and is never dialed — a loopback placeholder, not a routable address.
-  'remote.lnd.rpcserver': z.string().catch('127.0.0.1:10009'),
+  // LND's gRPC endpoint over the LXC bridge; main.ts writes the resolved bridge
+  // address at startup. Absent until LND's binding appears, so it stays unset
+  // (and unwritten) rather than seeding a fabricated dependency address.
+  'remote.lnd.rpcserver': z.string().optional().catch(undefined),
   'remote.lnd.macaroonpath': z.literal(macaroonPath).catch(macaroonPath),
   'remote.lnd.tlscertpath': z.literal(tlsCertPath).catch(tlsCertPath),
 })

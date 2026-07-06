@@ -11,21 +11,23 @@ export const main = sdk.setupMain(async ({ effects }) => {
   // LND's gRPC endpoint reached over the LXC bridge. This resolves null until
   // LND's gRPC binding first appears at wallet unlock (one healing restart),
   // then stays stable across lock/unlock cycles — the binding entry and its
-  // assigned port survive a disable. Until it appears litd dials the loopback
-  // placeholder and retries; connection-refused is harmless. litd pins the
-  // mounted tls.cert, whose SANs cover LND's bridge IP.
-  const rpcserver =
-    (await bridgeAddress(effects, {
-      packageId: 'lnd',
-      hostId: gRPCHostId,
-      internalPort: gRPCPort,
-    }).const()) ?? `127.0.0.1:${gRPCPort}`
+  // assigned port survive a disable. While it is null we leave
+  // remote.lnd.rpcserver unwritten rather than seed a fabricated address; litd
+  // retries and its health check stays red until the const() heal writes the
+  // real address. litd pins the mounted tls.cert, whose SANs cover LND's bridge IP.
+  const rpcserver = await bridgeAddress(effects, {
+    packageId: 'lnd',
+    hostId: gRPCHostId,
+    internalPort: gRPCPort,
+  }).const()
 
-  await litConfig.merge(
-    effects,
-    { 'remote.lnd.rpcserver': rpcserver },
-    { allowWriteAfterConst: true },
-  )
+  if (rpcserver) {
+    await litConfig.merge(
+      effects,
+      { 'remote.lnd.rpcserver': rpcserver },
+      { allowWriteAfterConst: true },
+    )
+  }
 
   return sdk.Daemons.of(effects).addDaemon('lit', {
     subcontainer: sdk.SubContainer.of(
