@@ -15,7 +15,6 @@ export default {
     10: 'Crea tu contraseña de interfaz de usuario',
     11: 'Éxito',
     12: 'Tu nueva contraseña está a continuación',
-    13: 'LND aún no es accesible en la red interna. Espera a que termine de iniciarse.',
   } satisfies LangDict,
   de_DE: {
     0: 'Lightning Terminal wird gestartet...',
@@ -31,7 +30,6 @@ export default {
     10: 'Erstelle dein Benutzeroberflächen-Passwort',
     11: 'Erfolg',
     12: 'Dein neues Passwort wird unten angezeigt',
-    13: 'LND ist im internen Netzwerk noch nicht erreichbar. Bitte warte, bis der Start abgeschlossen ist.',
   } satisfies LangDict,
   pl_PL: {
     0: 'Uruchamianie Lightning Terminal...',
@@ -47,7 +45,6 @@ export default {
     10: 'Utwórz hasło do interfejsu użytkownika',
     11: 'Sukces',
     12: 'Twoje nowe hasło jest poniżej',
-    13: 'LND nie jest jeszcze osiągalny w sieci wewnętrznej. Poczekaj, aż zakończy uruchamianie.',
   } satisfies LangDict,
   fr_FR: {
     0: 'Démarrage de Lightning Terminal...',
@@ -63,6 +60,5 @@ export default {
     10: "Créez votre mot de passe d'interface utilisateur",
     11: 'Succès',
     12: 'Votre nouveau mot de passe est ci-dessous',
-    13: "LND n'est pas encore accessible sur le réseau interne. Veuillez attendre la fin de son démarrage.",
   } satisfies LangDict,
 } as Record<string, LangDict>

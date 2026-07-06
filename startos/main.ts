@@ -1,36 +1,26 @@
 import { manifest as lndManifest } from 'lnd-startos/startos/manifest'
-import { gRPCHostId, gRPCInterfaceId } from 'lnd-startos/startos/interfaces'
+import { gRPCHostId, gRPCPort } from 'lnd-startos/startos/interfaces'
 import { litConfig } from './fileModels/lit.conf'
 import { i18n } from './i18n'
 import { sdk } from './sdk'
-import { litDir, lndMount, uiPort } from './utils'
+import { bridgeAddress, litDir, lndMount, uiPort } from './utils'
 
 export const main = sdk.setupMain(async ({ effects }) => {
   console.info(i18n('Starting Lightning Terminal...'))
 
-  // LND's gRPC endpoint reached over the LXC bridge (replaces `lnd.startos:10009`).
-  // litd connects with the mounted tls.cert, whose SANs cover LND's bridge IP.
-  const rpcserver = await sdk.host
-    .get(effects, { hostId: gRPCHostId, packageId: 'lnd' }, (host) => {
-      const iface =
-        host &&
-        Object.values(host.bindings)
-          .flatMap((b) => Object.values(b.interfaces))
-          .find((i) => i.id === gRPCInterfaceId)
-      const h = iface?.addressInfo
-        .filter({
-          kind: 'bridge',
-          predicate: (hn) => hn.ssl && hn.metadata.kind === 'ipv4',
-        })
-        .hostnames[0]
-      return h && `${h.hostname}:${h.port}`
-    })
-    .const()
-  if (!rpcserver) {
-    throw new Error(
-      i18n('LND is not yet reachable on the internal network. Please wait for it to finish starting.'),
-    )
-  }
+  // LND's gRPC endpoint reached over the LXC bridge. This resolves null until
+  // LND's gRPC binding first appears at wallet unlock (one healing restart),
+  // then stays stable across lock/unlock cycles — the binding entry and its
+  // assigned port survive a disable. Until it appears litd dials the loopback
+  // placeholder and retries; connection-refused is harmless. litd pins the
+  // mounted tls.cert, whose SANs cover LND's bridge IP.
+  const rpcserver =
+    (await bridgeAddress(effects, {
+      packageId: 'lnd',
+      hostId: gRPCHostId,
+      internalPort: gRPCPort,
+    }).const()) ?? `127.0.0.1:${gRPCPort}`
+
   await litConfig.merge(
     effects,
     { 'remote.lnd.rpcserver': rpcserver },
