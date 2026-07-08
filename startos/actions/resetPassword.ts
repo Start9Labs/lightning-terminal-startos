@@ -9,8 +9,7 @@ export const resetPassword = sdk.Action.withoutInput(
 
   // metadata
   async ({ effects }) => {
-    const hasPass =
-      (await litConfig.read((c) => c.uipassword).const(effects)) !== 'null'
+    const hasPass = !!(await litConfig.read((c) => c.uipassword).const(effects))
 
     return {
       name: hasPass ? i18n('Reset Password') : i18n('Create Password'),
