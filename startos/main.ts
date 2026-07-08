@@ -29,6 +29,10 @@ export const main = sdk.setupMain(async ({ effects }) => {
     )
   }
 
+  // Restart litd whenever lit.conf changes so config edits take effect (litd reads it only at
+  // startup). Registered after the rpcserver merge above so main's own write doesn't self-trigger.
+  await litConfig.read().const(effects)
+
   return sdk.Daemons.of(effects).addDaemon('lit', {
     subcontainer: sdk.SubContainer.of(
       effects,

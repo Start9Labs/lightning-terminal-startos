@@ -3,7 +3,7 @@ import { readFile, rm } from 'fs/promises'
 import { litConfig } from '../fileModels/lit.conf'
 
 export const current = VersionInfo.of({
-  version: '0.17.0-alpha:1',
+  version: '0.17.0-alpha:2',
   releaseNotes: {
     en_US: 'Internal updates (start-sdk 2.0.x)',
     es_ES: 'Actualizaciones internas (start-sdk 2.0.x)',
