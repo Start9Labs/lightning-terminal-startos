@@ -1,4 +1,5 @@
 {
+  "name": "lightning-terminal-startos",
   "scripts": {
     "build": "rm -rf ./javascript && ncc build startos/index.ts -o ./javascript",
     "prettier": "prettier --write startos",
