@@ -3,7 +3,7 @@ import { gRPCHostId, gRPCPort } from 'lnd-startos/startos/interfaces'
 import { litConfig } from './fileModels/lit.conf'
 import { i18n } from './i18n'
 import { sdk } from './sdk'
-import { bridgeAddress, litDir, lndMount, uiPort } from './utils'
+import { litDir, lndMount, uiPort } from './utils'
 
 export const main = sdk.setupMain(async ({ effects }) => {
   console.info(i18n('Starting Lightning Terminal...'))
@@ -15,11 +15,13 @@ export const main = sdk.setupMain(async ({ effects }) => {
   // remote.lnd.rpcserver unwritten rather than seed a fabricated address; litd
   // retries and its health check stays red until the const() heal writes the
   // real address. litd pins the mounted tls.cert, whose SANs cover LND's bridge IP.
-  const rpcserver = await bridgeAddress(effects, {
-    packageId: 'lnd',
-    hostId: gRPCHostId,
-    internalPort: gRPCPort,
-  }).const()
+  const rpcserver = await sdk.host
+    .getBridgeAddress(effects, {
+      packageId: 'lnd',
+      hostId: gRPCHostId,
+      internalPort: gRPCPort,
+    })
+    .const()
 
   if (rpcserver) {
     await litConfig.merge(
