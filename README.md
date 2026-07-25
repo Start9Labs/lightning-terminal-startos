@@ -34,24 +34,24 @@ A browser-based interface for managing channel liquidity on a self-hosted LND no
 
 ## Image and Container Runtime
 
-| Property | Value |
-|----------|-------|
-| Image | `lightninglabs/lightning-terminal` (upstream, unmodified) |
-| Architectures | x86_64, aarch64 |
-| Entrypoint | `/bin/litd` |
+| Property      | Value                                                     |
+| ------------- | --------------------------------------------------------- |
+| Image         | `lightninglabs/lightning-terminal` (upstream, unmodified) |
+| Architectures | x86_64, aarch64                                           |
+| Entrypoint    | `/bin/litd`                                               |
 
 ---
 
 ## Volume and Data Layout
 
-| Volume | Mount Point | Purpose |
-|--------|-------------|---------|
-| `main` | `/root` | All LiT data (configuration, application state) |
+| Volume | Mount Point | Purpose                                         |
+| ------ | ----------- | ----------------------------------------------- |
+| `main` | `/root`     | All LiT data (configuration, application state) |
 
 StartOS-specific files on the `main` volume:
 
-| File | Purpose |
-|------|---------|
+| File            | Purpose                                |
+| --------------- | -------------------------------------- |
 | `.lit/lit.conf` | LiT configuration (managed by StartOS) |
 
 The LND `main` volume is mounted read-only at `/mnt/lnd` for macaroon and TLS certificate access.
@@ -72,16 +72,16 @@ LiT is configured via the `.lit/lit.conf` file, managed by StartOS. There are no
 
 Settings managed by StartOS (hardcoded):
 
-| Setting | Value | Reason |
-|---------|-------|--------|
-| `uipassword` | Auto-generated | Set via Create/Reset Password action |
-| `databasebackend` | `sqlite` | Upstream default in v0.17.0; litd's own stores use SQLite |
-| `auto-migrate-to-sql` | `true` | Approve litd's one-way `bbolt`→SQL migration unattended (no `stdin` prompt available) |
-| `lit-dir` | `/root` | Maps to the mounted volume |
-| `insecure-httplisten` | `0.0.0.0:8443` | Bind litd's web UI on all container interfaces; StartOS exposes it over the LXC bridge |
-| `remote.lnd.rpcserver` | LND's LXC-bridge gRPC address (resolved at startup) | `main.ts` reads LND's gRPC host over the LXC bridge and writes it in; replaces the old `lnd.startos` DNS name |
-| `remote.lnd.macaroonpath` | `/mnt/lnd/data/chain/bitcoin/mainnet/admin.macaroon` | Mounted dependency volume |
-| `remote.lnd.tlscertpath` | `/mnt/lnd/tls.cert` | Mounted dependency volume |
+| Setting                   | Value                                                | Reason                                                                                                        |
+| ------------------------- | ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `uipassword`              | Auto-generated                                       | Set via Create/Reset Password action                                                                          |
+| `databasebackend`         | `sqlite`                                             | Upstream default in v0.17.0; litd's own stores use SQLite                                                     |
+| `auto-migrate-to-sql`     | `true`                                               | Approve litd's one-way `bbolt`→SQL migration unattended (no `stdin` prompt available)                         |
+| `lit-dir`                 | `/root`                                              | Maps to the mounted volume                                                                                    |
+| `insecure-httplisten`     | `0.0.0.0:8443`                                       | Bind litd's web UI on all container interfaces; StartOS exposes it over the LXC bridge                        |
+| `remote.lnd.rpcserver`    | LND's LXC-bridge gRPC address (resolved at startup)  | `main.ts` reads LND's gRPC host over the LXC bridge and writes it in; replaces the old `lnd.startos` DNS name |
+| `remote.lnd.macaroonpath` | `/mnt/lnd/data/chain/bitcoin/mainnet/admin.macaroon` | Mounted dependency volume                                                                                     |
+| `remote.lnd.tlscertpath`  | `/mnt/lnd/tls.cert`                                  | Mounted dependency volume                                                                                     |
 
 Upstream v0.17.0 makes SQLite the default backend for litd's **own** internal databases — accounts, sessions, and firewall/autopilot rules — which litd maintains even in remote-LND mode. This is separate from the LND node's own database (the LND package manages that, including LND's own kvdb→SQL migration). On the first start after upgrading, litd migrates its internal stores one-way from `bbolt` to SQLite. That migration normally prompts for confirmation on `stdin`, which a headless StartOS daemon cannot answer, so this package sets `auto-migrate-to-sql=true` to approve it unattended. The migration is irreversible: once it runs you cannot downgrade below v0.17.0-alpha. It reads macaroon IDs from LND, so it needs the LND node running (StartOS shows a dependency warning if it isn't). The migration is transactional — if LND is unreachable the attempt aborts cleanly, leaves the `bbolt` data intact, and litd retries automatically on its next start.
 
@@ -89,9 +89,9 @@ Upstream v0.17.0 makes SQLite the default backend for litd's **own** internal da
 
 ## Network Access and Interfaces
 
-| Interface | Port | Protocol | Purpose |
-|-----------|------|----------|---------|
-| Web UI | 8443 | HTTP | Lightning Terminal web interface |
+| Interface | Port | Protocol | Purpose                          |
+| --------- | ---- | -------- | -------------------------------- |
+| Web UI    | 8443 | HTTP     | Lightning Terminal web interface |
 
 ---
 
@@ -99,13 +99,13 @@ Upstream v0.17.0 makes SQLite the default backend for litd's **own** internal da
 
 ### Create / Reset Password
 
-| Property | Value |
-|----------|-------|
-| ID | `reset-password` |
-| Name | Create Password / Reset Password |
-| Visibility | Enabled |
-| Availability | Any status |
-| Purpose | Generate a random 22-character admin password for the web UI |
+| Property     | Value                                                        |
+| ------------ | ------------------------------------------------------------ |
+| ID           | `reset-password`                                             |
+| Name         | Create Password / Reset Password                             |
+| Visibility   | Enabled                                                      |
+| Availability | Any status                                                   |
+| Purpose      | Generate a random 22-character admin password for the web UI |
 
 **Inputs:** None
 
@@ -125,8 +125,8 @@ The action name changes dynamically: "Create Password" on first use, "Reset Pass
 
 ## Health Checks
 
-| Check | Method | Messages |
-|-------|--------|----------|
+| Check             | Method                | Messages                            |
+| ----------------- | --------------------- | ----------------------------------- |
 | **Web Interface** | Port listening (8443) | Ready: "The web interface is ready" |
 
 ---
@@ -135,13 +135,13 @@ The action name changes dynamically: "Create Password" on first use, "Reset Pass
 
 ### LND
 
-| Property | Value |
-|----------|-------|
-| Required | Yes |
-| Version constraint | `>= 0.20.1-beta` |
-| Health checks | `lnd` |
-| Mounted volumes | `main` → `/mnt/lnd` (read-only) |
-| Purpose | Lightning Network node access via gRPC (admin macaroon + TLS certificate) |
+| Property           | Value                                                                     |
+| ------------------ | ------------------------------------------------------------------------- |
+| Required           | Yes                                                                       |
+| Version constraint | `>= 0.20.1-beta`                                                          |
+| Health checks      | `lnd`                                                                     |
+| Mounted volumes    | `main` → `/mnt/lnd` (read-only)                                           |
+| Purpose            | Lightning Network node access via gRPC (admin macaroon + TLS certificate) |
 
 LND must be installed and running. LiT connects via the mounted macaroon and TLS certificate.
 
@@ -185,7 +185,7 @@ ports:
 dependencies:
   lnd:
     required: true
-    version: ">=0.20.1-beta"
+    version: '>=0.20.1-beta'
     health_check: [lnd]
     mounted_volume: main -> /mnt/lnd (read-only)
 startos_managed_env_vars: none
