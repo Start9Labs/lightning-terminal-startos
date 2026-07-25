@@ -138,7 +138,7 @@ The action name changes dynamically: "Create Password" on first use, "Reset Pass
 | Property           | Value                                                                     |
 | ------------------ | ------------------------------------------------------------------------- |
 | Required           | Yes                                                                       |
-| Version constraint | `>= 0.20.1-beta`                                                          |
+| Version constraint | Declared in `startos/dependencies.ts`                                     |
 | Health checks      | `lnd`                                                                     |
 | Mounted volumes    | `main` → `/mnt/lnd` (read-only)                                           |
 | Purpose            | Lightning Network node access via gRPC (admin macaroon + TLS certificate) |
@@ -168,7 +168,7 @@ LND must be installed and running. LiT connects via the mounted macaroon and TLS
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for build instructions and development workflow.
+Build and development workflow follow the StartOS packaging guide: <https://docs.start9.com/packaging>. Keep `README.md`, `instructions.md`, and `AGENTS.md` in sync with any change to user-visible behavior or package structure.
 
 ---
 
@@ -185,7 +185,6 @@ ports:
 dependencies:
   lnd:
     required: true
-    version: '>=0.20.1-beta'
     health_check: [lnd]
     mounted_volume: main -> /mnt/lnd (read-only)
 startos_managed_env_vars: none
