@@ -1,23 +1,23 @@
 import { VersionInfo } from '@start9labs/start-sdk'
 
 export const current = VersionInfo.of({
-  version: '0.17.0-alpha:6',
+  version: '0.17.0-alpha:7',
   releaseNotes: {
-    en_US: `Keeps the LND connection working when LND changes how it serves TLS.
+    en_US: `Fixes Lightning Terminal failing to start.
 
-Lightning Terminal resolved LND's address from a field that is only populated for one of the two ways a service can publish a port. It now reads the address itself, which is correct either way — so the connection survives LND's next update instead of going unreachable.`,
-    es_ES: `Mantiene la conexión con LND cuando LND cambia su forma de servir TLS.
+A port conflict introduced in the previous release stopped the service from launching — its web interface and an internal listener both tried to use the same port. They now use separate ports, so Lightning Terminal starts normally. An install left stuck by the previous version recovers automatically on update; no action is needed.`,
+    es_ES: `Corrige el fallo de inicio de Lightning Terminal.
 
-Lightning Terminal resolvía la dirección de LND a partir de un campo que solo se rellena en una de las dos formas en que un servicio puede publicar un puerto. Ahora lee la dirección en sí, que es correcta en ambos casos, así que la conexión sobrevive a la próxima actualización de LND en lugar de quedar inaccesible.`,
-    de_DE: `Hält die LND-Verbindung aufrecht, wenn LND die Art der TLS-Bereitstellung ändert.
+Un conflicto de puertos introducido en la versión anterior impedía que el servicio arrancara: su interfaz web y un componente interno intentaban usar el mismo puerto. Ahora usan puertos distintos, por lo que Lightning Terminal se inicia con normalidad. Una instalación que quedó bloqueada por la versión anterior se recupera automáticamente al actualizar; no es necesario hacer nada.`,
+    de_DE: `Behebt das Problem, dass Lightning Terminal nicht startet.
 
-Lightning Terminal ermittelte die Adresse von LND aus einem Feld, das nur bei einer der beiden Arten gefüllt ist, auf die ein Dienst einen Port veröffentlichen kann. Jetzt wird die Adresse selbst gelesen, die in beiden Fällen stimmt — die Verbindung übersteht damit das nächste LND-Update, statt unerreichbar zu werden.`,
-    pl_PL: `Utrzymuje połączenie z LND, gdy LND zmienia sposób udostępniania TLS.
+Ein in der vorherigen Version eingeführter Portkonflikt verhinderte den Start des Dienstes — seine Weboberfläche und ein interner Listener versuchten, denselben Port zu verwenden. Sie nutzen nun getrennte Ports, sodass Lightning Terminal normal startet. Eine durch die vorherige Version blockierte Installation wird beim Aktualisieren automatisch repariert; es ist nichts weiter zu tun.`,
+    pl_PL: `Naprawia problem z uruchamianiem Lightning Terminal.
 
-Lightning Terminal ustalał adres LND na podstawie pola wypełnianego tylko przy jednym z dwóch sposobów publikowania portu przez usługę. Teraz odczytuje sam adres, poprawny w obu przypadkach — dzięki temu połączenie przetrwa kolejną aktualizację LND, zamiast stać się nieosiągalne.`,
-    fr_FR: `Maintient la connexion à LND lorsque LND change sa façon de servir TLS.
+Konflikt portów wprowadzony w poprzedniej wersji uniemożliwiał uruchomienie usługi — jej interfejs webowy i wewnętrzny nasłuchiwacz próbowały użyć tego samego portu. Teraz używają osobnych portów, więc Lightning Terminal uruchamia się normalnie. Instalacja zablokowana przez poprzednią wersję naprawia się automatycznie po aktualizacji; nie trzeba nic robić.`,
+    fr_FR: `Corrige l'échec de démarrage de Lightning Terminal.
 
-Lightning Terminal déterminait l'adresse de LND à partir d'un champ renseigné dans un seul des deux modes de publication d'un port par un service. Il lit désormais l'adresse elle-même, correcte dans les deux cas — la connexion survit donc à la prochaine mise à jour de LND au lieu de devenir injoignable.`,
+Un conflit de ports introduit dans la version précédente empêchait le service de démarrer — son interface web et un écouteur interne tentaient d'utiliser le même port. Ils utilisent désormais des ports distincts, de sorte que Lightning Terminal démarre normalement. Une installation bloquée par la version précédente se répare automatiquement lors de la mise à jour ; aucune action n'est nécessaire.`,
   },
   migrations: {},
 })
