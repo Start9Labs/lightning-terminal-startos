@@ -4,13 +4,15 @@
 
 # Lightning Terminal on StartOS
 
-> **Upstream docs:** <https://docs.lightning.engineering/lightning-network-tools/lightning-terminal>
->
 > Everything not listed in this document should behave the same as upstream
-> Lightning Terminal. If a feature, setting, or behavior is not mentioned here, the
-> upstream documentation is accurate and fully applicable.
+> Lightning Terminal. If a feature, setting, or behavior is not mentioned here,
+> the upstream documentation is accurate and fully applicable — see the
+> Documentation section of `instructions.md` for links.
 
-A browser-based interface for managing channel liquidity on a self-hosted LND node. See the [upstream repo](https://github.com/lightninglabs/lightning-terminal) for general Lightning Terminal documentation.
+[Lightning Terminal](https://github.com/lightninglabs/lightning-terminal) is a browser interface for managing channel liquidity on an LND node. This package points it at the LND running on this server, generates its login password, and pins the listener configuration so its two web servers cannot collide.
+
+- **Upstream repo:** <https://github.com/lightninglabs/lightning-terminal>
+- **Wrapper repo:** <https://github.com/Start9Labs/lightning-terminal-startos>
 
 ---
 
@@ -18,158 +20,138 @@ A browser-based interface for managing channel liquidity on a self-hosted LND no
 
 - [Image and Container Runtime](#image-and-container-runtime)
 - [Volume and Data Layout](#volume-and-data-layout)
-- [Installation and First-Run Flow](#installation-and-first-run-flow)
-- [Configuration Management](#configuration-management)
-- [Network Access and Interfaces](#network-access-and-interfaces)
-- [Actions (StartOS UI)](#actions-startos-ui)
-- [Backups and Restore](#backups-and-restore)
-- [Health Checks](#health-checks)
+- [File Models](#file-models)
 - [Dependencies](#dependencies)
+- [Network Access and Interfaces](#network-access-and-interfaces)
+- [Installation and First-Run Flow](#installation-and-first-run-flow)
+- [Actions](#actions)
+- [Tasks](#tasks)
+- [Health Checks](#health-checks)
+- [Backups and Restore](#backups-and-restore)
 - [Limitations and Differences](#limitations-and-differences)
-- [What Is Unchanged from Upstream](#what-is-unchanged-from-upstream)
-- [Contributing](#contributing)
 - [Quick Reference for AI Consumers](#quick-reference-for-ai-consumers)
 
 ---
 
 ## Image and Container Runtime
 
-| Property      | Value                                                     |
-| ------------- | --------------------------------------------------------- |
-| Image         | `lightninglabs/lightning-terminal` (upstream, unmodified) |
-| Architectures | x86_64, aarch64                                           |
-| Entrypoint    | `/bin/litd`                                               |
+The upstream image is used unmodified, and one subcontainer runs the service.
 
----
+| Property      | Value                                                    |
+| ------------- | -------------------------------------------------------- |
+| Image         | `lightninglabs/lightning-terminal`                       |
+| Architectures | x86_64, aarch64                                          |
+| Command       | `litd`                                                   |
+| Subcontainer  | `lit-sub` — the `lit` daemon, and the one to `attach` to |
 
 ## Volume and Data Layout
 
-| Volume | Mount Point | Purpose                                         |
-| ------ | ----------- | ----------------------------------------------- |
-| `main` | `/root`     | All LiT data (configuration, application state) |
+One volume, plus a read-only view of LND's.
 
-StartOS-specific files on the `main` volume:
+| Volume | Mount Point | Purpose                                  |
+| ------ | ----------- | ---------------------------------------- |
+| `main` | `/root`     | `.lit/lit.conf`, and litd's own database |
 
-| File            | Purpose                                |
-| --------------- | -------------------------------------- |
-| `.lit/lit.conf` | LiT configuration (managed by StartOS) |
+LND's data directory is mounted **read-only** at `/mnt/lnd`. That is how the package reads LND's admin macaroon and TLS certificate — neither is stored here, and litd pins the mounted certificate rather than trusting the connection blindly.
 
-The LND `main` volume is mounted read-only at `/mnt/lnd` for macaroon and TLS certificate access.
+## File Models
 
----
+One model, and nearly all of it is enforced: litd's configuration is wiring rather than preference.
 
-## Installation and First-Run Flow
+| File            | Format | Modelled               | Written by                                       |
+| --------------- | ------ | ---------------------- | ------------------------------------------------ |
+| `.lit/lit.conf` | INI    | Yes — `FileHelper.ini` | Every init, every start, and the password action |
 
-1. On install, StartOS creates a **critical task** prompting the user to set an admin password via the **Create Password** action
-2. The `.lit/lit.conf` file is written with default configuration and the generated password
-3. LiT connects to the running LND node using the mounted macaroon and TLS certificate
+**Enforced** — rewritten to a fixed value whenever the package writes the file: `lit-dir`, `databasebackend`, `auto-migrate-to-sql`, both listener addresses, and LND's macaroon and certificate paths.
 
----
+Two of those are overrides rather than plain wiring:
 
-## Configuration Management
+- **`auto-migrate-to-sql` is forced on.** litd's one-way bbolt-to-SQL migration otherwise prompts on stdin for approval, and there is no stdin here to answer it — the service would simply not come up.
+- **The two listeners are pinned to different ports.** litd always binds a TLS listener as well as the plaintext one, and its default puts the TLS listener on loopback at the same port the plaintext listener binds on all interfaces. An already-bound specific address blocks the overlapping wildcard bind, so the second one fails and litd exits. The TLS listener is moved to a neighbouring loopback port; it backs only litd's internal proxy and is never exposed.
 
-LiT is configured via the `.lit/lit.conf` file, managed by StartOS. There are no user-configurable settings exposed through StartOS actions — the admin password is the only managed value.
+**Derived:** `remote.lnd.rpcserver` is LND's gRPC address, written by `main` from LND's own binding. While that binding is absent the key is left **unwritten** rather than seeded with a placeholder — litd retries and its health check stays red until the address resolves.
 
-Settings managed by StartOS (hardcoded):
+**Yours:** `uipassword`, through its action.
 
-| Setting                   | Value                                                | Reason                                                                                                        |
-| ------------------------- | ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| `uipassword`              | Auto-generated                                       | Set via Create/Reset Password action                                                                          |
-| `databasebackend`         | `sqlite`                                             | Upstream default in v0.17.0; litd's own stores use SQLite                                                     |
-| `auto-migrate-to-sql`     | `true`                                               | Approve litd's one-way `bbolt`→SQL migration unattended (no `stdin` prompt available)                         |
-| `lit-dir`                 | `/root`                                              | Maps to the mounted volume                                                                                    |
-| `httpslisten`             | `127.0.0.1:8444`                                     | litd always binds a TLS listener; pinned to a distinct loopback port so it can't collide with the plaintext UI on 8443 (a same-port collision makes litd exit at startup) |
-| `insecure-httplisten`     | `0.0.0.0:8443`                                       | Plaintext web UI bound on all container interfaces; StartOS reaches it over the LXC bridge                    |
-| `remote.lnd.rpcserver`    | LND's LXC-bridge gRPC address (resolved at startup)  | `main.ts` reads LND's gRPC host over the LXC bridge and writes it in; replaces the old `lnd.startos` DNS name |
-| `remote.lnd.macaroonpath` | `/mnt/lnd/data/chain/bitcoin/mainnet/admin.macaroon` | Mounted dependency volume                                                                                     |
-| `remote.lnd.tlscertpath`  | `/mnt/lnd/tls.cert`                                  | Mounted dependency volume                                                                                     |
-
-Upstream v0.17.0 makes SQLite the default backend for litd's **own** internal databases — accounts, sessions, and firewall/autopilot rules — which litd maintains even in remote-LND mode. This is separate from the LND node's own database (the LND package manages that, including LND's own kvdb→SQL migration). On the first start after upgrading, litd migrates its internal stores one-way from `bbolt` to SQLite. That migration normally prompts for confirmation on `stdin`, which a headless StartOS daemon cannot answer, so this package sets `auto-migrate-to-sql=true` to approve it unattended. The migration is irreversible: once it runs you cannot downgrade below v0.17.0-alpha. It reads macaroon IDs from LND, so it needs the LND node running (StartOS shows a dependency warning if it isn't). The migration is transactional — if LND is unreachable the attempt aborts cleanly, leaves the `bbolt` data intact, and litd retries automatically on its next start.
-
----
-
-## Network Access and Interfaces
-
-| Interface | Port | Protocol | Purpose                          |
-| --------- | ---- | -------- | -------------------------------- |
-| Web UI    | 8443 | HTTP     | Lightning Terminal web interface |
-
----
-
-## Actions (StartOS UI)
-
-### Create / Reset Password
-
-| Property     | Value                                                        |
-| ------------ | ------------------------------------------------------------ |
-| ID           | `reset-password`                                             |
-| Name         | Create Password / Reset Password                             |
-| Visibility   | Enabled                                                      |
-| Availability | Any status                                                   |
-| Purpose      | Generate a random 22-character admin password for the web UI |
-
-**Inputs:** None
-
-**Output:** Displays the new randomly generated password (copyable, masked).
-
-The action name changes dynamically: "Create Password" on first use, "Reset Password" thereafter.
-
----
-
-## Backups and Restore
-
-**Backed up:** The entire `main` volume (configuration, application data).
-
-**Restore behavior:** Standard restore — the configuration and data are restored as-is. The configured LND node must be available.
-
----
-
-## Health Checks
-
-| Check             | Method                | Messages                            |
-| ----------------- | --------------------- | ----------------------------------- |
-| **Web Interface** | Port listening (8443) | Ready: "The web interface is ready" |
-
----
+Because litd reads this file only at startup, `main` watches it and restarts the daemon on any change — which is what makes a password reset or a resolved LND address take effect.
 
 ## Dependencies
 
-### LND
+One, and it is required.
 
-| Property           | Value                                                                     |
-| ------------------ | ------------------------------------------------------------------------- |
-| Required           | Yes                                                                       |
-| Version constraint | Declared in `startos/dependencies.ts`                                     |
-| Health checks      | `lnd`                                                                     |
-| Mounted volumes    | `main` → `/mnt/lnd` (read-only)                                           |
-| Purpose            | Lightning Network node access via gRPC (admin macaroon + TLS certificate) |
+| Dependency | Kind      | Health check | Mount                 | Why                                                         |
+| ---------- | --------- | ------------ | --------------------- | ----------------------------------------------------------- |
+| LND        | `running` | `lnd`        | `/mnt/lnd`, read-only | The node being managed: gRPC, macaroon, and TLS certificate |
 
-LND must be installed and running. LiT connects via the mounted macaroon and TLS certificate.
+**LND's gRPC binding does not exist until its wallet is first unlocked.** Until then the address resolves to nothing, the config key stays unwritten, and this service's health check is red — expected on a fresh pair of installs rather than a fault. Once the binding appears the package heals with a single restart, and the address then survives later lock and unlock cycles.
 
----
+## Network Access and Interfaces
+
+One interface. litd's TLS listener is loopback-only and is never published.
+
+| Interface | Id   | Type | Port | Description                          |
+| --------- | ---- | ---- | ---- | ------------------------------------ |
+| Web UI    | `ui` | ui   | 8443 | The Lightning Terminal web interface |
+
+The port is bound on the `main` MultiHost and is not masked. StartOS terminates TLS at the edge, which is why the published listener is the plaintext one.
+
+## Installation and First-Run Flow
+
+Install seeds the config and raises a `critical` task for the password — there is no wizard, and no account to create inside the application.
+
+The ordering that matters is LND's: install it, start it, and **unlock its wallet** before expecting Lightning Terminal to work. Until that first unlock there is no gRPC address to connect to, and the service reports itself unhealthy rather than pretending otherwise.
+
+## Actions
+
+One action, which renames itself to match what running it will do.
+
+### Create / Reset Password
+
+Sets the password for the Lightning Terminal web interface.
+
+- **What it changes:** `uipassword` in `lit.conf`.
+- **Cost:** seconds, then a restart — litd reads its config only at startup.
+- **Repeat safety:** safe to re-run; each run generates a fresh password and invalidates the previous one.
+- **Outputs:** the new password, masked and copyable. It is not recoverable afterwards.
+
+This is the login for Lightning Terminal itself. It has no bearing on LND's own credentials.
+
+## Tasks
+
+One task, raised at install, and it blocks the service until you clear it.
+
+| Task            | Severity   | Raised when                       | Cleared when    |
+| --------------- | ---------- | --------------------------------- | --------------- |
+| Create Password | `critical` | At init, while no password is set | The action runs |
+
+`critical` because litd's web interface is the whole service and it has no other authentication.
+
+## Health Checks
+
+One check, on the daemon.
+
+| Check                 | Method                 | Grace Period |
+| --------------------- | ---------------------- | ------------ |
+| `lit` "Web Interface" | Port 8443 is listening | SDK default  |
+
+A failure most often means litd could not reach LND — either LND is not running, or its wallet has never been unlocked and there is no gRPC address to write into the config. The service logs distinguish the two.
+
+## Backups and Restore
+
+The `main` volume is copied wholesale — `sdk.Backups.ofVolumes('main')`. No dump step and nothing excluded.
+
+- **Included:** `lit.conf` with the interface password, and litd's own database — the Loop, Pool, and Faraday state it keeps alongside LND's.
+- **Not included:** anything belonging to LND. Channels, funds, and the node identity are that package's backup.
+- **Restore:** complete on this side, and no task is raised since the password comes back. LND must be present and unlocked before the service becomes healthy again.
 
 ## Limitations and Differences
 
-1. **Remote mode only** — LiT runs in remote mode connecting to a separate LND instance; integrated mode (where LiT runs its own LND) is not available
-2. **No user-configurable settings** — all configuration is managed by StartOS; the only user action is password management
-3. **Password-only authentication** — the UI password is auto-generated via the StartOS action; there is no option to set a custom password manually
-4. **One-way SQLite migration** — on upgrade to v0.17.0, litd migrates its own internal stores from `bbolt` to SQLite (`auto-migrate-to-sql=true`); this is irreversible, so afterwards the package cannot be downgraded below v0.17.0-alpha
-
----
-
-## What Is Unchanged from Upstream
-
-- Lightning Loop (submarine swaps — Loop In and Loop Out)
-- Lightning Pool (channel liquidity marketplace)
-- Channel visualization and balance management
-- All web UI functionality
-- Faraday (channel analytics)
-
----
-
-## Contributing
-
-Build and development workflow follow the StartOS packaging guide: <https://docs.start9.com/packaging>. Keep `README.md`, `instructions.md`, and `AGENTS.md` in sync with any change to user-visible behavior or package structure.
+1. **LND is required, and must have been unlocked at least once.** Before that there is no gRPC address to connect to.
+2. **The password is generated, not chosen**, and the service will not start until it exists.
+3. **litd's configuration is not user-editable in any meaningful way.** Every key but the password is pinned by the package.
+4. **The TLS listener is moved to a loopback port** so it cannot collide with the published plaintext listener; StartOS terminates TLS at the edge instead.
+5. **The bbolt-to-SQL migration is approved automatically**, because it is one-way and would otherwise block on a prompt nothing can answer.
+6. **No riscv64 build.** x86_64 and aarch64 only.
 
 ---
 
@@ -178,23 +160,24 @@ Build and development workflow follow the StartOS packaging guide: <https://docs
 ```yaml
 package_id: lightning-terminal
 image: lightninglabs/lightning-terminal
-architectures: [x86_64, aarch64]
+architectures:
+  - x86_64
+  - aarch64
+subcontainers:
+  - lit-sub
 volumes:
   main: /root
-ports:
-  ui: 8443
+file_models:
+  - /root/.lit/lit.conf
+startos_managed_env_vars: []
 dependencies:
-  lnd:
-    required: true
-    health_check: [lnd]
-    mounted_volume: main -> /mnt/lnd (read-only)
-startos_managed_env_vars: none
-startos_managed_files:
-  - .lit/lit.conf
+  - lnd # required; mounted read-only at /mnt/lnd
+interfaces:
+  ui: { type: ui, port: 8443 } # litd's TLS listener is loopback-only and unexported
 actions:
-  - reset-password
+  - reset-password # renames itself to "Create Password" when unset
+tasks:
+  - { action: reset-password, severity: critical }
 health_checks:
-  - port_listening: 8443
-backup_volumes:
-  - main
+  - lit # displayed "Web Interface"
 ```
