@@ -4,9 +4,16 @@ const dict = {
   // main.ts
   'Starting Lightning Terminal...': 0,
   'Web Interface': 1,
+  'Create your LiT admin password': 4,
+
+  // healthCheck.ts
   'The web interface is ready': 2,
   'The web interface is not ready': 3,
-  'Create your LiT admin password': 4,
+  'Waiting for LND — start it and unlock its wallet': 13,
+  'Cannot reach LND: ${error}': 14,
+  'Lightning Terminal failed to start: ${error}': 15,
+  'Starting Lightning Terminal…': 16,
+  'Connecting to LND…': 17,
 
   // interfaces.ts
   'Web UI': 5,

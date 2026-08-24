@@ -1,9 +1,10 @@
 import { manifest as lndManifest } from 'lnd-startos/startos/manifest'
 import { gRPCHostId, gRPCPort } from 'lnd-startos/startos/interfaces'
 import { litConfig } from './fileModels/lit.conf'
+import { checkLit } from './healthCheck'
 import { i18n } from './i18n'
 import { sdk } from './sdk'
-import { litDir, lndMount, uiPort } from './utils'
+import { litDir, lndMount } from './utils'
 
 export const main = sdk.setupMain(async ({ effects }) => {
   console.info(i18n('Starting Lightning Terminal...'))
@@ -12,9 +13,9 @@ export const main = sdk.setupMain(async ({ effects }) => {
   // LND's gRPC binding first appears at wallet unlock (one healing restart),
   // then stays stable across lock/unlock cycles — the binding entry and its
   // assigned port survive a disable. While it is null we leave
-  // remote.lnd.rpcserver unwritten rather than seed a fabricated address; litd
-  // retries and its health check stays red until the const() heal writes the
-  // real address. litd pins the mounted tls.cert, whose SANs cover LND's bridge IP.
+  // remote.lnd.rpcserver unwritten rather than seed a fabricated address, and
+  // the health check reports `waiting` on that same null. litd pins the mounted
+  // tls.cert, whose SANs cover LND's bridge IP.
   const rpcserver = await sdk.host
     .getBridgeAddress(effects, {
       packageId: 'lnd',
@@ -58,11 +59,7 @@ export const main = sdk.setupMain(async ({ effects }) => {
     exec: { command: ['/bin/litd'] },
     ready: {
       display: i18n('Web Interface'),
-      fn: () =>
-        sdk.healthCheck.checkPortListening(effects, uiPort, {
-          successMessage: i18n('The web interface is ready'),
-          errorMessage: i18n('The web interface is not ready'),
-        }),
+      fn: () => checkLit(rpcserver),
     },
     requires: [],
   })

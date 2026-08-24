@@ -25,6 +25,9 @@ const shape = z.object({
   // plaintext listener below (see note above).
   httpslisten: z.literal(httpsListen).catch(httpsListen),
   'insecure-httplisten': z.literal(httpListen).catch(httpListen),
+  // Serves litd's `/v1/status` on the listener above; the health check reads
+  // the state of litd's `lnd` sub-server from it.
+  enablerest: z.literal('true').catch('true'),
   // LND's gRPC endpoint over the LXC bridge; main.ts writes the resolved bridge
   // address at startup. Absent until LND's binding appears, so it stays unset
   // (and unwritten) rather than seeding a fabricated dependency address.
