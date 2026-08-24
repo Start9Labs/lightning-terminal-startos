@@ -144,7 +144,7 @@ The check reads litd's own status manager rather than the socket. litd binds por
 | `starting` | litd is connecting to LND, or has connected and is still coming up           |
 | `success`  | both the `lnd` and `lit` sub-servers report running                          |
 
-A `failure` naming LND most often means LND is not running. A slow-starting LND is reported as `starting` for as long as litd waits on its RPC, and only becomes a failure once litd gives up.
+A `failure` naming LND most often means LND is not running. litd bounds its wait for LND's RPC by `--lndreadytimeout`, ten minutes by default, so a slow-starting LND is reported as `starting` for up to that long before it becomes a failure.
 
 ## Backups and Restore
 
