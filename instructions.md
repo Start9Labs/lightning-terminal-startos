@@ -2,6 +2,7 @@
 
 ## Documentation
 
+- [Start9 Bitcoin Guides](https://docs.start9.com/bitcoin-guides/) — connecting wallets and dashboards to a Lightning node on StartOS.
 - [Lightning Terminal upstream docs](https://docs.lightning.engineering/lightning-network-tools/lightning-terminal) — the upstream operator guide covering Loop, Pool, and the web UI.
 
 ## What you get on StartOS
