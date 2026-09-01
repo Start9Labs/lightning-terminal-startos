@@ -28,24 +28,15 @@ async function subServers() {
 }
 
 /**
- * The one terminal state litd can enter. Upstream `terminal.go` stamps this
- * prefix at its single park site — `SetErrored(subservers.LIT, "could not
- * start Lit: %v", startErr)` after `g.start()` returns — where litd blocks
- * forever with the web port bound; any start failure lands there, an LND
- * restart cutting the RPC middleware stream being the common one. The message
- * text is the only discriminator the status API offers: `SubServerStatus`
- * carries just disabled/running/error/custom_status, set identically by the
- * self-healing retry sites ("Error when setting up basic LND Client", "Error
- * when creating LND Services client"), which must NOT match. Re-verify the
- * three `SetErrored(LIT, …)` sites on every upstream bump.
+ * `terminal.go`'s single park site stamps this after `g.start()` returns, and
+ * litd then blocks forever with the web port bound. Its two other
+ * `SetErrored(LIT, …)` messages come from retry loops and must never match —
+ * re-check all three on an upstream bump.
  */
 const PARKED_PREFIX = 'could not start Lit'
 
 export type LitHealth = HealthCheckResult & {
-  /**
-   * litd is alive (status endpoint answering) but permanently down — only a
-   * process restart recovers it. `main`'s ready fn acts on this.
-   */
+  /** Alive but permanently down — only a process restart recovers it. */
   parked?: boolean
 }
 
@@ -69,9 +60,7 @@ export async function checkLit(rpcserver: string | null): Promise<LitHealth> {
     }
 
   const { lnd, lit } = servers
-  // Checked before `lnd.error`: a park can stamp both sub-servers (e.g. LND
-  // dying post-start), and the parked state must win — it is the only one
-  // that never heals without a restart.
+  // A park stamps both sub-servers, so this must outrank the lnd.error branch.
   if (lit?.error?.startsWith(PARKED_PREFIX))
     return {
       result: 'failure',
