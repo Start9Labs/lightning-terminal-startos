@@ -146,6 +146,8 @@ The check reads litd's own status manager rather than the socket. litd binds por
 
 A `failure` naming LND most often means LND is not running. litd bounds its wait for LND's RPC by `--lndreadytimeout`, ten minutes by default, so a slow-starting LND is reported as `starting` for up to that long before it becomes a failure.
 
+**The check doubles as litd's watchdog.** litd never exits once its startup has failed: it stamps its `lit` sub-server `could not start Lit: …` and parks with the web port bound, and nothing inside the process retries or exits from there (upstream treats a restart as the operator's job). Any start failure lands in that state — the common cause is an LND restart cutting the RPC middleware stream litd holds open. When the check sees that error prefix it reports the failure and stops litd, and the daemon supervisor starts it again; the fresh litd re-enters its LND wait and reconnects once LND answers. Signals are sent at most once per 90-second cooldown — SIGTERM first (a parked litd is blocked on exactly that shutdown path), escalating to SIGKILL if it is still parked a cooldown later. The prefix is what makes this safe: litd's other two `lit` error messages come from retry loops that heal on their own and must never trigger the restart. During a self-heal the check briefly shows `failure` (litd is down between the stop and the next bind), then `starting`, then `success`.
+
 ## Backups and Restore
 
 The `main` volume is copied wholesale — `sdk.Backups.ofVolumes('main')`. No dump step and nothing excluded.
@@ -162,6 +164,7 @@ The `main` volume is copied wholesale — `sdk.Backups.ofVolumes('main')`. No du
 4. **The TLS listener is moved to a loopback port** so it cannot collide with the published plaintext listener; StartOS terminates TLS at the edge instead.
 5. **The bbolt-to-SQL migration is approved automatically**, because it is one-way and would otherwise block on a prompt nothing can answer.
 6. **No riscv64 build.** x86_64 and aarch64 only.
+7. **litd cannot survive an LND restart on its own** — the package's health check detects the parked state it leaves behind and restarts litd automatically. Expect the Web Interface check to blip red and pass through `starting` for a short while after any LND update or restart.
 
 ---
 
