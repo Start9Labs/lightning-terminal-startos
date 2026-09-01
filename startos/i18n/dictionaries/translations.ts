@@ -20,6 +20,8 @@ export default {
     15: 'Lightning Terminal no pudo iniciarse: ${error}',
     16: 'Iniciando Lightning Terminal…',
     17: 'Conectando con LND…',
+    18: 'Reiniciando litd: se quedó bloqueado tras un error fatal y no puede recuperarse por sí solo',
+    19: 'Lightning Terminal sufrió un error fatal — reiniciándolo: ${error}',
   } satisfies LangDict,
   de_DE: {
     0: 'Lightning Terminal wird gestartet...',
@@ -40,6 +42,8 @@ export default {
     15: 'Lightning Terminal konnte nicht gestartet werden: ${error}',
     16: 'Lightning Terminal wird gestartet…',
     17: 'Verbindung zu LND wird hergestellt…',
+    18: 'litd wird neu gestartet — es blieb nach einem schwerwiegenden Fehler stehen und kann sich nicht selbst erholen',
+    19: 'Lightning Terminal hat einen schwerwiegenden Fehler erlitten — es wird neu gestartet: ${error}',
   } satisfies LangDict,
   pl_PL: {
     0: 'Uruchamianie Lightning Terminal...',
@@ -60,6 +64,8 @@ export default {
     15: 'Nie udało się uruchomić Lightning Terminal: ${error}',
     16: 'Uruchamianie Lightning Terminal…',
     17: 'Łączenie z LND…',
+    18: 'Ponowne uruchamianie litd — zawiesił się po krytycznym błędzie i nie może samodzielnie się odzyskać',
+    19: 'Lightning Terminal napotkał krytyczny błąd — trwa jego ponowne uruchamianie: ${error}',
   } satisfies LangDict,
   fr_FR: {
     0: 'Démarrage de Lightning Terminal...',
@@ -80,5 +86,7 @@ export default {
     15: "Lightning Terminal n'a pas pu démarrer : ${error}",
     16: 'Démarrage de Lightning Terminal…',
     17: 'Connexion à LND…',
+    18: "Redémarrage de litd — il s'est figé après une erreur fatale et ne peut pas se rétablir seul",
+    19: 'Lightning Terminal a rencontré une erreur fatale — redémarrage en cours : ${error}',
   } satisfies LangDict,
 } as Record<string, LangDict>

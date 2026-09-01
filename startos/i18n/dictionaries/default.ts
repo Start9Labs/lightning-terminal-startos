@@ -5,6 +5,7 @@ const dict = {
   'Starting Lightning Terminal...': 0,
   'Web Interface': 1,
   'Create your LiT admin password': 4,
+  'Restarting litd — it parked after a fatal error and cannot recover on its own': 18,
 
   // healthCheck.ts
   'The web interface is ready': 2,
@@ -14,6 +15,7 @@ const dict = {
   'Lightning Terminal failed to start: ${error}': 15,
   'Starting Lightning Terminal…': 16,
   'Connecting to LND…': 17,
+  'Lightning Terminal hit a fatal error — restarting it: ${error}': 19,
 
   // interfaces.ts
   'Web UI': 5,

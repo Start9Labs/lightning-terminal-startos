@@ -28,13 +28,24 @@ async function subServers() {
 }
 
 /**
+ * `terminal.go`'s single park site stamps this after `g.start()` returns, and
+ * litd then blocks forever with the web port bound. Its two other
+ * `SetErrored(LIT, …)` messages come from retry loops and must never match —
+ * re-check all three on an upstream bump.
+ */
+const PARKED_PREFIX = 'could not start Lit'
+
+export type LitHealth = HealthCheckResult & {
+  /** Alive but permanently down — only a process restart recovers it. */
+  parked?: boolean
+}
+
+/**
  * @param rpcserver LND's resolved gRPC address, or null while its binding is
  * absent. litd falls back to its own `localhost:10009` default when the key is
  * unwritten, so on null there is nothing to probe.
  */
-export async function checkLit(
-  rpcserver: string | null,
-): Promise<HealthCheckResult> {
+export async function checkLit(rpcserver: string | null): Promise<LitHealth> {
   if (!rpcserver)
     return {
       result: 'waiting',
@@ -49,6 +60,18 @@ export async function checkLit(
     }
 
   const { lnd, lit } = servers
+  // A park stamps both sub-servers, so this must outrank the lnd.error branch.
+  if (lit?.error?.startsWith(PARKED_PREFIX))
+    return {
+      result: 'failure',
+      message: i18n(
+        'Lightning Terminal hit a fatal error — restarting it: ${error}',
+        {
+          error: lit.error,
+        },
+      ),
+      parked: true,
+    }
   if (lnd?.error)
     return {
       result: 'failure',
