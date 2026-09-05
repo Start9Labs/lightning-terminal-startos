@@ -1,23 +1,38 @@
 import { VersionInfo } from '@start9labs/start-sdk'
 
 export const current = VersionInfo.of({
-  version: '0.17.3-alpha:1',
+  version: '0.17.4-alpha:0',
   releaseNotes: {
-    en_US: `Lightning Terminal now recovers on its own after losing its connection to LND.
+    en_US: `Updated Lightning Terminal to 0.17.4-alpha.
 
-When LND restarts — for an update, a settings change, or during a reboot — the control connection Lightning Terminal keeps open to it is cut, and Lightning Terminal would stay down with a "Health Check lit failed … RPC middleware receive failed" error until the service was restarted by hand. It now detects that state and restarts itself, reconnecting once LND is back. If your Lightning Terminal is currently stuck on that error, this update clears it — no action needed.`,
-    es_ES: `Lightning Terminal ahora se recupera por sí solo tras perder la conexión con LND.
+This release updates its bundled liquidity services: Taproot Assets 0.8.3, Loop 0.35.0-beta, Pool 0.7.1-beta, and Faraday 0.2.19-alpha.
 
-Cuando LND se reinicia — por una actualización, un cambio de configuración o durante un reinicio del servidor — se corta la conexión de control que Lightning Terminal mantiene abierta con él, y Lightning Terminal quedaba caído con un error "Health Check lit failed … RPC middleware receive failed" hasta que se reiniciaba el servicio a mano. Ahora detecta ese estado y se reinicia solo, reconectándose en cuanto LND vuelve. Si tu Lightning Terminal está actualmente atascado en ese error, esta actualización lo resuelve — no hace falta hacer nada.`,
-    de_DE: `Lightning Terminal erholt sich jetzt selbstständig, nachdem die Verbindung zu LND verloren ging.
+Full upstream release notes:
+https://github.com/lightninglabs/lightning-terminal/releases/tag/v0.17.4-alpha`,
+    es_ES: `Lightning Terminal se actualizó a 0.17.4-alpha.
 
-Wenn LND neu startet — wegen eines Updates, einer Einstellungsänderung oder während eines Neustarts des Servers — wird die Steuerverbindung getrennt, die Lightning Terminal zu ihm offen hält, und Lightning Terminal blieb mit dem Fehler "Health Check lit failed … RPC middleware receive failed" außer Betrieb, bis der Dienst von Hand neu gestartet wurde. Dieser Zustand wird jetzt erkannt und der Dienst startet sich selbst neu; sobald LND wieder da ist, verbindet er sich erneut. Steckt Ihr Lightning Terminal derzeit in diesem Fehler fest, behebt dieses Update ihn — es ist nichts weiter zu tun.`,
-    pl_PL: `Lightning Terminal odzyskuje teraz sprawność samodzielnie po utracie połączenia z LND.
+Esta versión actualiza sus servicios de liquidez incluidos: Taproot Assets 0.8.3, Loop 0.35.0-beta, Pool 0.7.1-beta y Faraday 0.2.19-alpha.
 
-Gdy LND uruchamia się ponownie — z powodu aktualizacji, zmiany ustawień lub podczas restartu serwera — przerywane jest połączenie kontrolne, które Lightning Terminal utrzymuje z nim otwarte, i Lightning Terminal pozostawał wyłączony z błędem "Health Check lit failed … RPC middleware receive failed", dopóki usługa nie została ręcznie uruchomiona ponownie. Teraz ten stan jest wykrywany i usługa restartuje się sama, łącząc się ponownie, gdy tylko LND wróci. Jeśli Twój Lightning Terminal utknął obecnie na tym błędzie, ta aktualizacja go usuwa — nie trzeba nic robić.`,
-    fr_FR: `Lightning Terminal se rétablit désormais tout seul après avoir perdu sa connexion à LND.
+Notas completas de la versión original:
+https://github.com/lightninglabs/lightning-terminal/releases/tag/v0.17.4-alpha`,
+    de_DE: `Lightning Terminal wurde auf 0.17.4-alpha aktualisiert.
 
-Quand LND redémarre — pour une mise à jour, un changement de réglage ou lors d'un redémarrage du serveur — la connexion de contrôle que Lightning Terminal garde ouverte vers lui est coupée, et Lightning Terminal restait hors service avec une erreur "Health Check lit failed … RPC middleware receive failed" jusqu'à un redémarrage manuel du service. Cet état est désormais détecté et le service se redémarre de lui-même, puis se reconnecte dès que LND est de retour. Si votre Lightning Terminal est actuellement bloqué sur cette erreur, cette mise à jour la corrige — rien à faire.`,
+Diese Version aktualisiert die enthaltenen Liquiditätsdienste: Taproot Assets 0.8.3, Loop 0.35.0-beta, Pool 0.7.1-beta und Faraday 0.2.19-alpha.
+
+Vollständige Upstream-Versionshinweise:
+https://github.com/lightninglabs/lightning-terminal/releases/tag/v0.17.4-alpha`,
+    pl_PL: `Zaktualizowano Lightning Terminal do wersji 0.17.4-alpha.
+
+Ta wersja aktualizuje dołączone usługi płynności: Taproot Assets 0.8.3, Loop 0.35.0-beta, Pool 0.7.1-beta i Faraday 0.2.19-alpha.
+
+Pełne informacje o wydaniu projektu źródłowego:
+https://github.com/lightninglabs/lightning-terminal/releases/tag/v0.17.4-alpha`,
+    fr_FR: `Lightning Terminal a été mis à jour vers la version 0.17.4-alpha.
+
+Cette version met à jour les services de liquidité inclus : Taproot Assets 0.8.3, Loop 0.35.0-beta, Pool 0.7.1-beta et Faraday 0.2.19-alpha.
+
+Notes de version amont complètes :
+https://github.com/lightninglabs/lightning-terminal/releases/tag/v0.17.4-alpha`,
   },
   migrations: {},
 })
