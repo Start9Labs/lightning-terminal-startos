@@ -27,5 +27,5 @@
 
 ## Applying the bump
 
-- In `startos/manifest/index.ts`, set `images['lightning-terminal'].source.dockerTag` to the Docker Hub tag you confirmed above — normally `lightninglabs/lightning-terminal:v<new version>` including the `-alpha` suffix upstream uses (e.g. `v0.16.1-alpha`), or the retry tag when upstream published one (e.g. `v0.17.2-alpha-docker`).
+- In `startos/manifest/index.ts`, set `images['lightning-terminal'].source.dockerTag` to the Docker Hub tag you confirmed above — normally `lightninglabs/lightning-terminal:v<new version>`, retaining any prerelease suffix in the release tag (e.g. `v0.16.1-alpha`; `v0.17.6` has none), or the retry tag when upstream published one (e.g. `v0.17.2-alpha-docker`).
 - The version in `startos/versions/current.ts` tracks the upstream **release**, not the image tag: `0.17.2-alpha:0`, never `0.17.2-alpha-docker:0`. StartOS versions carry a single pre-release segment, so a retry tag's name does not parse — and it fails late, at `canMigrateFrom()`, with an error naming neither the file nor the version.
