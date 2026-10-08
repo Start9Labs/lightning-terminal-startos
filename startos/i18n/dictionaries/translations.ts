@@ -22,6 +22,7 @@ export default {
     17: 'Conectando con LND…',
     18: 'Reiniciando litd: se quedó bloqueado tras un error fatal y no puede recuperarse por sí solo',
     19: 'Lightning Terminal sufrió un error fatal — reiniciándolo: ${error}',
+    20: 'Tu contraseña actual dejará de funcionar y Lightning Terminal se reiniciará si está en ejecución.',
   } satisfies LangDict,
   de_DE: {
     0: 'Lightning Terminal wird gestartet...',
@@ -44,6 +45,7 @@ export default {
     17: 'Verbindung zu LND wird hergestellt…',
     18: 'litd wird neu gestartet — es blieb nach einem schwerwiegenden Fehler stehen und kann sich nicht selbst erholen',
     19: 'Lightning Terminal hat einen schwerwiegenden Fehler erlitten — es wird neu gestartet: ${error}',
+    20: 'Dein aktuelles Passwort funktioniert danach nicht mehr, und Lightning Terminal wird neu gestartet, falls es läuft.',
   } satisfies LangDict,
   pl_PL: {
     0: 'Uruchamianie Lightning Terminal...',
@@ -66,6 +68,7 @@ export default {
     17: 'Łączenie z LND…',
     18: 'Ponowne uruchamianie litd — zawiesił się po krytycznym błędzie i nie może samodzielnie się odzyskać',
     19: 'Lightning Terminal napotkał krytyczny błąd — trwa jego ponowne uruchamianie: ${error}',
+    20: 'Twoje obecne hasło przestanie działać, a Lightning Terminal uruchomi się ponownie, jeśli jest uruchomiony.',
   } satisfies LangDict,
   fr_FR: {
     0: 'Démarrage de Lightning Terminal...',
@@ -88,5 +91,6 @@ export default {
     17: 'Connexion à LND…',
     18: "Redémarrage de litd — il s'est figé après une erreur fatale et ne peut pas se rétablir seul",
     19: 'Lightning Terminal a rencontré une erreur fatale — redémarrage en cours : ${error}',
+    20: "Votre mot de passe actuel cessera de fonctionner et Lightning Terminal redémarrera s'il est en cours d'exécution.",
   } satisfies LangDict,
 } as Record<string, LangDict>

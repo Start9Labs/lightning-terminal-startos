@@ -1,5 +1,5 @@
 import { setupManifest } from '@start9labs/start-sdk'
-import { depLndDescription, depLndTitle, long, short } from './i18n'
+import { long, short } from './i18n'
 
 export const manifest = setupManifest({
   id: 'lightning-terminal',
@@ -17,16 +17,7 @@ export const manifest = setupManifest({
         dockerTag: 'lightninglabs/lightning-terminal:v0.17.6',
       },
       arch: ['aarch64', 'x86_64'],
-    },
-  },
-  dependencies: {
-    lnd: {
-      description: depLndDescription,
-      optional: false,
-      metadata: {
-        title: depLndTitle,
-        icon: 'https://raw.githubusercontent.com/Start9Labs/lnd-startos/6a24e93761aa9046d427d0e62021defcaf9b47f3/icon.svg',
-      },
+      emulateMissing: false,
     },
   },
 })

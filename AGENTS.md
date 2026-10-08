@@ -18,19 +18,23 @@ Freshly scaffolded? Work the
 guide page, not a file in this repo — read it, don't copy it in.
 
 Keep `README.md` (technical reference for an AI support or administering agent) and
-`instructions.md` (end-user docs) in sync with your changes.
+`instructions.md` (end-user docs) in sync with your changes. This file restates neither:
+whoever changes the package has both, so it carries only what they don't — repo mechanics,
+a change that looks right and is not, where the next thing gets added, a naming trap, a
+build or test invocation particular to this repo.
 
-**Bugs and feature requests are GitHub issues on this repo** — file them as you find them.
+**Fix a defect you spot rather than reporting it** — you have the package open and the
+context to be sure. File **a GitHub issue on this repo** only when the call isn't yours to
+make: you can't pin the cause down, two defensible fixes exist, or it's too large to ride on
+the work in hand. An open issue is a report, not a queue — implement one when you're asked
+to or when it's labelled `Approved`, then close it with `Closes #<n>`.
+
 Don't record work in the repo instead: no `TODO.md`, no `NOTES.md`, no `PLAN.md`. What you
 verified, tried, and decided belongs in the commit message and the PR body.
 
 ## This repo
 
-- **`httpslisten` must stay pinned off the plaintext port.** litd always binds a TLS listener as well; its default is `127.0.0.1:<uiPort>`, and the plaintext listener binds `0.0.0.0:<uiPort>`. An already-listening specific address blocks the overlapping wildcard bind, so the second bind fails with `EADDRINUSE` and litd exits. Moving either listener onto the other's port brings the service down.
-- **The health check reads `/v1/status`, never the socket.** litd binds 8443 before it connects to LND and keeps it bound when that connection fails, so a listening port is not evidence that the interface can load. `/v1/status` is litd's own status manager, and it reports an `lnd` sub-server even in remote mode.
-- **`main`'s ready fn is also litd's watchdog, and an upstream bump must re-verify it.** It kills a parked litd so the supervisor restarts it, matching that state by message prefix — `PARKED_PREFIX` in `startos/healthCheck.ts`, which names the `terminal.go` sites to re-check. Don't reach for `pkill`: busybox matches argv rather than comm, so `pkill -x litd` can never match a process started as `/bin/litd`. A bump must also confirm the image still ships `sh`, `kill`, and `pidof`.
-- **`enablerest` must stay `true`.** It is what serves `/v1/status` on the UI port, so the health check above has nothing to read without it. It adds no unauthenticated surface: REST calls are converted back to gRPC and re-enter the same authenticated proxy that already serves the UI's grpc-web traffic.
-- **`auto-migrate-to-sql` must stay `true`.** litd's bbolt→SQL migration is one-way and prompts on stdin for approval; nothing here can answer it, so the service simply never comes up without this.
-- **Leave `remote.lnd.rpcserver` unwritten when LND's binding is absent, never seeded.** That binding does not exist until LND's first wallet unlock. A fabricated address would be indistinguishable from a real one and would have to be corrected later; leaving it unset lets the `.const()` heal write the real value on one restart, and the binding then survives lock/unlock cycles.
-- **`main` must `const` the config _after_ its own `rpcserver` merge**, or that write self-triggers a restart on every start.
-- **litd pins the mounted `tls.cert`**, whose SANs cover LND's bridge address — that is why the LND mount is required and not just the macaroon path.
+- **Keep `httpslisten` on its own loopback port, off `uiPort`.** litd always binds it, and on the plaintext listener's port the second bind fails with `EADDRINUSE` and litd exits.
+- **Keep `enablerest` and `auto-migrate-to-sql` at `true`, and health-check `/v1/status`, never the socket.** litd holds 8443 while it cannot reach LND; `/v1/status` needs `enablerest`, and without `auto-migrate-to-sql` litd waits on a stdin prompt nothing answers.
+- **On an upstream bump, re-check `PARKED_PREFIX` against the `terminal.go` sites named in `startos/healthCheck.ts`, and that the image still ships `sh`, `kill` and `pidof`.** Don't swap in `pkill`: busybox matches argv, so `pkill -x litd` never matches `/bin/litd`.
+- **In `main`, `const` the config only after the `rpcserver` merge, and never seed `remote.lnd.rpcserver` while LND's binding is absent.** The earlier `const` restarts on every start; a seeded address can't be told from a real one.
