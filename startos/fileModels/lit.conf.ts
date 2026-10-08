@@ -15,7 +15,7 @@ const macaroonPath =
   `${lndMount}/data/chain/bitcoin/mainnet/admin.macaroon` as const
 const tlsCertPath = `${lndMount}/tls.cert` as const
 
-const shape = z.object({
+const shape = z.looseObject({
   uipassword: z.string().nullable().catch(null),
   databasebackend: z.literal('sqlite').catch('sqlite'),
   // Approve litd 0.17's one-way bbolt→SQL migration headlessly; no stdin prompt is answerable here.
