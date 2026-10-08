@@ -85,10 +85,12 @@ export const main = sdk.setupMain(async ({ effects }) => {
             ? ['sh', '-c', 'kill -9 $(pidof litd)']
             : ['sh', '-c', 'kill $(pidof litd)']
           sigtermSent = true
-          const res = await litSub.exec(kill, undefined, 10_000).catch((e) => {
-            console.error(e)
-            return null
-          })
+          const res = await litSub
+            .exec(kill, { timeout: 10_000 })
+            .catch((e) => {
+              console.error(e)
+              return null
+            })
           // exec reports failure via exitCode rather than throwing.
           if (res && res.exitCode !== 0)
             console.error(

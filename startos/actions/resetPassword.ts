@@ -16,7 +16,11 @@ export const resetPassword = sdk.Action.withoutInput(
       description: hasPass
         ? i18n('Reset your user interface password')
         : i18n('Create your user interface password'),
-      warning: null,
+      warning: hasPass
+        ? i18n(
+            'Your current password stops working, and Lightning Terminal restarts if it is running.',
+          )
+        : null,
       allowedStatuses: 'any',
       group: null,
       visibility: 'enabled',

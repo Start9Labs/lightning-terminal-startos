@@ -28,6 +28,7 @@ const dict = {
   'Create your user interface password': 10,
   Success: 11,
   'Your new password is below': 12,
+  'Your current password stops working, and Lightning Terminal restarts if it is running.': 20,
 } as const
 
 /**

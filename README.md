@@ -113,6 +113,7 @@ Sets the password for the Lightning Terminal web interface.
 - **What it changes:** `uipassword` in `lit.conf`.
 - **Cost:** seconds, then a restart — litd reads its config only at startup.
 - **Repeat safety:** safe to re-run; each run generates a fresh password and invalidates the previous one.
+- **Confirmation:** Reset Password asks for confirmation before it runs; Create Password does not.
 - **Outputs:** the new password, masked and copyable. It is not recoverable afterwards.
 
 This is the login for Lightning Terminal itself. It has no bearing on LND's own credentials.

@@ -20,7 +20,7 @@ After installing Lightning Terminal, it posts a critical task asking you to crea
 2. Start Lightning Terminal.
 3. Open the **Web UI** interface and log in with the generated password.
 
-If you ever lose the password, run the **Reset Password** action to generate a new one.
+If you ever lose the password, run the **Reset Password** action to generate a new one. It asks you to confirm first, because your current password stops working.
 
 ## Using Lightning Terminal
 
