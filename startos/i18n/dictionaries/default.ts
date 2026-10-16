@@ -10,7 +10,6 @@ const dict = {
   // healthCheck.ts
   'The web interface is ready': 2,
   'The web interface is not ready': 3,
-  'Waiting for LND — start it and unlock its wallet': 13,
   'Cannot reach LND: ${error}': 14,
   'Lightning Terminal failed to start: ${error}': 15,
   'Starting Lightning Terminal…': 16,

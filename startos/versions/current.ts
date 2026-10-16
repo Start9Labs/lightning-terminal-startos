@@ -1,13 +1,18 @@
 import { VersionInfo } from '@start9labs/start-sdk'
 
 export const current = VersionInfo.of({
-  version: '0.17.6:1',
+  version: '0.17.6:2',
   releaseNotes: {
-    en_US: `- Reset Password asks for confirmation before replacing your current password.`,
-    es_ES: `- Restablecer contraseña pide confirmación antes de reemplazar tu contraseña actual.`,
-    de_DE: `- Passwort zurücksetzen fragt vor dem Ersetzen deines aktuellen Passworts nach einer Bestätigung.`,
-    pl_PL: `- Resetuj hasło prosi o potwierdzenie przed zastąpieniem obecnego hasła.`,
-    fr_FR: `- Réinitialiser le mot de passe demande une confirmation avant de remplacer votre mot de passe actuel.`,
+    en_US:
+      'Restarting Lightning Terminal while it starts up leaves exactly one copy of it running.',
+    es_ES:
+      'Reiniciar Lightning Terminal mientras arranca deja exactamente una copia en ejecución.',
+    de_DE:
+      'Ein Neustart von Lightning Terminal während des Startvorgangs lässt genau eine Instanz laufen.',
+    pl_PL:
+      'Ponowne uruchomienie Lightning Terminal podczas startu pozostawia dokładnie jedną działającą kopię.',
+    fr_FR:
+      'Redémarrer Lightning Terminal pendant son démarrage laisse exactement une seule copie en cours d’exécution.',
   },
   migrations: {},
 })

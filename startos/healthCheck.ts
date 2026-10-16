@@ -46,11 +46,7 @@ export type LitHealth = HealthCheckResult & {
  * unwritten, so on null there is nothing to probe.
  */
 export async function checkLit(rpcserver: string | null): Promise<LitHealth> {
-  if (!rpcserver)
-    return {
-      result: 'waiting',
-      message: i18n('Waiting for LND — start it and unlock its wallet'),
-    }
+  if (!rpcserver) return { result: 'waiting', message: 'LND' }
 
   const servers = await subServers()
   if (!servers)
