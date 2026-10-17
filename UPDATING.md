@@ -14,7 +14,7 @@
   curl -fsSL "https://hub.docker.com/v2/repositories/lightninglabs/lightning-terminal/tags?page_size=20&ordering=last_updated" | jq -r '.results[].name'
   ```
 
-  A release tag does not guarantee an image. Upstream's `docker.yml` tags images from whatever git tag is pushed, so a failed image build is retried under a *new* git tag and the image lands there instead — which is why this pin is `v0.17.2-alpha-docker` while neither `v0.17.1-alpha` nor `v0.17.2-alpha` has an image. When the release tag has no image, find the retry tag and confirm it descends from the release:
+  A release tag does not guarantee an image. Upstream's `docker.yml` tags images from whatever git tag is pushed, so a failed image build is retried under a *new* git tag and the image lands there instead. For example, `v0.17.2-alpha-docker` supplied the image for `v0.17.2-alpha`; neither `v0.17.1-alpha` nor `v0.17.2-alpha` has an image. When the release tag has no image, find the retry tag and confirm it descends from the release:
 
   ```sh
   gh api repos/lightninglabs/lightning-terminal/tags --jq '.[].name'
