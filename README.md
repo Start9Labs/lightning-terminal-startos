@@ -35,13 +35,11 @@
 
 ## Image and Container Runtime
 
-The upstream image runs with its CA store upgraded by the root `Dockerfile`, a
-temporary layer that comes out once upstream ships an image built on a fixed
-store. One subcontainer runs the service.
+One subcontainer runs the unmodified upstream image.
 
 | Property      | Value                                                    |
 | ------------- | -------------------------------------------------------- |
-| Image         | `lightninglabs/lightning-terminal` + root `Dockerfile`   |
+| Image         | `lightninglabs/lightning-terminal`   |
 | Architectures | x86_64, aarch64                                          |
 | Command       | `litd`                                                   |
 | Subcontainer  | `lit-sub` — the `lit` daemon, and the one to `attach` to |
@@ -175,7 +173,7 @@ The `main` volume is copied wholesale — `sdk.Backups.ofVolumes('main')`. No du
 
 ```yaml
 package_id: lightning-terminal
-image: lightninglabs/lightning-terminal + root Dockerfile (CA store upgrade)
+image: lightninglabs/lightning-terminal
 architectures:
   - x86_64
   - aarch64
