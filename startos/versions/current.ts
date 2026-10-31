@@ -1,33 +1,33 @@
 import { VersionInfo } from '@start9labs/start-sdk'
 
 export const current = VersionInfo.of({
-  version: '0.17.8:0',
+  version: '0.17.10:0',
   releaseNotes: {
-    en_US: `Updated Lightning Terminal to 0.17.8. This release uses Go 1.27.3 to reject compromised certificate chains (CVE-2026-111943), fixes sub-server shutdown and SQL error matching, and updates bundled liquidity services. The upstream image now includes the fixed CA store, replacing the temporary StartOS layer.
+    en_US: `Updated Lightning Terminal to 0.17.10 and start-sdk to 3.1.1. Lightning Terminal disables MPTCP listeners by default to mitigate the demonstrated exploit path for CVE-2026-98432 and updates its bundled services.
 
-Back up your databases before updating. Bundled Loop automatically adds on-chain cost fields to static-address deposits and looks up costs for existing deposits after startup. Instant Out API callers must set max_swap_fee_sat; omitting the fee cap is rejected (zero is valid).
+This is not a kernel fix: a patched StartOS host kernel is still required. This package connects to the separate LND service, which must receive its own security update independently.
 
-Full upstream release notes: https://github.com/lightninglabs/lightning-terminal/releases/tag/v0.17.8`,
-    es_ES: `Lightning Terminal se actualizó a 0.17.8. Recompilado con Go 1.27.3 para rechazar cadenas de certificados comprometidas (CVE-2026-111943), corrige el apagado de los subservidores y la detección de errores SQL, y actualiza los servicios de liquidez incluidos. La imagen original ya incluye el almacén de CA corregido, sustituyendo la capa temporal de StartOS.
+Full upstream release notes: https://github.com/lightninglabs/lightning-terminal/releases/tag/v0.17.10`,
+    es_ES: `Lightning Terminal se actualizó a 0.17.10 y start-sdk a 3.1.1. Lightning Terminal desactiva los servidores MPTCP de forma predeterminada para mitigar la vía de explotación demostrada de CVE-2026-98432 y actualiza sus servicios incluidos.
 
-Haz una copia de seguridad de tus bases de datos antes de actualizar. Loop añade automáticamente campos de costes en cadena a los depósitos de direcciones estáticas y consulta los costes de los depósitos existentes tras el inicio. Los clientes de la API Instant Out deben establecer max_swap_fee_sat; omitir el límite de comisión provoca el rechazo (cero es válido).
+Esto no corrige el núcleo: sigue siendo necesario un núcleo de StartOS con el parche. Este paquete se conecta al servicio LND independiente, que debe recibir su propia actualización de seguridad por separado.
 
-Notas completas de la versión original: https://github.com/lightninglabs/lightning-terminal/releases/tag/v0.17.8`,
-    de_DE: `Lightning Terminal wurde auf 0.17.8 aktualisiert. Mit Go 1.27.3 neu kompiliert, um kompromittierte Zertifikatsketten abzulehnen (CVE-2026-111943). Behebt das Herunterfahren der Unterserver und die Erkennung von SQL-Fehlern und aktualisiert die enthaltenen Liquiditätsdienste. Das Upstream-Image enthält nun den korrigierten CA-Speicher und ersetzt die temporäre StartOS-Schicht.
+Notas completas de la versión original: https://github.com/lightninglabs/lightning-terminal/releases/tag/v0.17.10`,
+    de_DE: `Lightning Terminal wurde auf 0.17.10 und start-sdk auf 3.1.1 aktualisiert. Lightning Terminal deaktiviert MPTCP-Listener standardmäßig, um den nachgewiesenen Angriffsweg für CVE-2026-98432 zu entschärfen, und aktualisiert seine enthaltenen Dienste.
 
-Sichern Sie Ihre Datenbanken vor dem Update. Das enthaltene Loop ergänzt automatisch Felder für On-Chain-Kosten bei Einzahlungen auf statische Adressen und ermittelt nach dem Start die Kosten bestehender Einzahlungen. Instant-Out-API-Aufrufer müssen max_swap_fee_sat setzen; ohne Gebührenlimit wird die Anfrage abgelehnt (null ist gültig).
+Dies behebt nicht den Kernel-Fehler: Ein gepatchter StartOS-Host-Kernel ist weiterhin erforderlich. Dieses Paket verbindet sich mit dem separaten LND-Dienst, der sein eigenes Sicherheitsupdate unabhängig erhalten muss.
 
-Vollständige Upstream-Versionshinweise: https://github.com/lightninglabs/lightning-terminal/releases/tag/v0.17.8`,
-    pl_PL: `Zaktualizowano Lightning Terminal do wersji 0.17.8. Ponownie skompilowano z Go 1.27.3, aby odrzucać przejęte łańcuchy certyfikatów (CVE-2026-111943), naprawiono zamykanie podserwerów i rozpoznawanie błędów SQL oraz zaktualizowano dołączone usługi płynności. Obraz źródłowy zawiera już poprawiony magazyn CA, zastępując tymczasową warstwę StartOS.
+Vollständige Upstream-Versionshinweise: https://github.com/lightninglabs/lightning-terminal/releases/tag/v0.17.10`,
+    pl_PL: `Zaktualizowano Lightning Terminal do wersji 0.17.10 i start-sdk do 3.1.1. Lightning Terminal domyślnie wyłącza nasłuchiwanie MPTCP, aby ograniczyć zademonstrowaną ścieżkę wykorzystania CVE-2026-98432, i aktualizuje dołączone usługi.
 
-Przed aktualizacją wykonaj kopię zapasową baz danych. Dołączony Loop automatycznie dodaje pola kosztów on-chain do wpłat na adresy statyczne i ustala koszty istniejących wpłat po uruchomieniu. Klienci API Instant Out muszą ustawić max_swap_fee_sat; pominięcie limitu opłaty powoduje odrzucenie żądania (zero jest prawidłowe).
+Nie jest to poprawka jądra: nadal wymagane jest załatane jądro hosta StartOS. Ten pakiet łączy się z oddzielną usługą LND, która musi niezależnie otrzymać własną aktualizację zabezpieczeń.
 
-Pełne informacje o wydaniu projektu źródłowego: https://github.com/lightninglabs/lightning-terminal/releases/tag/v0.17.8`,
-    fr_FR: `Lightning Terminal a été mis à jour vers la version 0.17.8. Recompilé avec Go 1.27.3 pour rejeter les chaînes de certificats compromises (CVE-2026-111943), corrige l'arrêt des sous-serveurs et la détection des erreurs SQL et met à jour les services de liquidité inclus. L'image amont contient désormais le magasin de CA corrigé, remplaçant la couche temporaire de StartOS.
+Pełne informacje o wydaniu projektu źródłowego: https://github.com/lightninglabs/lightning-terminal/releases/tag/v0.17.10`,
+    fr_FR: `Lightning Terminal a été mis à jour vers la version 0.17.10 et start-sdk vers 3.1.1. Lightning Terminal désactive les écouteurs MPTCP par défaut pour atténuer le chemin d'exploitation démontré de CVE-2026-98432 et met à jour ses services intégrés.
 
-Sauvegardez vos bases de données avant la mise à jour. Loop ajoute automatiquement des champs de coûts sur la chaîne aux dépôts d'adresses statiques et recherche les coûts des dépôts existants après le démarrage. Les clients de l'API Instant Out doivent définir max_swap_fee_sat ; sans plafond de frais, la demande est rejetée (zéro est valide).
+Cela ne corrige pas le noyau : un noyau hôte StartOS corrigé reste nécessaire. Ce paquet se connecte au service LND distinct, qui doit recevoir sa propre mise à jour de sécurité indépendamment.
 
-Notes de version amont complètes : https://github.com/lightninglabs/lightning-terminal/releases/tag/v0.17.8`,
+Notes de version amont complètes : https://github.com/lightninglabs/lightning-terminal/releases/tag/v0.17.10`,
   },
   migrations: {},
 })
