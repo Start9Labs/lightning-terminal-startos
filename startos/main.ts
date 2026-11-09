@@ -14,7 +14,7 @@ export const main = sdk.setupMain(async ({ effects }) => {
   // then stays stable across lock/unlock cycles — the binding entry and its
   // assigned port survive a disable. While it is null we leave
   // remote.lnd.rpcserver unwritten rather than seed a fabricated address, and
-  // the health check reports `waiting` on that same null. litd pins the mounted
+  // the health check reports waiting on that same null. litd pins the mounted
   // tls.cert, whose SANs cover LND's bridge IP.
   const rpcserver = await sdk.host
     .getBridgeAddress(effects, {
@@ -48,8 +48,8 @@ export const main = sdk.setupMain(async ({ effects }) => {
       })
       .mountDependency<typeof lndManifest>({
         dependencyId: 'lnd',
-        volumeId: 'main',
-        subpath: null,
+        volumeId: 'public',
+        subpath: 'admin',
         mountpoint: lndMount,
         readonly: true,
       }),

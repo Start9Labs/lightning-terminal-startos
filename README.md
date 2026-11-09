@@ -39,7 +39,7 @@ One subcontainer runs the unmodified upstream image.
 
 | Property      | Value                                                    |
 | ------------- | -------------------------------------------------------- |
-| Image         | `lightninglabs/lightning-terminal`   |
+| Image         | `lightninglabs/lightning-terminal`                       |
 | Architectures | x86_64, aarch64                                          |
 | Command       | `litd`                                                   |
 | Subcontainer  | `lit-sub` — the `lit` daemon, and the one to `attach` to |
@@ -52,7 +52,7 @@ One volume, plus a read-only view of LND's.
 | ------ | ----------- | ---------------------------------------- |
 | `main` | `/root`     | `.lit/lit.conf`, and litd's own database |
 
-LND's data directory is mounted **read-only** at `/mnt/lnd`. That is how the package reads LND's admin macaroon and TLS certificate — neither is stored here, and litd pins the mounted certificate rather than trusting the connection blindly.
+LND's `public` volume tier `admin/` is mounted **read-only** at `/mnt/lnd`, holding only `admin.macaroon` and `tls.cert` — neither is stored here, and litd pins the mounted certificate rather than trusting the connection blindly.
 
 ## File Models
 
@@ -70,7 +70,7 @@ Three of those are overrides rather than plain wiring:
 - **The two listeners are pinned to different ports.** litd always binds a TLS listener as well as the plaintext one, and its default puts the TLS listener on loopback at the same port the plaintext listener binds on all interfaces. An already-bound specific address blocks the overlapping wildcard bind, so the second one fails and litd exits. The TLS listener is moved to a neighbouring loopback port; it backs only litd's internal proxy and is never exposed.
 - **`enablerest` is forced on.** It is what serves litd's `/v1/status` on the UI port, which the health check reads to learn the state of litd's `lnd` sub-server. REST calls are converted back to gRPC and re-enter the same authenticated proxy that already backs the UI's grpc-web traffic, so no endpoint becomes reachable that the port was not already serving.
 
-**Derived:** `remote.lnd.rpcserver` is LND's gRPC address, written by `main` from LND's own binding. While that binding is absent the key is left **unwritten** rather than seeded with a placeholder, and the health check reports `waiting` on that same absence. litd does not retry: with the key unwritten it falls back to its own `localhost:10009` default, fails to connect, and stays up with its `lnd` sub-server errored until the `const()` heal writes the real address and restarts it.
+**Derived:** `remote.lnd.rpcserver` is LND's gRPC address, written by `main` from LND's own binding. While that binding is absent the key is left **unwritten** rather than seeded with a placeholder, and the health check reports `starting` (waiting) on that same absence. litd does not retry: with the key unwritten it falls back to its own `localhost:10009` default, fails to connect, and stays up with its `lnd` sub-server errored until the `const()` heal writes the real address and restarts it.
 
 **Yours:** `uipassword`, through its action.
 
@@ -84,7 +84,7 @@ One, and it is required.
 | ---------- | --------- | ------------ | --------------------- | ----------------------------------------------------------- |
 | LND        | `running` | `lnd`        | `/mnt/lnd`, read-only | The node being managed: gRPC, macaroon, and TLS certificate |
 
-**LND's gRPC binding does not exist until its wallet is first unlocked.** Until then the address resolves to nothing, the config key stays unwritten, and this service's health check reports `waiting` — expected on a fresh pair of installs rather than a fault. Once the binding appears the package heals with a single restart, and the address then survives later lock and unlock cycles.
+**LND's gRPC binding does not exist until its wallet is first unlocked.** Until then the address resolves to nothing, the config key stays unwritten, and this service's health check reports `starting` (waiting) — expected on a fresh pair of installs rather than a fault. Once the binding appears the package heals with a single restart, and the address then survives later lock and unlock cycles.
 
 ## Network Access and Interfaces
 
@@ -100,7 +100,7 @@ The port is bound on the `main` MultiHost and is not masked. StartOS terminates 
 
 Install seeds the config and raises a `critical` task for the password — there is no wizard, and no account to create inside the application.
 
-The ordering that matters is LND's: install it, start it, and **unlock its wallet** before expecting Lightning Terminal to work. Until that first unlock there is no gRPC address to connect to, and the service reports `waiting` rather than pretending otherwise.
+The ordering that matters is LND's: install it, start it, and **unlock its wallet** before expecting Lightning Terminal to work. Until that first unlock there is no gRPC address to connect to, and the service reports `starting` (waiting) rather than pretending otherwise.
 
 ## Actions
 
@@ -138,12 +138,12 @@ One check, on the daemon.
 
 The check reads litd's own status manager rather than the socket. litd binds port 8443 before it talks to LND and keeps it bound when that connection fails, so a listening port says nothing about whether the interface can load; `/v1/status` reports the `lnd` and `lit` sub-servers directly.
 
-| Reported   | Condition                                                                   |
-| ---------- | --------------------------------------------------------------------------- |
-| `waiting`  | `remote.lnd.rpcserver` is unwritten — LND's wallet has never been unlocked   |
-| `failure`  | `/v1/status` is unreachable, or either sub-server carries an error           |
-| `starting` | litd is connecting to LND, or has connected and is still coming up           |
-| `success`  | both the `lnd` and `lit` sub-servers report running                          |
+| Reported            | Condition                                                                  |
+| ------------------- | -------------------------------------------------------------------------- |
+| `starting`, waiting | `remote.lnd.rpcserver` is unwritten — LND's wallet has never been unlocked |
+| `failure`           | `/v1/status` is unreachable, or either sub-server carries an error         |
+| `starting`          | litd is connecting to LND, or has connected and is still coming up         |
+| `success`           | both the `lnd` and `lit` sub-servers report running                        |
 
 A `failure` naming LND most often means LND is not running. litd bounds its wait for LND's RPC by `--lndreadytimeout`, ten minutes by default, so a slow-starting LND is reported as `starting` for up to that long before it becomes a failure.
 
@@ -185,7 +185,7 @@ file_models:
   - /root/.lit/lit.conf
 startos_managed_env_vars: []
 dependencies:
-  - lnd # required; mounted read-only at /mnt/lnd
+  - lnd # required; public/admin mounted read-only at /mnt/lnd
 interfaces:
   ui: { type: ui, port: 8443 } # litd's TLS listener is loopback-only and unexported
 actions:
