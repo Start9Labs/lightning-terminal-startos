@@ -11,8 +11,7 @@ import { litDir, lndMount, uiPort } from '../utils'
 // port; it only backs litd's internal REST/gRPC proxy and is never exposed.
 const httpListen = `0.0.0.0:${uiPort}` as const
 const httpsListen = `127.0.0.1:${uiPort + 1}` as const
-const macaroonPath =
-  `${lndMount}/data/chain/bitcoin/mainnet/admin.macaroon` as const
+const macaroonPath = `${lndMount}/admin.macaroon` as const
 const tlsCertPath = `${lndMount}/tls.cert` as const
 
 const shape = z.looseObject({
