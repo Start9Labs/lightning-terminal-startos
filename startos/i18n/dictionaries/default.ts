@@ -27,7 +27,7 @@ const dict = {
   'Create your user interface password': 10,
   Success: 11,
   'Your new password is below': 12,
-  'Your current password stops working, and Lightning Terminal restarts if it is running.': 20,
+  'Your current password stops working, and Lightning Terminal restarts if it is running. Lightning Node Connect sessions and macaroons stay valid. If someone else may know the old password, revoke their sessions on the Lightning Node Connect page and run Revoke Macaroons in LND: the password gives full control of LND, including creating LND macaroons that keep working after Lightning Terminal is reset or reinstalled.': 20,
 } as const
 
 /**

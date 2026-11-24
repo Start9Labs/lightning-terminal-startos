@@ -1,18 +1,18 @@
 import { VersionInfo } from '@start9labs/start-sdk'
 
 export const current = VersionInfo.of({
-  version: '0.17.11:0',
+  version: '0.17.11:1',
   releaseNotes: {
     en_US:
-      'Requires StartOS 0.4.2 or later. Updated Lightning Terminal to 0.17.11, including Loop 0.35.4-beta and patched frontend build dependencies. Full upstream release notes: https://github.com/lightninglabs/lightning-terminal/releases/tag/v0.17.11',
+      'Resetting the password does not end Lightning Node Connect sessions or invalidate macaroons, and the Lightning Terminal password gives full control of LND, including creating LND macaroons. If someone else may know a past password, revoke their sessions on the Lightning Node Connect page and run **Revoke Macaroons** in LND.',
     es_ES:
-      'Requiere StartOS 0.4.2 o posterior. Lightning Terminal se actualizó a 0.17.11, con Loop 0.35.4-beta y dependencias de compilación de la interfaz corregidas. Notas completas de la versión original: https://github.com/lightninglabs/lightning-terminal/releases/tag/v0.17.11',
+      'Restablecer la contraseña no cierra las sesiones de Lightning Node Connect ni invalida los macaroons, y la contraseña de Lightning Terminal da control total de LND, incluida la creación de macaroons de LND. Si otra persona puede conocer una contraseña anterior, revoca sus sesiones en la página Lightning Node Connect y ejecuta **Revocar macaroons** en LND.',
     de_DE:
-      'Erfordert StartOS 0.4.2 oder neuer. Lightning Terminal wurde auf 0.17.11 aktualisiert, mit Loop 0.35.4-beta und Sicherheitskorrekturen in den Build-Abhängigkeiten der Weboberfläche. Vollständige Upstream-Versionshinweise: https://github.com/lightninglabs/lightning-terminal/releases/tag/v0.17.11',
+      'Das Zurücksetzen des Passworts beendet keine Lightning-Node-Connect-Sitzungen und macht keine Macaroons ungültig, und das Lightning-Terminal-Passwort gibt volle Kontrolle über LND, einschließlich der Erstellung von LND-Macaroons. Falls jemand anderes ein früheres Passwort kennen könnte, widerrufe dessen Sitzungen auf der Seite Lightning Node Connect und führe in LND **Macaroons widerrufen** aus.',
     pl_PL:
-      'Wymaga StartOS 0.4.2 lub nowszego. Zaktualizowano Lightning Terminal do wersji 0.17.11, z Loop 0.35.4-beta i poprawkami zależności kompilacji interfejsu. Pełne informacje o wydaniu projektu źródłowego: https://github.com/lightninglabs/lightning-terminal/releases/tag/v0.17.11',
+      'Zresetowanie hasła nie kończy sesji Lightning Node Connect ani nie unieważnia macaroons, a hasło Lightning Terminal daje pełną kontrolę nad LND, w tym tworzenie macaroons LND. Jeśli ktoś inny może znać wcześniejsze hasło, unieważnij jego sesje na stronie Lightning Node Connect i uruchom **Unieważnij macaroons** w LND.',
     fr_FR:
-      'Nécessite StartOS 0.4.2 ou ultérieur. Lightning Terminal a été mis à jour vers la version 0.17.11, avec Loop 0.35.4-beta et des dépendances de compilation de l’interface corrigées. Notes de version amont complètes : https://github.com/lightninglabs/lightning-terminal/releases/tag/v0.17.11',
+      "Réinitialiser le mot de passe ne met pas fin aux sessions Lightning Node Connect et n'invalide pas les macaroons, et le mot de passe de Lightning Terminal donne le contrôle total de LND, y compris la création de macaroons LND. Si quelqu'un d'autre peut connaître un ancien mot de passe, révoquez ses sessions sur la page Lightning Node Connect et exécutez **Révoquer les macaroons** dans LND.",
   },
   migrations: {},
 })

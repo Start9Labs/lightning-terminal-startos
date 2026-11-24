@@ -20,7 +20,7 @@ After installing Lightning Terminal, it posts a critical task asking you to crea
 2. Start Lightning Terminal.
 3. Open the **Web UI** interface and log in with the generated password.
 
-If you ever lose the password, run the **Reset Password** action to generate a new one. It asks you to confirm first, because your current password stops working.
+If you ever lose the password, run the **Reset Password** action to generate a new one. It asks you to confirm first, because your current password stops working. A reset doesn't end Lightning Node Connect sessions or invalidate macaroons, and the password gives full control of LND, including creating LND macaroons. If someone else may know the old password, revoke their sessions with **Revoke Session** on the **Lightning Node Connect** page, and run **Revoke Macaroons** in LND, which invalidates every LND macaroon; services connected to LND may need a restart afterwards.
 
 ## Using Lightning Terminal
 
@@ -30,4 +30,4 @@ The Web UI is where you spend your time: viewing channels and balances, running 
 
 ### Actions
 
-- **Create Password / Reset Password** — generates a new random admin password for the Web UI. The action is labelled **Create Password** before one has been set and **Reset Password** afterwards.
+- **Create Password / Reset Password** — generates a new random admin password for the Web UI. The action is labelled **Create Password** before one has been set and **Reset Password** afterwards. Lightning Node Connect sessions and macaroons stay valid after a reset; see [Getting set up](#getting-set-up) for revoking them.
