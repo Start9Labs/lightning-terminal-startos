@@ -18,7 +18,7 @@ export const resetPassword = sdk.Action.withoutInput(
         : i18n('Create your user interface password'),
       warning: hasPass
         ? i18n(
-            'Your current password stops working, and Lightning Terminal restarts if it is running.',
+            'Your current password stops working, and Lightning Terminal restarts if it is running. Lightning Node Connect sessions and macaroons stay valid. If someone else may know the old password, revoke their sessions on the Lightning Node Connect page and run Revoke Macaroons in LND: the password gives full control of LND, including creating LND macaroons that keep working after Lightning Terminal is reset or reinstalled.',
           )
         : null,
       allowedStatuses: 'any',

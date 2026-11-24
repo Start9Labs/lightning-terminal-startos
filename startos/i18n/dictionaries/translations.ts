@@ -21,7 +21,7 @@ export default {
     17: 'Conectando con LND…',
     18: 'Reiniciando litd: se quedó bloqueado tras un error fatal y no puede recuperarse por sí solo',
     19: 'Lightning Terminal sufrió un error fatal — reiniciándolo: ${error}',
-    20: 'Tu contraseña actual dejará de funcionar y Lightning Terminal se reiniciará si está en ejecución.',
+    20: 'Tu contraseña actual dejará de funcionar y Lightning Terminal se reiniciará si está en ejecución. Las sesiones de Lightning Node Connect y los macaroons siguen siendo válidos. Si otra persona puede conocer la contraseña anterior, revoca sus sesiones en la página Lightning Node Connect y ejecuta Revocar macaroons en LND: la contraseña da control total de LND, incluida la creación de macaroons de LND que siguen funcionando después de restablecer o reinstalar Lightning Terminal.',
   } satisfies LangDict,
   de_DE: {
     0: 'Lightning Terminal wird gestartet...',
@@ -43,7 +43,7 @@ export default {
     17: 'Verbindung zu LND wird hergestellt…',
     18: 'litd wird neu gestartet — es blieb nach einem schwerwiegenden Fehler stehen und kann sich nicht selbst erholen',
     19: 'Lightning Terminal hat einen schwerwiegenden Fehler erlitten — es wird neu gestartet: ${error}',
-    20: 'Dein aktuelles Passwort funktioniert danach nicht mehr, und Lightning Terminal wird neu gestartet, falls es läuft.',
+    20: 'Dein aktuelles Passwort funktioniert danach nicht mehr, und Lightning Terminal wird neu gestartet, falls es läuft. Lightning-Node-Connect-Sitzungen und Macaroons bleiben gültig. Falls jemand anderes das alte Passwort kennen könnte, widerrufe dessen Sitzungen auf der Seite Lightning Node Connect und führe in LND Macaroons widerrufen aus: Das Passwort gibt volle Kontrolle über LND, einschließlich der Erstellung von LND-Macaroons, die auch nach dem Zurücksetzen oder Neuinstallieren von Lightning Terminal weiter funktionieren.',
   } satisfies LangDict,
   pl_PL: {
     0: 'Uruchamianie Lightning Terminal...',
@@ -65,7 +65,7 @@ export default {
     17: 'Łączenie z LND…',
     18: 'Ponowne uruchamianie litd — zawiesił się po krytycznym błędzie i nie może samodzielnie się odzyskać',
     19: 'Lightning Terminal napotkał krytyczny błąd — trwa jego ponowne uruchamianie: ${error}',
-    20: 'Twoje obecne hasło przestanie działać, a Lightning Terminal uruchomi się ponownie, jeśli jest uruchomiony.',
+    20: 'Twoje obecne hasło przestanie działać, a Lightning Terminal uruchomi się ponownie, jeśli jest uruchomiony. Sesje Lightning Node Connect i macaroons pozostają ważne. Jeśli ktoś inny może znać stare hasło, unieważnij jego sesje na stronie Lightning Node Connect i uruchom Unieważnij macaroons w LND: hasło daje pełną kontrolę nad LND, w tym tworzenie macaroons LND, które działają nadal po zresetowaniu lub ponownej instalacji Lightning Terminal.',
   } satisfies LangDict,
   fr_FR: {
     0: 'Démarrage de Lightning Terminal...',
@@ -87,6 +87,6 @@ export default {
     17: 'Connexion à LND…',
     18: "Redémarrage de litd — il s'est figé après une erreur fatale et ne peut pas se rétablir seul",
     19: 'Lightning Terminal a rencontré une erreur fatale — redémarrage en cours : ${error}',
-    20: "Votre mot de passe actuel cessera de fonctionner et Lightning Terminal redémarrera s'il est en cours d'exécution.",
+    20: "Votre mot de passe actuel cessera de fonctionner et Lightning Terminal redémarrera s'il est en cours d'exécution. Les sessions Lightning Node Connect et les macaroons restent valides. Si quelqu'un d'autre peut connaître l'ancien mot de passe, révoquez ses sessions sur la page Lightning Node Connect et exécutez Révoquer les macaroons dans LND : le mot de passe donne le contrôle total de LND, y compris la création de macaroons LND qui continuent de fonctionner après la réinitialisation ou la réinstallation de Lightning Terminal.",
   } satisfies LangDict,
 } as Record<string, LangDict>

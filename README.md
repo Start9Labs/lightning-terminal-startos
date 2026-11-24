@@ -116,7 +116,13 @@ Sets the password for the Lightning Terminal web interface.
 - **Confirmation:** Reset Password asks for confirmation before it runs; Create Password does not.
 - **Outputs:** the new password, masked and copyable. It is not recoverable afterwards.
 
-This is the login for Lightning Terminal itself. It has no bearing on LND's own credentials.
+This is the login for Lightning Terminal itself, and it is also an LND admin credential: litd attaches LND's mounted `admin.macaroon` to any LND call authenticated with it (`basicAuthToMacaroon` in litd's `rpc_proxy.go`), `BakeMacaroon` included. So whoever has the password can mint LND macaroons that live in LND and survive a reset or reinstall of this package.
+
+**A reset changes only `uipassword`.** The restart signs browsers out, but these stay valid:
+
+- **Lightning Node Connect sessions** — revoke them on the **Lightning Node Connect** page (**Revoke Session**).
+- **LND macaroons baked with the password** — LND's **Revoke Macaroons** action regenerates every LND root key, which invalidates them, along with every other LND macaroon. LNC sessions survive that rotation, since litd re-bakes their macaroons when it starts, so they must still be revoked here.
+- **`lit.macaroon`** in `.lit/` — litd's own macaroon, held only by someone with the volume or a backup.
 
 ## Tasks
 
