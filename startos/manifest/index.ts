@@ -14,7 +14,7 @@ export const manifest = setupManifest({
   images: {
     'lightning-terminal': {
       source: {
-        dockerTag: 'lightninglabs/lightning-terminal:v0.17.11',
+        dockerTag: 'lightninglabs/lightning-terminal:v0.17.12',
       },
       arch: ['aarch64', 'x86_64'],
       emulateMissing: false,
