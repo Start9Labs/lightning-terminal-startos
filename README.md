@@ -58,9 +58,9 @@ LND's `public` volume tier `admin/` is mounted **read-only** at `/mnt/lnd`, hold
 
 One model, and nearly all of it is enforced: litd's configuration is wiring rather than preference.
 
-| File            | Format | Modelled               | Written by                                       |
-| --------------- | ------ | ---------------------- | ------------------------------------------------ |
-| `.lit/lit.conf` | INI    | Yes — `FileHelper.ini` | Every init, every start, and the password action |
+| File            | Format | Modelled               | Written by                                |
+| --------------- | ------ | ---------------------- | ----------------------------------------- |
+| `.lit/lit.conf` | INI    | Yes — `FileHelper.ini` | Every init, every start, and both actions |
 
 **Enforced** — rewritten to a fixed value whenever the package writes the file: `lit-dir`, `databasebackend`, `auto-migrate-to-sql`, `enablerest`, both listener addresses, and LND's macaroon and certificate paths.
 
@@ -72,9 +72,9 @@ Three of those are overrides rather than plain wiring:
 
 **Derived:** `remote.lnd.rpcserver` is LND's gRPC address, written by `main` from LND's own binding. While that binding is absent the key is left **unwritten** rather than seeded with a placeholder, and the health check reports `starting` (waiting) on that same absence. litd does not retry: with the key unwritten it falls back to its own `localhost:10009` default, fails to connect, and stays up with its `lnd` sub-server errored until the `const()` heal writes the real address and restarts it.
 
-**Yours:** `uipassword`, through its action.
+**Yours:** `uipassword`, and the sub-server switches `loop-mode`, `pool-mode`, `faraday-mode`, `taproot-assets-mode` and `autopilot.disable`, each through its action. The switches stay unwritten until the Sub-servers action first saves, which leaves litd's defaults in force: every sub-server integrated and the Autopilot client on.
 
-Because litd reads this file only at startup, `main` watches it and restarts the daemon on any change — which is what makes a password reset or a resolved LND address take effect.
+Because litd reads this file only at startup, `main` watches it and restarts the daemon on any change — which is what makes a password reset, a sub-server change, or a resolved LND address take effect.
 
 ## Dependencies
 
@@ -104,7 +104,7 @@ The ordering that matters is LND's: install it, start it, and **unlock its walle
 
 ## Actions
 
-One action, which renames itself to match what running it will do.
+Two actions. The password action renames itself to match what running it will do.
 
 ### Create / Reset Password
 
@@ -123,6 +123,17 @@ This is the login for Lightning Terminal itself, and it is also an LND admin cre
 - **Lightning Node Connect sessions** — revoke them on the **Lightning Node Connect** page (**Revoke Session**).
 - **LND macaroons baked with the password** — LND's **Revoke Macaroons** action regenerates every LND root key, which invalidates them, along with every other LND macaroon. LNC sessions survive that rotation, since litd re-bakes their macaroons when it starts, so they must still be revoked here.
 - **`lit.macaroon`** in `.lit/` — litd's own macaroon, held only by someone with the volume or a backup.
+
+### Sub-servers
+
+Turns litd's bundled sub-servers and its Autopilot client on or off. Every switch defaults to on, which is litd's own default.
+
+- **What it changes:** `loop-mode`, `pool-mode`, `faraday-mode` and `taproot-assets-mode` in `lit.conf`, each `integrated` or `disable`, and `autopilot.disable`.
+- **Cost:** seconds, then a restart.
+- **Repeat safety:** safe to re-run; the form opens on the current settings.
+- **What turning one off does:** litd starts without it, and its data stays on the volume for when it is turned back on. The parts of the web interface that use it stop working. With Autopilot off, litd no longer connects to Lightning Labs' Autopilot server.
+- **Hazard:** don't turn Loop off with a swap in progress. An unfinished swap needs `loopd` running to complete or to reclaim its funds by timeout. While Pool is off, an existing Pool account cannot be managed.
+- **Outputs:** none.
 
 ## Tasks
 
@@ -167,9 +178,9 @@ The `main` volume is copied wholesale — `sdk.Backups.ofVolumes('main')`. No du
 
 1. **LND is required, and must have been unlocked at least once.** Before that there is no gRPC address to connect to.
 2. **The password is generated, not chosen**, and the service will not start until it exists.
-3. **litd's configuration is not user-editable in any meaningful way.** Every key but the password is pinned by the package.
+3. **Only the password and the sub-server switches are yours to set.** Every other key in litd's configuration is pinned by the package.
 4. **The TLS listener is moved to a loopback port** so it cannot collide with the published plaintext listener; StartOS terminates TLS at the edge instead.
-5. **The bbolt-to-SQL migration is approved automatically**, because it is one-way and would otherwise block on a prompt nothing can answer.
+5. **The bbolt-to-SQL migration is approved automatically**, because it is one-way and would otherwise block on a prompt nothing can answer. It runs on the first start after updating from a release before 0.17, and the package cannot be downgraded past it, so a backup of this service, and of LND, taken before that update is the only way back to the state before the migration.
 6. **No riscv64 build.** x86_64 and aarch64 only.
 7. **litd cannot survive an LND restart on its own** — the package's health check detects the parked state it leaves behind and restarts litd automatically. Expect the Web Interface check to blip red and pass through `starting` for a short while after any LND update or restart.
 
@@ -196,6 +207,7 @@ interfaces:
   ui: { type: ui, port: 8443 } # litd's TLS listener is loopback-only and unexported
 actions:
   - reset-password # renames itself to "Create Password" when unset
+  - sub-servers
 tasks:
   - { action: reset-password, severity: critical }
 health_checks:

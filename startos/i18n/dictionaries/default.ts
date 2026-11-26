@@ -28,6 +28,20 @@ const dict = {
   Success: 11,
   'Your new password is below': 12,
   'Your current password stops working, and Lightning Terminal restarts if it is running. Lightning Node Connect sessions and macaroons stay valid. If someone else may know the old password, revoke their sessions on the Lightning Node Connect page and run Revoke Macaroons in LND: the password gives full control of LND, including creating LND macaroons that keep working after Lightning Terminal is reset or reinstalled.': 20,
+
+  // actions/subServers.ts
+  'Sub-servers': 21,
+  'Turn off the parts of Lightning Terminal you do not use. Saving restarts Lightning Terminal.': 22,
+  Loop: 23,
+  'Submarine swaps (Loop In and Loop Out). Turn it off only with no swap in progress: an unfinished swap needs Loop running to complete or to reclaim its funds.': 24,
+  Pool: 25,
+  'The Lightning Pool liquidity marketplace. While it is off, an existing Pool account cannot be managed.': 26,
+  Faraday: 27,
+  'Channel insights and reports in the web interface.': 28,
+  'Taproot Assets': 29,
+  'Holding and transferring Taproot Assets. Turning it off leaves its data in place.': 30,
+  Autopilot: 31,
+  "The Autopilot client, which connects to Lightning Labs' Autopilot server.": 32,
 } as const
 
 /**
