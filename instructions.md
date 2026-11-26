@@ -31,3 +31,4 @@ The Web UI is where you spend your time: viewing channels and balances, running 
 ### Actions
 
 - **Create Password / Reset Password** — generates a new random admin password for the Web UI. The action is labelled **Create Password** before one has been set and **Reset Password** afterwards. Lightning Node Connect sessions and macaroons stay valid after a reset; see [Getting set up](#getting-set-up) for revoking them.
+- **Sub-servers** — turns off the parts of Lightning Terminal you don't use: Loop, Pool, Faraday, Taproot Assets, and the Autopilot client. Everything is on by default, and saving restarts Lightning Terminal. A sub-server you turn off keeps its data. Don't turn Loop off while a swap is in progress, because an unfinished swap needs Loop running to finish or to get its funds back.

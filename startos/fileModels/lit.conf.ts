@@ -14,6 +14,11 @@ const httpsListen = `127.0.0.1:${uiPort + 1}` as const
 const macaroonPath = `${lndMount}/admin.macaroon` as const
 const tlsCertPath = `${lndMount}/tls.cert` as const
 
+const subServerMode = z
+  .enum(['integrated', 'disable'])
+  .optional()
+  .catch(undefined)
+
 const shape = z.looseObject({
   uipassword: z.string().nullable().catch(null),
   databasebackend: z.literal('sqlite').catch('sqlite'),
@@ -33,6 +38,12 @@ const shape = z.looseObject({
   'remote.lnd.rpcserver': z.string().optional().catch(undefined),
   'remote.lnd.macaroonpath': z.literal(macaroonPath).catch(macaroonPath),
   'remote.lnd.tlscertpath': z.literal(tlsCertPath).catch(tlsCertPath),
+  // Sub-servers action. Unset keeps litd's defaults: integrated, and Autopilot on.
+  'loop-mode': subServerMode,
+  'pool-mode': subServerMode,
+  'faraday-mode': subServerMode,
+  'taproot-assets-mode': subServerMode,
+  'autopilot.disable': z.boolean().optional().catch(undefined),
 })
 
 export const litConfig = FileHelper.ini(
